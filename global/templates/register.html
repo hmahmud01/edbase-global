@@ -1,0 +1,86 @@
+{% extends 'utils/login_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row gx-0 min-vh-100">
+        <div class="col-md-9 col-lg-6 col-xl-8 px-5 d-flex align-items-center shadow">
+            <div class="w-100 py-5">
+                <div class="text-center"><img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..."
+                        style="max-width: 6rem;">
+                    <h1 class="h4 text-uppercase mb-3">Register</h1>
+                </div>
+                <p class="text-muted text-sm mb-4">The bedding was hardly able to cover it and seemed ready to slide off
+                    any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about
+                    helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.</p>
+                <form method="get" action="index.html">
+                    <div class="mb-3">
+                        <label class="form-label" for="registerUsername">Username </label>
+                        <input class="form-control" id="registerUsername" type="text" name="registerUsername" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="registerEmail">Email Address</label>
+                        <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="registerPassword">Password</label>
+                        <input class="form-control" id="registerPassword" type="password" name="registerPassword"
+                            required>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input me-2" id="registerAgree" type="checkbox" value="">
+                        <label class="form-check-label" for="registerAgree">I agree with the terms and policy </label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="registerUsername">Username </label>
+                        <input class="form-control" id="registerUsername" type="text" name="registerUsername" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="registerEmail">Email Address</label>
+                        <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="registerPassword">Password</label>
+                        <input class="form-control" id="registerPassword" type="password" name="registerPassword"
+                            required>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input me-2" id="registerAgree" type="checkbox" value="">
+                        <label class="form-check-label" for="registerAgree">I agree with the terms and policy </label>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="registerUsername">Username </label>
+                        <input class="form-control" id="registerUsername" type="text" name="registerUsername" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="registerEmail">Email Address</label>
+                        <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="registerPassword">Password</label>
+                        <input class="form-control" id="registerPassword" type="password" name="registerPassword"
+                            required>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input me-2" id="registerAgree" type="checkbox" value="">
+                        <label class="form-check-label" for="registerAgree">I agree with the terms and policy </label>
+                    </div>
+                    <!-- Submit-->
+                    <div class="d-grid mb-5">
+                        <button class="btn btn-primary text-uppercase">Register</button>
+                    </div>
+                    <!-- Link-->
+                    <p class="text-center"><small class="text-muted text-center">Already have an account? <a
+                                href="login-2.html">Log in</a>.</small></p>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">
+            <!-- Image-->
+            <div class="bg-cover h-100"
+                style="background-image: url(/static/img/photos/victor-ene-1301123-unsplash.jpg); background-repeat: no-repeat; background-attachment: fixed;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
