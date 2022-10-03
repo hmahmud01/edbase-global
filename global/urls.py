@@ -15,9 +15,9 @@ urlpatterns = [
     path('countries/', views.listCountries, name='countries'),
     path('addcountry/', views.addCountry, name='addcountry'),
     path('universities/', views.listUniversities, name='universities'),
-    path('adduniversity', views.addUniversity, name='adduniversity')
-    path('directories/', views.listDirectory, name='direcotries'),
-    path('adddirectory/', views.addDirectory, name='adddirectory')
+    path('adduniversity', views.addUniversity, name='adduniversity'),
+    path('directories/', views.listDirectory, name='directories'),
+    path('adddirectory/', views.addDirectory, name='adddirectory'),
     path('qualifications/', views.listQualifications, name='qualifications'),
     path('addqualification', views.addQualification, name='addqualification'),
 ]

@@ -30,7 +30,7 @@
                     <h5 class="modal-title" id="adddirectory">Add a Directory</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="">
+                <form action="{% url 'adddirectory' %}" method="post"> {% csrf_token %}
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="title" class="form-label">Directory Title</label>
@@ -40,7 +40,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>

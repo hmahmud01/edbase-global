@@ -36,7 +36,7 @@ def register(request):
 
 def listTeachers(request):
     data = Teacher.objects.all()    
-    qualifications = qualifcation.objects.all()
+    qualifications = Qualification.objects.all()
     return render(request, 'list_teachers.html', {'data': data, 'qualifications': qualifications})
 
 def addTeacher(request):
@@ -51,7 +51,7 @@ def addTeacher(request):
         qualifcation = Qualification.objects.get(id=post_data['qual'])
         teacher = Teacher(
             user = user,
-            name = post_data['namae'],
+            name = post_data['name'],
             phone = post_data['phone'],
             email = post_data['email'],
             level = post_data['level'],
@@ -59,6 +59,7 @@ def addTeacher(request):
             user_type = TEACHER_TYPE,            
         )
         teacher.save()
+        print("teacher added")
         alert="Teacher Created Successfully"
         return render(request, 'list_teachers.html', {'data': teacher, 'alert': alert})
 
@@ -72,7 +73,7 @@ def detailStudent(request):
 
 def listCountries(request):
     data = Country.objects.all()
-    return render(request, 'list_countries.html', {'data': data})
+    return render(request, 'list_country.html', {'data': data})
 
 def addCountry(request):
     post_data = request.POST
@@ -89,15 +90,17 @@ def listUniversities(request):
     countries = Country.objects.all()
     return render(request, 'list_universities.html', {'data': data, 'countries': countries})
 
-def addUniversity(req_user):
+def addUniversity(request):
     post_data = request.POST
     file_data = request.FILES
+    print(post_data)
+    print(file_data)
     country = Country.objects.get(id=post_data['country_id'])
     university = University(
         name = post_data['name'],
         country = country,
         url = post_data['url'],
-        description = post_data['post_data'],
+        description = post_data['description'],
         image = file_data['image']
     )
     university.save()
@@ -105,7 +108,7 @@ def addUniversity(req_user):
 
 def listDirectory(request):
     data = Directory.objects.all()
-    return render(request, 'list_direcotries.html', {'data': data})
+    return render(request, 'list_directory.html', {'data': data})
 
 def addDirectory(request):
     directory = Directory(
@@ -116,11 +119,12 @@ def addDirectory(request):
     return redirect('directories')
 
 def listQualifications(request):
-    data = Student.objects.all()    
+    data = Qualification.objects.all()    
     return render(request, 'list_qualifications.html', {'data': data})
 
 def addQualification(request):
     post_data = request.POST
+    print(post_data)
     qual = Qualification(
         title = post_data['title'],
         level = post_data['level']

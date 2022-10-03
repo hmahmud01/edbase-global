@@ -7,7 +7,7 @@
     <div class="page-breadcrumb">
         <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">Data Table </li>
+            <li class="breadcrumb-item active">Student Index </li>
         </ul>
     </div>
     <!-- Page Header-->
@@ -15,50 +15,154 @@
         <div class="d-flex justify-content-between">
             <h1 class="page-heading">Data Table</h1>
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
+                Register A Student
             </button>
-        </div>                   
-        
+        </div>
+
     </div>
-    
-    
+
+
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Student Registration</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="get" action="">
+                    <div class="modal-body">
+
+                        <p class="fs-2">Academic Information</p>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="name">Name </label>
+                                <input class="form-control" id="name" name="name" type="text" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="mobile">Mobile</label>
+                                <input class="form-control" id="mobile" type="number" name="mobile" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="guardian_mobile">Guardian Mobile </label>
+                                <input class="form-control" id="guardian_mobile" name="guardian_mobile" type="number"
+                                    required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input class="form-control" id="email" type="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="school">School</label>
+                                <input class="form-control" id="school" name="school" type="text" required>
+                            </div>
+                            <div class="col-6">
+                                <label for="name" class="form-label">Qualifications</label>
+                                <select class="form-select" aria-label="Default select qualification" name="qual">
+                                    <option selected>Open this select menu</option>
+                                    {% for qual in qualifications %}
+                                    <option value="{{ qual.id }}">{{ qual.title }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <p class="fs-2">Personal Information</p>
+                        <hr>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label class="form-label" for="passport">Passport/NID Number (Any One) </label>
+                                <input class="form-control" id="passport" name="passport" type="text" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="mother">Mother's Name </label>
+                                <input class="form-control" id="mother" name="mother" type="text" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="father">Father's Name </label>
+                                <input class="form-control" id="father" name="father" type="text" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="parents_phone">Parent's Phone (Any One) </label>
+                                <input class="form-control" id="parents_phone" name="parent_phone" type="text" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="praent_email">Parent's Email (Any One) </label>
+                                <input class="form-control" id="praent_email" name="praent_email" type="email" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="street_1">Address </label>
+                                <input class="form-control" id="street_1" name="street_1" type="text" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="street_2">Address </label>
+                                <input class="form-control" id="street_2" name="street_2" type="text" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label class="form-label" for="city">City </label>
+                                <input class="form-control" id="city" name="city" type="text" required>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label" for="zip_code">Zip </label>
+                                <input class="form-control" id="zip_code" name="zip_code" type="text" required>
+                            </div>
+                            <div class="col-4">
+                                <label class="form-label" for="country">Country </label>
+                                <input class="form-control" id="country" name="country" type="text" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label" for="dob">Date Of Birth </label>
+                                <input class="form-control" id="dob" name="dob" type="date" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label" for="blood_group">Blood Group </label>
+                                <input class="form-control" id="blood_group" name="blood_group" type="text" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <label for="photo" class="form-label">Photo</label>
+                                <input class="form-control form-control-sm" id="photo" name="photo" type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
             </div>
-            <div class="modal-body">
-            ...
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
         </div>
     </div>
     <section>
         <div class="card mb-4">
             <div class="card-header">
-                <div class="card-heading">Data Table - Classic</div>
+                <div class="card-heading">Student Index</div>
             </div>
             <div class="card-body text-muted">
-                <p>A lightweight, extendable, dependency-free javascript HTML table plugin. Similar to
-                    jQuery DataTables for use in modern browsers, but without the jQuery dependency.</p>
-                <p>Check out more at <a href="https://github.com/fiduswriter/Simple-DataTables">Project's
-                        GitHub</a>.</p>
-                <p>How easy is it to use DataTables? Take a peek at the code below: a single function call
-                    to initialise the table is all it takes!</p>
-                <pre><code class="language-js">const dataTable = new simpleDatatables.DataTable(&quot;#datatable1&quot;, {});
-</code></pre>
                 <table class="table" id="datatable1">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Company</th>
+                            <th>Institute</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>City</th>
@@ -214,7 +318,7 @@
                 </table>
             </div>
         </div>
-      </section>
+    </section>
 </div>
 
 {% endblock %}

@@ -6,41 +6,42 @@
     <div class="row gx-0 min-vh-100">
         <div class="col-md-9 col-lg-6 col-xl-8 px-5 d-flex align-items-center shadow">
             <div class="w-100 py-5">
-                <div class="text-center"><img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..."
-                        style="max-width: 6rem;">
-                    <h1 class="h4 text-uppercase mb-3">Register</h1>
+                <div class="text-center">
+                    <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
+                    <h1 class="h2 text-uppercase mb-3">Edbase</h1>
+                    <h1 class="h4 text-uppercase mb-3">Registration System</h1>
                 </div>
-                <p class="text-muted text-sm mb-4">The bedding was hardly able to cover it and seemed ready to slide off
-                    any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about
-                    helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.</p>
+                <!-- <p class="text-muted text-sm mb-4">Please Register with your proper Information</p> -->
                 <form method="get" action="">
                     <p class="fs-2">Academic Information</p>
+                    <p>Fill up your academic information</p>
+                    <hr>
                     <div class="row mb-3">
-                        <div class="col-auto">
+                        <div class="col-6">
                             <label class="form-label" for="name">Name </label>
                             <input class="form-control" id="name" name="name" type="text"required>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-6">
                             <label class="form-label" for="mobile">Mobile</label>
                             <input class="form-control" id="mobile" type="number" name="mobile" required>
                         </div>    
                     </div>
                     <div class="row mb-3">
-                        <div class="col-auto">
+                        <div class="col-6">
                             <label class="form-label" for="guardian_mobile">Guardian Mobile </label>
                             <input class="form-control" id="guardian_mobile" name="guardian_mobile" type="number"required>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-6">
                             <label class="form-label" for="email">Email Address</label>
                             <input class="form-control" id="email" type="email" name="email" required>
                         </div>    
                     </div>
                     <div class="row mb-3">
-                        <div class="col-auto">
+                        <div class="col-6">
                             <label class="form-label" for="school">School</label>
                             <input class="form-control" id="school" name="school" type="text"required>
                         </div>
-                        <div class="col-auto">
+                        <div class="col-6">
                             <label for="name" class="form-label">Qualifications</label>
                             <select class="form-select" aria-label="Default select qualification" name="qual">
                                 <option selected>Open this select menu</option>
@@ -50,69 +51,98 @@
                             </select>
                         </div>    
                     </div>
-                    <hr>
+                    
                     <p class="fs-2">Personal Information</p>
-                    <div class="mb-4">
-                        <label class="form-label" for="registerEmail">Email Address</label>
-                        <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
+                    <p>Fill up your personal information</p>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label" for="passport">Passport/NID Number (Any One) </label>
+                            <input class="form-control" id="passport" name="passport" type="text"required>
+                        </div>   
                     </div>
-                    <div class="mb-4">
-                        <label class="form-label" for="registerPassword">Password</label>
-                        <input class="form-control" id="registerPassword" type="password" name="registerPassword"
-                            required>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label" for="mother">Mother's Name </label>
+                            <input class="form-control" id="mother" name="mother" type="text"required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="father">Father's Name </label>
+                            <input class="form-control" id="father" name="father" type="text"required>
+                        </div>  
                     </div>
-                    <div class="form-check mb-4">
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label" for="parents_phone">Parent's Phone (Any One) </label>
+                            <input class="form-control" id="parents_phone" name="parent_phone" type="text"required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="praent_email">Parent's Email (Any One) </label>
+                            <input class="form-control" id="praent_email" name="praent_email" type="email"required>
+                        </div>  
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label" for="street_1">Address </label>
+                            <input class="form-control" id="street_1" name="street_1" type="text"required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="street_2">Address </label>
+                            <input class="form-control" id="street_2" name="street_2" type="text"required>
+                        </div>  
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label class="form-label" for="city">City </label>
+                            <input class="form-control" id="city" name="city" type="text"required>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label" for="zip_code">Zip </label>
+                            <input class="form-control" id="zip_code" name="zip_code" type="text"required>
+                        </div>  
+                        <div class="col-4">
+                            <label class="form-label" for="country">Country </label>
+                            <input class="form-control" id="country" name="country" type="text"required>
+                        </div>  
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label" for="dob">Date Of Birth </label>
+                            <input class="form-control" id="dob" name="dob" type="date"required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label" for="blood_group">Blood Group </label>
+                            <input class="form-control" id="blood_group" name="blood_group" type="text"required>
+                        </div>  
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label for="photo" class="form-label">Photo</label>
+                            <input class="form-control form-control-sm" id="photo" name="photo" type="file">
+                        </div>
+                    </div>
+                    <!-- <div class="form-check mb-4">
                         <input class="form-check-input me-2" id="registerAgree" type="checkbox" value="">
                         <label class="form-check-label" for="registerAgree">I agree with the terms and policy </label>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="registerUsername">Username </label>
-                        <input class="form-control" id="registerUsername" type="text" name="registerUsername" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label" for="registerEmail">Email Address</label>
-                        <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label" for="registerPassword">Password</label>
-                        <input class="form-control" id="registerPassword" type="password" name="registerPassword"
-                            required>
-                    </div>
-                    <div class="form-check mb-4">
-                        <input class="form-check-input me-2" id="registerAgree" type="checkbox" value="">
-                        <label class="form-check-label" for="registerAgree">I agree with the terms and policy </label>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="registerUsername">Username </label>
-                        <input class="form-control" id="registerUsername" type="text" name="registerUsername" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label" for="registerEmail">Email Address</label>
-                        <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
-                    </div>
-                    <div class="mb-4">
-                        <label class="form-label" for="registerPassword">Password</label>
-                        <input class="form-control" id="registerPassword" type="password" name="registerPassword"
-                            required>
-                    </div>
-                    <div class="form-check mb-4">
-                        <input class="form-check-input me-2" id="registerAgree" type="checkbox" value="">
-                        <label class="form-check-label" for="registerAgree">I agree with the terms and policy </label>
-                    </div>
+                    </div> -->
                     <!-- Submit-->
                     <div class="d-grid mb-5">
                         <button class="btn btn-primary text-uppercase">Register</button>
                     </div>
                     <!-- Link-->
                     <p class="text-center"><small class="text-muted text-center">Already have an account? <a
-                                href="login-2.html">Log in</a>.</small></p>
+                                href="{% url 'login' %}">Log in</a>.</small></p>
+                    <p class="mb-2 mb-md-0 text-muted text-center text-sm">Edbase &copy; 2022</p>
                 </form>
             </div>
         </div>
         <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">
             <!-- Image-->
             <div class="bg-cover h-100"
-                style="background-image: url(/static/img/photos/victor-ene-1301123-unsplash.jpg); background-repeat: no-repeat; background-attachment: fixed;">
+                style="background-image: url(/static/cred/cred-2.jpg); background-repeat: no-repeat; background-attachment: fixed;">
             </div>
         </div>
     </div>

@@ -14,7 +14,8 @@
     <div class="page-header">
         <div class="d-flex justify-content-between">
             <h1 class="page-heading">University Index</h1>
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_university">
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#add_university">
                 Add A University
             </button>
         </div>
@@ -30,16 +31,15 @@
                     <h5 class="modal-title" id="adduniversity">Add a University</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="">
+                <form action="{% url 'adduniversity' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">University Name</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="University Name">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="University Name">
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Country</label>
-                            <select class="form-select" aria-label="Default select country" name="country">
+                            <select class="form-select" aria-label="Default select country" name="country_id">
                                 <option selected>Open this select menu</option>
                                 {% for country in countries %}
                                 <option value="{{ country.id }}">{{ country.name }}</option>
@@ -47,8 +47,7 @@
                             </select>
                             <div class="mb-3">
                                 <label for="url" class="form-label">URL</label>
-                                <input type="text" class="form-control" id="url" name="url"
-                                    placeholder="URL">
+                                <input type="text" class="form-control" id="url" name="url" placeholder="URL">
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Description</label>
@@ -62,80 +61,141 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
     <section>
-        <div class="card mb-4">
-            <div class="card-header">
-                <div class="card-heading">University Index</div>
+        <div class="row">
+            {% for university in data %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">University title</h5>
+                        <p class="card-text">Short Description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted">Location</li>
+                    </ul>
+                    <div class="card-body">
+                        <a class="btn btn-outline-primary" href="#">Some link</a>
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="2" onclick="func(this)"
+                            href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body text-muted">
-                <p>List of Universities Where Students upload their contents</p>
-                <table class="table" id="datatable1">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Title</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>##</td>
-                            <td>Documents</td>
-                            <td>Active</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-warning">De-activate</a>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>##</td>
-                            <td>Academic</td>
-                            <td>Active</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-info">Activate</a>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>##</td>
-                            <td>Finanicals</td>
-                            <td>Active</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-warning">De-activate</a>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
-                        {% for directory in data %}
-                        <tr>
-                            <td>{{ directory.id }}</td>
-                            <td>{{ directory.title }}</td>
-                            {% if directory.status is True %}
-                            <td>Available</td>
-                            {% else %}
-                            <td>Currently Inactive</td>
-                            {% endif %}
-                            <td>
-                                {% if directory.status is True %}
-                                <a href="" class="btn btn-sm btn-warning">De-activate</a>
-                                {% else %}
-                                <a href="" class="btn btn-sm btn-info">Activate</a>
-                                {% endif %}
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            {% endfor %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">University title</h5>
+                        <p class="card-text">Short Description</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted">Location</li>
+                    </ul>
+                    <div class="card-body">
+                        <a class="btn btn-outline-primary" href="#">Some link</a>
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="2" onclick="func(this)"
+                            href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="col-md-6 col-lg-3">
+                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the
+                            bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted">Vice tote bag shabby chic </li>
+                        <li class="list-group-item text-muted">Portland Etsy craft beer</li>
+                    </ul>
+                    <div class="card-body">
+                        <a class="btn btn-outline-primary" href="#">Card link</a>
+                        <button class="btn btn-primary" type="button" data-id="2" onclick="func(this)"
+                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                            aria-controls="offcanvasExample">
+                            Button with data-bs-target
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
+                        alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the
+                            bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item text-muted">Vice tote bag shabby chic </li>
+                        <li class="list-group-item text-muted">Portland Etsy craft beer</li>
+                    </ul>
+                    <div class="card-body">
+                        <a class="btn btn-outline-primary" href="#">Card link</a>
+                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                            Button with data-bs-target
+                        </button>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">University Information</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="container-fluid px-0">
+                        <div class="row gx-0 min-vh-100">
+                            <div class="col-md-8 col-lg-6 col-xl-4 px-5 d-flex align-items-center shadow">
+                                <div class="w-100 py-5">
+                                    <div class="">
+                                        <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
+                                        <h1 class="h3 text-uppercase">University</h1>
+                                    </div> 
+                                    <div class="">
+                                        <p class="text-sm">                                            
+                                            Where does it come from?  <br>
+                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. <br>
+                                            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+                                        </p>
+                                        <a href="">University URL</a>
+                                        <p class="text-muted">University Location : AUS</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-6 col-xl-8 d-none d-md-block">
+                                <!-- Image-->
+                                <div class="bg-cover h-100" style="background-image: url(/static/cred/uni.jpg); filter: grayscale(20%);">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
     </section>
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function func(d){
+        console.log(d.getAttribute("data-id"));
+    }
+</script>
 {% endblock %}

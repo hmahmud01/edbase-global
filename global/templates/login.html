@@ -6,11 +6,12 @@
     <div class="row gx-0 min-vh-100">
         <div class="col-md-9 col-lg-6 col-xl-4 px-5 d-flex align-items-center shadow">
             <div class="w-100 py-5">
-                <div class="text-center"><img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..."
-                        style="max-width: 6rem;">
-                    <h1 class="h4 text-uppercase mb-5">Welcome Back</h1>
+                <div class="text-center">
+                    <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
+                    <h1 class="h2 text-uppercase mb-3">Edbase</h1>
+                    <h1 class="h4 text-uppercase mb-3">Login System</h1>
                 </div>
-                <form method="get" action="index.html">
+                <form method="get" action="{% url 'home' %}">
                     <div class="mb-3">
                         <label class="form-label">Email Address</label>
                         <input class="form-control" name="loginUsername" type="email" autocomplete="off">
@@ -25,23 +26,24 @@
                         </div>
                         <input class="form-control" name="loginPassword" type="password">
                     </div>
-                    <div class="form-check mb-4">
+                    <!-- <div class="form-check mb-4">
                         <input class="form-check-input" id="remember" type="checkbox">
                         <label class="custom-control-label" for="remember">Remember this device</label>
-                    </div>
+                    </div> -->
                     <!-- Submit-->
                     <div class="d-grid mb-5">
                         <button class="btn btn-primary text-uppercase">Sign in</button>
                     </div>
                     <!-- Link-->
                     <p class="text-sm text-muted text-center">
-                        Don't have an account yet? <a href="register-2.html">Register</a>.</p>
+                        Don't have an account yet? <a href="{% url 'register' %}">Register</a>.</p>
+                    <p class="mb-2 mb-md-0 text-muted text-center text-sm">Edbase &copy; 2022</p>
                 </form>
             </div>
         </div>
         <div class="col-md-3 col-lg-6 col-xl-8 d-none d-md-block">
             <!-- Image-->
-            <div class="bg-cover h-100" style="background-image: url(/static/img/photos/victor-ene-1301123-unsplash.jpg);">
+            <div class="bg-cover h-100" style="background-image: url(/static/cred/cred-1.jpg); filter: grayscale(20%);">
             </div>
         </div>
     </div>
