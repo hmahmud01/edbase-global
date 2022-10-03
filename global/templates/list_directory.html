@@ -7,15 +7,15 @@
     <div class="page-breadcrumb">
         <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active">University Index </li>
+            <li class="breadcrumb-item active">Directory Index </li>
         </ul>
     </div>
     <!-- Page Header-->
     <div class="page-header">
         <div class="d-flex justify-content-between">
-            <h1 class="page-heading">University Index</h1>
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_university">
-                Add A University
+            <h1 class="page-heading">Directory Index</h1>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_directory">
+                Add A Directory
             </button>
         </div>
 
@@ -23,41 +23,19 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="add_university" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+    <div class="modal fade" id="add_directory" tabindex="-1" aria-labelledby="adddirectory" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="adduniversity">Add a University</h5>
+                    <h5 class="modal-title" id="adddirectory">Add a Directory</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label">University Name</label>
-                            <input type="text" class="form-control" id="name" name="name"
-                                placeholder="University Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Country</label>
-                            <select class="form-select" aria-label="Default select country" name="country">
-                                <option selected>Open this select menu</option>
-                                {% for country in countries %}
-                                <option value="{{ country.id }}">{{ country.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <div class="mb-3">
-                                <label for="url" class="form-label">URL</label>
-                                <input type="text" class="form-control" id="url" name="url"
-                                    placeholder="URL">
-                            </div>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Image</label>
-                                <input class="form-control form-control-sm" id="image" name="image" type="file">
-                            </div>
+                            <label for="title" class="form-label">Directory Title</label>
+                            <input type="text" class="form-control" id="title" name="title"
+                                placeholder="Directory Title">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -71,10 +49,10 @@
     <section>
         <div class="card mb-4">
             <div class="card-header">
-                <div class="card-heading">University Index</div>
+                <div class="card-heading">Directory Index</div>
             </div>
             <div class="card-body text-muted">
-                <p>List of Universities Where Students upload their contents</p>
+                <p>List of Directory Where Students upload their contents</p>
                 <table class="table" id="datatable1">
                     <thead>
                         <tr>

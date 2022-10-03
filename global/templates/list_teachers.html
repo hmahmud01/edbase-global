@@ -6,215 +6,109 @@
     <!-- Breadcrumbs -->
     <div class="page-breadcrumb">
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-            <li class="breadcrumb-item active">Data Table </li>
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Teacher Index </li>
         </ul>
     </div>
     <!-- Page Header-->
     <div class="page-header">
         <div class="d-flex justify-content-between">
-            <h1 class="page-heading">Data Table</h1>
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                Launch demo modal
+            <h1 class="page-heading">Teacher Index</h1>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_Teacher">
+                Add A Teacher
             </button>
-        </div>                   
-        
-    </div>
-    
-    
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            ...
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
         </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="add_Teacher" tabindex="-1" aria-labelledby="addTeacher" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTeacher">Add a Teacher</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Teacher Name</label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                placeholder="Teacher Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="phone" name="phone"
+                                placeholder="Phone">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="Email">
+                        </div>
+                        <div class="mb-3">
+                            <label for="level" class="form-label">Level</label>
+                            <input type="text" class="form-control" id="level" name="level"
+                                placeholder="Level">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Qualifications</label>
+                            <select class="form-select" aria-label="Default select country" name="qual">
+                                <option selected>Open this select menu</option>
+                                {% for qual in qualifications %}
+                                <option value="{{ qual.id }}">{{ qual.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="photo" class="form-label">Photo</label>
+                            <input class="form-control form-control-sm" id="photo" name="photo" type="file">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
     <section>
         <div class="card mb-4">
             <div class="card-header">
-                <div class="card-heading">Data Table - Classic</div>
+                <div class="card-heading">Teacher Index</div>
             </div>
             <div class="card-body text-muted">
-                <p>A lightweight, extendable, dependency-free javascript HTML table plugin. Similar to
-                    jQuery DataTables for use in modern browsers, but without the jQuery dependency.</p>
-                <p>Check out more at <a href="https://github.com/fiduswriter/Simple-DataTables">Project's
-                        GitHub</a>.</p>
-                <p>How easy is it to use DataTables? Take a peek at the code below: a single function call
-                    to initialise the table is all it takes!</p>
-                <pre><code class="language-js">const dataTable = new simpleDatatables.DataTable(&quot;#datatable1&quot;, {});
-</code></pre>
+                <p>List of Teachers</p>
                 <table class="table" id="datatable1">
                     <thead>
                         <tr>
+                            <th>Id</th>
                             <th>Name</th>
-                            <th>Company</th>
-                            <th>Email</th>
+                            <th>Qualifcation</th>
                             <th>Phone</th>
-                            <th>City</th>
-                            <th>Orders</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for teacher in data %}
                         <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Nielsen Cobb</a></td>
-                            <td>Memora</td>
-                            <td>nielsencobb@memora.com</td>
-                            <td>+1 (851) 552-2735</td>
-                            <td>Graniteville</td>
-                            <td>0 </td>
+                            <td>{{ teacher.id }}</td>
+                            <td>{{ teacher.title }}</td>
+                            <td>{{ teacher.qualifcation.title }}</td>
+                            {% if teacher.status is True %}
+                            <td>Available</td>
+                            {% else %}
+                            <td>Currently Inactive</td>
+                            {% endif %}
                         </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Margret Cote</a></td>
-                            <td>Zilidium</td>
-                            <td>margretcote@zilidium.com</td>
-                            <td>+1 (893) 532-2218</td>
-                            <td>Foxworth</td>
-                            <td>2 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Rachel Vinson</a></td>
-                            <td>Chorizon</td>
-                            <td>rachelvinson@chorizon.com</td>
-                            <td>+1 (891) 494-2060</td>
-                            <td>Eastmont</td>
-                            <td>5 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Gabrielle Aguirre</a></td>
-                            <td>Comverges</td>
-                            <td>gabrielleaguirre@comverges.com</td>
-                            <td>+1 (805) 459-3869</td>
-                            <td>Whitewater</td>
-                            <td>0 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Spears Collier</a></td>
-                            <td>Remold</td>
-                            <td>spearscollier@remold.com</td>
-                            <td>+1 (910) 555-2436</td>
-                            <td>Hebron</td>
-                            <td>1 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Keisha Thomas</a></td>
-                            <td>Euron</td>
-                            <td>keishathomas@euron.com</td>
-                            <td>+1 (958) 405-3392</td>
-                            <td>Levant</td>
-                            <td>10 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Elisabeth Key</a></td>
-                            <td>Netagy</td>
-                            <td>elisabethkey@netagy.com</td>
-                            <td>+1 (900) 421-2096</td>
-                            <td>Nile</td>
-                            <td>0 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Patel Mack</a></td>
-                            <td>Zedalis</td>
-                            <td>patelmack@zedalis.com</td>
-                            <td>+1 (800) 460-2720</td>
-                            <td>Albrightsville</td>
-                            <td>2 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Erika Whitaker</a></td>
-                            <td>Uniworld</td>
-                            <td>erikawhitaker@uniworld.com</td>
-                            <td>+1 (911) 484-3333</td>
-                            <td>Leola</td>
-                            <td>8 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Meyers Swanson</a></td>
-                            <td>Candecor</td>
-                            <td>meyersswanson@candecor.com</td>
-                            <td>+1 (999) 404-3297</td>
-                            <td>Finderne</td>
-                            <td>3 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Townsend Sloan</a></td>
-                            <td>Rameon</td>
-                            <td>townsendsloan@rameon.com</td>
-                            <td>+1 (978) 563-2964</td>
-                            <td>Coultervillle</td>
-                            <td>8 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Millicent Henry</a></td>
-                            <td>Balooba</td>
-                            <td>millicenthenry@balooba.com</td>
-                            <td>+1 (863) 585-3988</td>
-                            <td>Caron</td>
-                            <td>9 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Madelyn Brock</a></td>
-                            <td>Combogene</td>
-                            <td>madelynbrock@combogene.com</td>
-                            <td>+1 (969) 508-2642</td>
-                            <td>Ballico</td>
-                            <td>1 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Jenkins Carney</a></td>
-                            <td>Dadabase</td>
-                            <td>jenkinscarney@dadabase.com</td>
-                            <td>+1 (901) 471-3581</td>
-                            <td>Chesterfield</td>
-                            <td>6 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Grimes Delaney</a></td>
-                            <td>Progenex</td>
-                            <td>grimesdelaney@progenex.com</td>
-                            <td>+1 (815) 514-2108</td>
-                            <td>Cazadero</td>
-                            <td>6 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Valencia Rivera</a></td>
-                            <td>Xleen</td>
-                            <td>valenciarivera@xleen.com</td>
-                            <td>+1 (969) 536-3595</td>
-                            <td>Kirk</td>
-                            <td>7 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Helene Solomon</a></td>
-                            <td>Zomboid</td>
-                            <td>helenesolomon@zomboid.com</td>
-                            <td>+1 (813) 456-2608</td>
-                            <td>Riverton</td>
-                            <td>6 </td>
-                        </tr>
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">Kathleen Holman</a></td>
-                            <td>Hotcakes</td>
-                            <td>kathleenholman@hotcakes.com</td>
-                            <td>+1 (857) 406-2766</td>
-                            <td>Darlington</td>
-                            <td>10 </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
-      </section>
+    </section>
 </div>
 
 {% endblock %}

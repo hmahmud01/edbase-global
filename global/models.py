@@ -81,6 +81,8 @@ class University(models.Model):
     url = models.CharField(max_length=128, null=True, blank=True)
     image = models.FileField('university_image', upload_to='university', blank=True, null=True)
     description = models.TextField(null=True, blank=True)
+    status = models.BooleanField(default=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -106,3 +108,8 @@ class DirectoryIndex(models.Model):
 
     def __str__(self):
         return self.directory
+
+
+# TODO
+# DIRECTORY CONTENT CLASS NEED TO REWORK
+# UNIVERSITY STATUS FIELD NEEDED
