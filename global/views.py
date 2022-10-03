@@ -11,6 +11,8 @@ from .models import *
 
 TEACHER_TYPE = "Teacher"
 STUDENT_TYPE = "Student"
+DEFAULT_PASS = "edbase2022"
+
 
 def userLogout(request):
     logout(request)
@@ -32,36 +34,20 @@ def register(request):
     data = ""
     return render(request, 'register.html', {'data': data})
 
-def listQualifications(request):
-    data = Student.objects.all()    
-    return render(request, 'list_qualifications.html', {'data': data})
-
-def addQualification(request):
-    post_data = request.POST
-    qual = Qualification(
-        title = post_data['title'],
-        level = post_data['level']
-    )
-
-    qual.save()
-
-    return redirect('qualifications')
-
 def listTeachers(request):
     data = Teacher.objects.all()    
-    return render(request, 'list_teachers.html', {'data': data})
+    qualifications = qualifcation.objects.all()
+    return render(request, 'list_teachers.html', {'data': data, 'qualifications': qualifications})
 
 def addTeacher(request):
     teacher = Teacher.objects.all()
     post_data = request.POST
-    password = "teacher"
     username = post_data['email']
     if User.objects.filter(username=username).exists():
-        
         alert="Teacher Already Exists"
         return render(request, 'list_teachers.html', {'data': teacher, 'alert': alert})
     else:
-        user = User.objects.create_user(post_data['email'], post_data['email'], password)
+        user = User.objects.create_user(post_data['email'], post_data['email'], DEFAULT_PASS)
         qualifcation = Qualification.objects.get(id=post_data['qual'])
         teacher = Teacher(
             user = user,
@@ -81,11 +67,12 @@ def listStudents(request):
     data = Student.objects.all()    
     return render(request, 'list_students.html', {'data': data})
 
+def detailStudent(request):
+    pass
+
 def listCountries(request):
     data = Country.objects.all()
     return render(request, 'list_countries.html', {'data': data})
-
-
 
 def addCountry(request):
     post_data = request.POST
@@ -99,7 +86,8 @@ def addCountry(request):
 
 def listUniversities(request):
     data = University.objects.all()
-    return render(request, 'list_universities.html', {'data': data})
+    countries = Country.objects.all()
+    return render(request, 'list_universities.html', {'data': data, 'countries': countries})
 
 def addUniversity(req_user):
     post_data = request.POST
@@ -126,3 +114,18 @@ def addDirectory(request):
     directory.save()
 
     return redirect('directories')
+
+def listQualifications(request):
+    data = Student.objects.all()    
+    return render(request, 'list_qualifications.html', {'data': data})
+
+def addQualification(request):
+    post_data = request.POST
+    qual = Qualification(
+        title = post_data['title'],
+        level = post_data['level']
+    )
+
+    qual.save()
+
+    return redirect('qualifications')

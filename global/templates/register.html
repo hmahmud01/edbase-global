@@ -13,11 +13,45 @@
                 <p class="text-muted text-sm mb-4">The bedding was hardly able to cover it and seemed ready to slide off
                     any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about
                     helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.</p>
-                <form method="get" action="index.html">
-                    <div class="mb-3">
-                        <label class="form-label" for="registerUsername">Username </label>
-                        <input class="form-control" id="registerUsername" type="text" name="registerUsername" required>
+                <form method="get" action="">
+                    <p class="fs-2">Academic Information</p>
+                    <div class="row mb-3">
+                        <div class="col-auto">
+                            <label class="form-label" for="name">Name </label>
+                            <input class="form-control" id="name" name="name" type="text"required>
+                        </div>
+                        <div class="col-auto">
+                            <label class="form-label" for="mobile">Mobile</label>
+                            <input class="form-control" id="mobile" type="number" name="mobile" required>
+                        </div>    
                     </div>
+                    <div class="row mb-3">
+                        <div class="col-auto">
+                            <label class="form-label" for="guardian_mobile">Guardian Mobile </label>
+                            <input class="form-control" id="guardian_mobile" name="guardian_mobile" type="number"required>
+                        </div>
+                        <div class="col-auto">
+                            <label class="form-label" for="email">Email Address</label>
+                            <input class="form-control" id="email" type="email" name="email" required>
+                        </div>    
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-auto">
+                            <label class="form-label" for="school">School</label>
+                            <input class="form-control" id="school" name="school" type="text"required>
+                        </div>
+                        <div class="col-auto">
+                            <label for="name" class="form-label">Qualifications</label>
+                            <select class="form-select" aria-label="Default select qualification" name="qual">
+                                <option selected>Open this select menu</option>
+                                {% for qual in qualifications %}
+                                <option value="{{ qual.id }}">{{ qual.title }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>    
+                    </div>
+                    <hr>
+                    <p class="fs-2">Personal Information</p>
                     <div class="mb-4">
                         <label class="form-label" for="registerEmail">Email Address</label>
                         <input class="form-control" id="registerEmail" type="email" name="registerEmail" required>
