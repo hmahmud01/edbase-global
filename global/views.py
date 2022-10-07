@@ -13,14 +13,12 @@ TEACHER_TYPE = "Teacher"
 STUDENT_TYPE = "Student"
 DEFAULT_PASS = "edbase2022"
 
+def landing(request):
+    return render(request, 'landing/index.html')
 
 def userLogout(request):
     logout(request)
     return redirect('/')
-
-def home(request):
-    data = ""
-    return render(request, 'index.html', {'data': data})
 
 def login(request):
     data = ""
@@ -28,11 +26,109 @@ def login(request):
 
 def verifyLogin(request):
     post_data = request.POST
-    pass
+    if post_data['username'] and post_data['pass']:
+        user = authenticate(
+            request,
+            username = post_data['username'],
+            password = post_data['pass']
+        )
+        if user is None:
+            return redirect('login')
+        else:
+            auth_login(request, user)
+            return redirect('home')
+    else:
+        return redirect('login')
+        
+def home(request):
+    data = ""
+    user  = request.user
+    if user.is_superuser:    
+        return render(request, 'index.html', {'data': data})
+    else:
+        if Teacher.objects.filter(user_id=user.id).exists():
+            print("TEACHER")
+            print(Teacher.objects.get(user_id=user.id))
+            return render(request, 'index_teacher.html')
+        elif Student.objects.get(user_id=user.id).exists():
+            print("STUDENT")
+            print(Student.objects.filter(user_id=user.id))
+            return render(request, 'index_student.html')
+        else:
+            return redirect('failed')
+        # try:            
+        #     req_user = Teacher.objects.get(user=user.id)
+        #     print("TEACHER")
+        #     print(req_user)
+        #     return render(request, 'index_teacher.html')
+        # except:
+        #     req_user = Student.objects.get(user=user.id)
+        #     print("STUDENT")
+        #     print(req_user)
+        #     return render(request, 'index_student.html')
 
 def register(request):
     data = ""
-    return render(request, 'register.html', {'data': data})
+    qualifications = Qualification.objects.all()
+    return render(request, 'register.html', {'data': data, 'qualifications': qualifications})
+
+# <QueryDict: {'csrfmiddlewaretoken': ['7Bo3ThkJZP34z5MvGa2pNDLEKNxNj5wvBLk5mW4pkOzB0SoSK6wYjYRAuJqgsOGB'], 
+# 'name': ['Alomgir'], 'mobile': ['1545212'], 'guardian_mobile': ['123561'], 'email': ['alomgir@chacha'], 
+# 'school': ['MGBHS'], 'qual': ['3'], 'passport': ['fafe22222'], 'mother': ['Someone'], 'father': ['Else'], 
+# 'parent_phone': ['12635454'], 'parent_email': ['parlent@ermgail.com'], 'street_1': ['Str111'], 'street_2': ['Str222'], 
+# 'city': ['Dhaka'], 'zip_code': ['1214'], 'country': ['BD'], 'dob': ['2005-11-10'], 'blood_group': ['0+']}>
+# <MultiValueDict: {'photo': [<InMemoryUploadedFile: avatar-2.jpg (image/jpeg)>]}>
+
+def signupData(request):
+    post_data = request.POST
+    file_data = request.FILES
+    username = post_data['email']
+    qualification = Qualification.objects.get(id=post_data['qual'])
+
+    if User.objects.filter(username=username).exists():
+        return redirect('failed')
+    else:
+        user = User.objects.create_user(post_data['email'], post_data['email'], DEFAULT_PASS)
+        student = Student(
+            user = user,
+            name = post_data['name'],
+            mobile = post_data['mobile'],
+            guardian_mobile = post_data['guardian_mobile'],
+            email = post_data['email'],
+            school = post_data['school'],
+            qualification = qualification,
+        )
+
+        student.save()
+
+        unique_id = "STD" + str(student.id)
+        info = PersonalInfo(
+            student=student,
+            unique_id=unique_id,
+            passport=post_data['passport'],
+            father=post_data['father'],
+            mother=post_data['mother'],
+            father_mobile=post_data['parent_phone'],
+            mother_mobile=post_data['parent_phone'],
+            parent_email=post_data['parent_email'],
+            street_1=post_data['street_1'],
+            street_2=post_data['street_2'],
+            city=post_data['city'],
+            zip_code=post_data['zip_code'],
+            dob=post_data['dob'],
+            blood_group=post_data['blood_group'],
+            photo=file_data['photo'],
+        )
+
+        info.save()
+
+        return redirect('success')
+
+def successPage(request):
+    return render(request, 'success.html')
+
+def failedPage(request):
+    return render(request, 'failed.html')
 
 def listTeachers(request):
     data = Teacher.objects.all()    
@@ -66,7 +162,10 @@ def addTeacher(request):
 
 def listStudents(request):
     data = Student.objects.all()    
-    return render(request, 'list_students.html', {'data': data})
+    qualifications = Qualification.objects.all()
+    users = User.objects.all()
+    print(users)
+    return render(request, 'list_students.html', {'data': data, 'qualifications': qualifications, 'users': users})
 
 def detailStudent(request):
     pass
@@ -133,3 +232,22 @@ def addQualification(request):
     qual.save()
 
     return redirect('qualifications')
+    
+
+TODO
+def studentDetail(request, sid):
+    pass
+    
+def assignTeacher(request):
+    pass
+
+def assignUniversity(request):
+    pass
+
+def directoryList(request):
+    pass
+
+def directoryIndex(request, did):
+    pass
+
+

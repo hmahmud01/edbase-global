@@ -12,7 +12,7 @@
                     <h1 class="h4 text-uppercase mb-3">Registration System</h1>
                 </div>
                 <!-- <p class="text-muted text-sm mb-4">Please Register with your proper Information</p> -->
-                <form method="get" action="">
+                <form method="post" action="{% url 'signupdata' %}" enctype="multipart/form-data">{% csrf_token %}
                     <p class="fs-2">Academic Information</p>
                     <p>Fill up your academic information</p>
                     <hr>
@@ -80,17 +80,17 @@
                         </div>
                         <div class="col-6">
                             <label class="form-label" for="praent_email">Parent's Email (Any One) </label>
-                            <input class="form-control" id="praent_email" name="praent_email" type="email"required>
+                            <input class="form-control" id="praent_email" name="parent_email" type="email"required>
                         </div>  
                     </div>
 
                     <div class="row mb-3">
                         <div class="col-6">
-                            <label class="form-label" for="street_1">Address </label>
+                            <label class="form-label" for="street_1">Street Address 1 </label>
                             <input class="form-control" id="street_1" name="street_1" type="text"required>
                         </div>
                         <div class="col-6">
-                            <label class="form-label" for="street_2">Address </label>
+                            <label class="form-label" for="street_2">Street Address 2 </label>
                             <input class="form-control" id="street_2" name="street_2" type="text"required>
                         </div>  
                     </div>
@@ -130,13 +130,13 @@
                     </div> -->
                     <!-- Submit-->
                     <div class="d-grid mb-5">
-                        <button class="btn btn-primary text-uppercase">Register</button>
+                        <button type="submit" class="btn btn-primary text-uppercase">Register</button>
                     </div>
-                    <!-- Link-->
-                    <p class="text-center"><small class="text-muted text-center">Already have an account? <a
-                                href="{% url 'login' %}">Log in</a>.</small></p>
-                    <p class="mb-2 mb-md-0 text-muted text-center text-sm">Edbase &copy; 2022</p>
+                    <!-- Link-->                    
                 </form>
+                <p class="text-center"><small class="text-muted text-center">Already have an account? <a
+                    href="{% url 'login' %}">Log in</a>.</small></p>
+                <p class="mb-2 mb-md-0 text-muted text-center text-sm">Edbase &copy; 2022</p>
             </div>
         </div>
         <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">

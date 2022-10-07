@@ -38,6 +38,8 @@ class Student(models.Model):
     status = models.BooleanField(default=False, null=True, blank=True)    
     qualification = models.ForeignKey(Qualification, related_name='student_qualification', on_delete=models.CASCADE)
     assigned_teacher = models.ForeignKey(Teacher, related_name='assigned_teacher', on_delete=models.CASCADE, null=True)
+    taken_care = models.BooleanField(default=False)
+    visited = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
