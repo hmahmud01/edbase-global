@@ -172,17 +172,7 @@
                     <tbody>
                         {% for student in data %}
                         <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">{{ student.user.id }}</a></td>
-                            <td>Memora</td>
-                            <td>nielsencobb@memora.com</td>
-                            <td>+1 (851) 552-2735</td>
-                            <td>Graniteville</td>
-                            <td>0 </td>
-                        </tr>
-                        {% endfor %}
-                        {% for user in users %}
-                        <tr>
-                            <td><a href="javascript:void(0)" class="text-muted">{{ user.username }}</a></td>
+                            <td><a href="{% url 'studentdetail' student.id %}" class="text-muted">{{ student.user.id }}</a></td>
                             <td>Memora</td>
                             <td>nielsencobb@memora.com</td>
                             <td>+1 (851) 552-2735</td>

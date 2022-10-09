@@ -1,0 +1,245 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Profile </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <h1 class="page-heading">Profile</h1>
+    </div>
+    <section>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-profile mb-4">
+                    <div class="card-header" style="background-image: url(img/photos/paul-morris-116514-unsplash.jpg);">
+                    </div>
+                    <div class="card-body text-center"><img class="card-profile-img" src="img/avatar-7.jpg"
+                            alt="Nathan Andrews">
+                        <h3 class="mb-3">Nathan Andrews</h3>
+                        <p class="mb-4">One morning, when Gregor Samsa woke from troubled </p>
+                        <button class="btn btn-outline-dark btn-sm"><span class="fab fa-twitter"></span> Follow</button>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0"><img class="avatar avatar-lg p-1" src="img/avatar-7.jpg"
+                                    alt="Nathan Andrews"></div>
+                            <div class="flex-grow-1 ps-3">
+                                <h4>Nathan Andrews</h4>
+                                <p class="text-muted mb-0">Coder</p>
+                                <ul class="social-links list-inline mb-0 mt-2">
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="Nathan's Facebook"><i
+                                                class="fab fa-facebook"></i></a></li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="@nathan_andrews"><i
+                                                class="fab fa-twitter"></i></a></li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="+420777555987"><i class="fa fa-phone"></i></a>
+                                    </li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="@nathan"><i class="fab fa-skype"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="card-heading">My Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-auto d-flex align-items-center"><img class="avatar avatar-lg p-1"
+                                    src="img/avatar-7.jpg" alt="Avatar"></div>
+                            <div class="col">
+                                <label class="form-label">Name</label>
+                                <input class="form-control" placeholder="Your name">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Bio</label>
+                            <textarea class="form-control"
+                                rows="8">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" placeholder="you@domain.com">
+                        </div>
+                        <label class="form-label">Password</label>
+                        <input class="form-control" type="password" value="password">
+                    </div>
+                    <div class="card-footer text-end">
+                        <button class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+            <div class="col-lg-8">
+                <div class="card overflow-hidden mb-4">
+                    <div class="card-header">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Message">
+                            <button class="btn btn-outline-secondary" type="button"><i
+                                    class="fa fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <div class="list-group rounded-0">
+                        <div class="list-group-item border-start-0 border-end-0 py-5 border-top-0">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="avatar avatar-lg p-1" src="img/avatar-7.jpg"
+                                        alt="Nathan Andrews"></div>
+                                <div class="flex-grow-1 ps-3"><small class="float-right">10 mins ago</small>
+                                    <h5 class="fw-bold">Nathan Andrews</h5>
+                                    <div class="text-muted text-sm"> One morning, when Gregor Samsa woke from troubled
+                                        dreams, he found himself transformed in his bed into a horrible vermin. He lay
+                                        on his armour-like back, and if he lifted his head a little he could see his
+                                        brown belly, slightly domed and divided by arches into stiff sections</div>
+                                    <div class="d-flex mt-4">
+                                        <div class="flex-shrink-0"><img class="avatar avatar-md p-1"
+                                                src="img/avatar-3.jpg" alt="Serenity Mitchelle"></div>
+                                        <div class="flex-grow-1 ps-3 text-sm text-muted"><strong
+                                                class="text-dark">Serenity Mitchelle: </strong>The bedding was hardly
+                                            able to cover it and seemed ready to slide off any moment. His many legs,
+                                            pitifully thin compared with the size of the rest of him, waved about
+                                            helplessly as he looked. &quot;What's happened to me?&quot; he thought. It
+                                            wasn't a dream.</div>
+                                    </div>
+                                    <div class="d-flex mt-4">
+                                        <div class="flex-shrink-0"><img class="avatar avatar-md p-1"
+                                                src="img/avatar-1.jpg" alt="Tony O'Brian"></div>
+                                        <div class="flex-grow-1 ps-3 text-sm text-muted"><strong class="text-dark">Tony
+                                                O'Brian: </strong>His room, a proper human room although a little too
+                                            small, lay peacefully between its four familiar walls. A collection of
+                                            textile samples lay spread out on the table.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-start-0 border-end-0 py-5">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="avatar avatar-lg p-1" src="img/avatar-7.jpg"
+                                        alt="Nathan Andrews"></div>
+                                <div class="flex-grow-1 ps-3"><small class="float-right">12 mins ago</small>
+                                    <h5 class="fw-bold">Nathan Andrews</h5>
+                                    <div class="text-muted text-sm"> Samsa was a travelling salesman - and above it
+                                        there hung a picture that he had recently cut out of an illustrated magazine and
+                                        housed in a nice, gilded frame.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-group-item border-start-0 border-end-0 py-5">
+                            <div class="d-flex">
+                                <div class="flex-shrink-0"><img class="avatar avatar-lg p-1" src="img/avatar-7.jpg"
+                                        alt="Nathan Andrews"></div>
+                                <div class="flex-grow-1 ps-3"><small class="float-right">34 mins ago</small>
+                                    <h5 class="fw-bold">Nathan Andrews</h5>
+                                    <div class="text-muted text-sm"> He must have tried it a hundred times, shut his
+                                        eyes so that he wouldn't have to look at the floundering legs, and only stopped
+                                        when he began to feel a mild, dull pain there that he had never felt before.
+                                    </div>
+                                    <div class="d-flex mt-4">
+                                        <div class="flex-shrink-0"><img class="avatar avatar-md p-1"
+                                                src="img/avatar-6.jpg" alt="Javier Gregory"></div>
+                                        <div class="flex-grow-1 ps-3 text-sm text-muted"><strong
+                                                class="text-dark">Javier Gregory: </strong>One morning, when Gregor
+                                            Samsa woke from troubled dreams, he found himself transformed in his bed
+                                            into a horrible vermin. He lay on his armour-like back, and if he lifted his
+                                            head a little he could see his brown belly, slightly domed and divided by
+                                            arches into stiff sections</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <form class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="card-heading">Edit Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="mb-4">
+                                    <label class="form-label">Company</label>
+                                    <input class="form-control" type="text" placeholder="Company"
+                                        value="Nathan &amp; Nathan">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="mb-4">
+                                    <label class="form-label">Username</label>
+                                    <input class="form-control" type="text" placeholder="Username" value="nathan">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Email address</label>
+                                    <input class="form-control" type="email" placeholder="Email">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">First Name</label>
+                                    <input class="form-control" type="text" placeholder="First name">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Last Name</label>
+                                    <input class="form-control" type="text" placeholder="Last Name">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-4">
+                                    <label class="form-label">Address</label>
+                                    <input class="form-control" type="text" placeholder="Home Address">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="mb-4">
+                                    <label class="form-label">City</label>
+                                    <input class="form-control" type="text" placeholder="City">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="mb-4">
+                                    <label class="form-label">ZIP</label>
+                                    <input class="form-control" type="number" placeholder="ZIP">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="mb-4">
+                                    <label class="form-label">Country</label>
+                                    <select class="form-control custom-select">
+                                        <option value="">UK</option>
+                                        <option value="">US</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="mb-0">
+                                    <label class="form-label">About Me</label>
+                                    <textarea class="form-control" rows="5"
+                                        placeholder="Here can be your description">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <button class="btn btn-primary" type="submit">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% block content %}
+{% endblock %}

@@ -50,7 +50,7 @@ def home(request):
             print("TEACHER")
             print(Teacher.objects.get(user_id=user.id))
             return render(request, 'index_teacher.html')
-        elif Student.objects.get(user_id=user.id).exists():
+        elif Student.objects.filter(user_id=user.id).exists():
             print("STUDENT")
             print(Student.objects.filter(user_id=user.id))
             return render(request, 'index_student.html')
@@ -115,6 +115,7 @@ def signupData(request):
             street_2=post_data['street_2'],
             city=post_data['city'],
             zip_code=post_data['zip_code'],
+            country=post_data['country'],
             dob=post_data['dob'],
             blood_group=post_data['blood_group'],
             photo=file_data['photo'],
@@ -136,7 +137,7 @@ def listTeachers(request):
     return render(request, 'list_teachers.html', {'data': data, 'qualifications': qualifications})
 
 def addTeacher(request):
-    teacher = Teacher.objects.all()
+    teachers = Teacher.objects.all()
     post_data = request.POST
     username = post_data['email']
     if User.objects.filter(username=username).exists():
@@ -157,7 +158,7 @@ def addTeacher(request):
         teacher.save()
         print("teacher added")
         alert="Teacher Created Successfully"
-        return render(request, 'list_teachers.html', {'data': teacher, 'alert': alert})
+        return render(request, 'list_teachers.html', {'data': teachers, 'alert': alert})
 
 
 def listStudents(request):
@@ -233,10 +234,16 @@ def addQualification(request):
 
     return redirect('qualifications')
     
-
-TODO
 def studentDetail(request, sid):
-    pass
+    student = Student.objects.get(id=sid)
+    teachers = Teacher.objects.all()
+
+    return render(request, 'detail_student.html', {'student': student, 'teachers': teachers})
+
+def teacherDetail(request, tid):
+    teacher = Teacher.objects.get(id=tid)
+
+    return render(request, 'detail_teacher.html', {'teacher': teacher})
     
 def assignTeacher(request):
     pass

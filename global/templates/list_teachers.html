@@ -93,7 +93,7 @@
                     <tbody>
                         {% for teacher in data %}
                         <tr>
-                            <td>{{ teacher.id }}</td>
+                            <td> <a href="{% url 'teacherdetail' teacher.id %}">{{ teacher.id }}</a></td>
                             <td>{{ teacher.name }}</td>
                             <td>{{ teacher.qualification.title }}</td>
                             <td>{{ teacher.phone }}</td>

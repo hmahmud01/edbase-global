@@ -25,6 +25,8 @@ urlpatterns = [
     path('adddirectory/', views.addDirectory, name='adddirectory'),
     path('qualifications/', views.listQualifications, name='qualifications'),
     path('addqualification', views.addQualification, name='addqualification'),
+    path('studentdetail/<int:sid>/', views.studentDetail, name='studentdetail'),
+    path('teacherdetail/<int:tid>/', views.teacherDetail, name='teacherdetail'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

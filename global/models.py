@@ -10,7 +10,7 @@ class Qualification(models.Model):
         return self.title
 
 class Teacher(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=128, null=True, blank=True)    
     phone = models.CharField(max_length=128, null=True, blank=True)  
     email = models.CharField(max_length=128, null=True, blank=True) 
@@ -26,7 +26,7 @@ class Teacher(models.Model):
         return self.name
 
 class Student(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=64, default='student', blank=True, null=True)
     status = models.BooleanField(default=True)
     password_change = models.BooleanField(default=False)
@@ -46,7 +46,7 @@ class Student(models.Model):
         return self.name
 
 class PersonalInfo(models.Model):
-    student = models.ForeignKey(Student, related_name='student_personal_info', on_delete=models.CASCADE)
+    student = models.OneToOneField(Student, related_name='student_personal_info', on_delete=models.CASCADE)
     unique_id = models.CharField(max_length=26, null=True, blank=True)
     acceptance = models.BooleanField(default=False, null=True, blank=True)
     passport = models.CharField(max_length=128, null=True, blank=True)
@@ -66,8 +66,7 @@ class PersonalInfo(models.Model):
     photo = models.FileField('student_image', upload_to='student_photos', blank=True, null=True)
 
     def __str__(self):
-        return self.student
-
+        return self.student.name
 
 
 class Country(models.Model):
