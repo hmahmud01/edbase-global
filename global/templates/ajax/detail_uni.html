@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row gx-0 min-vh-100 bg-white">
+        <div class="col-md-8 col-lg-6 col-xl-4 px-5 d-flex align-items-center">
+            <div class="w-100 py-5">
+                <div class="">
+                    <h1 class="h3 text-uppercase">{{ university.name }}</h1>
+                </div> 
+                <div class="">
+                    <p class="text-sm">
+                        {{ university.description }}
+                    </p>
+                    <a href="">{{ university.url }}</a>
+                    <p class="text-muted">University Location : AUS</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-lg-6 col-xl-8 d-none d-md-block">
+            <!-- Image-->
+            <div class="bg-cover h-100" style="background-image: url('/media/{{ university.image }}'); filter: grayscale(20%);">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

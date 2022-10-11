@@ -160,13 +160,24 @@ def addTeacher(request):
         alert="Teacher Created Successfully"
         return render(request, 'list_teachers.html', {'data': teachers, 'alert': alert})
 
-
 def listStudents(request):
     data = Student.objects.all()    
     qualifications = Qualification.objects.all()
     users = User.objects.all()
     print(users)
     return render(request, 'list_students.html', {'data': data, 'qualifications': qualifications, 'users': users})
+
+def studentDetail(request, sid):
+    student = Student.objects.get(id=sid)
+    teachers = Teacher.objects.all()
+    universities = University.objects.all()
+
+    indexs = StudentUniversityIndex.objects.filter(student__id = sid)
+
+    info = PersonalInfo.objects.get(student__id=sid)
+    print(info)
+
+    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs})
 
 def addStudent(request):
     post_data = request.POST
@@ -214,9 +225,6 @@ def addStudent(request):
 
         return redirect('students')
 
-def detailStudent(request):
-    pass
-
 def listCountries(request):
     data = Country.objects.all()
     return render(request, 'list_country.html', {'data': data})
@@ -235,6 +243,10 @@ def listUniversities(request):
     data = University.objects.all()
     countries = Country.objects.all()
     return render(request, 'list_universities.html', {'data': data, 'countries': countries})
+
+def uniDetail(request, uid):
+    university = University.objects.get(id=uid)
+    return render(request, 'ajax/detail_uni.html', {'university': university})
 
 def addUniversity(request):
     post_data = request.POST
@@ -292,14 +304,7 @@ def addQualification(request):
 
     return redirect('qualifications')
     
-def studentDetail(request, sid):
-    student = Student.objects.get(id=sid)
-    teachers = Teacher.objects.all()
 
-    info = PersonalInfo.objects.get(student__id=sid)
-    print(info)
-
-    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info})
 
 def teacherDetail(request, tid):
     teacher = Teacher.objects.get(id=tid)
@@ -316,8 +321,26 @@ def assignTeacher(request):
 
     return redirect('studentdetail', post_data['sid'])
 
-def assignUniversity(request):
-    pass
+def suggestUni(request):
+    post_data = request.POST
+    student = Student.objects.get(id=post_data['sid'])
+    unis = post_data.getlist('universities')
+    for uni in unis:
+        univ = University.objects.get(id=uni)
+        idx = StudentUniversityIndex(
+            student = student,
+            university = univ
+        )
+        idx.save()    
+
+    return redirect('studentdetail', post_data['sid'])
+
+def deleteSuggestion(request, iid):
+    idx = StudentUniversityIndex.objects.get(id=iid)
+    sid = idx.student.id
+    idx.delete()
+
+    return redirect('studentdetail', sid)
 
 def directoryList(request):
     pass

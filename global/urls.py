@@ -21,6 +21,7 @@ urlpatterns = [
     path('countries/', views.listCountries, name='countries'),
     path('addcountry/', views.addCountry, name='addcountry'),
     path('universities/', views.listUniversities, name='universities'),
+    path('unidetail/<int:uid>/', views.uniDetail, name='unidetail'),
     path('deleteuni/<int:uid>', views.deleteUniversity, name='deleteuni'),
     path('loaduniversity/', views.loadUniversity, name='loaduniversity'),
     path('adduniversity', views.addUniversity, name='adduniversity'),
@@ -31,6 +32,8 @@ urlpatterns = [
     path('studentdetail/<int:sid>/', views.studentDetail, name='studentdetail'),
     path('teacherdetail/<int:tid>/', views.teacherDetail, name='teacherdetail'),
     path('assignteacher/', views.assignTeacher, name='assignteacher'),
+    path('suggestuni/', views.suggestUni, name='suggestuni'),
+    path('deletesuggestion/<int:iid>', views.deleteSuggestion, name='deletesuggestion'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
