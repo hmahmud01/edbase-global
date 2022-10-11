@@ -168,6 +168,52 @@ def listStudents(request):
     print(users)
     return render(request, 'list_students.html', {'data': data, 'qualifications': qualifications, 'users': users})
 
+def addStudent(request):
+    post_data = request.POST
+    file_data = request.FILES
+    username = post_data['email']
+    qualification = Qualification.objects.get(id=post_data['qual'])
+
+    if User.objects.filter(username=username).exists():
+        return redirect('failstudentsed')
+    else:
+        user = User.objects.create_user(post_data['email'], post_data['email'], DEFAULT_PASS)
+        student = Student(
+            user = user,
+            name = post_data['name'],
+            mobile = post_data['mobile'],
+            guardian_mobile = post_data['guardian_mobile'],
+            email = post_data['email'],
+            school = post_data['school'],
+            qualification = qualification,
+        )
+
+        student.save()
+
+        unique_id = "STD" + str(student.id)
+        info = PersonalInfo(
+            student=student,
+            unique_id=unique_id,
+            passport=post_data['passport'],
+            father=post_data['father'],
+            mother=post_data['mother'],
+            father_mobile=post_data['parent_phone'],
+            mother_mobile=post_data['parent_phone'],
+            parent_email=post_data['parent_email'],
+            street_1=post_data['street_1'],
+            street_2=post_data['street_2'],
+            city=post_data['city'],
+            zip_code=post_data['zip_code'],
+            country=post_data['country'],
+            dob=post_data['dob'],
+            blood_group=post_data['blood_group'],
+            photo=file_data['photo'],
+        )
+
+        info.save()
+
+        return redirect('students')
+
 def detailStudent(request):
     pass
 
@@ -206,6 +252,18 @@ def addUniversity(request):
     university.save()
     return redirect('universities')
 
+def deleteUniversity(request, uid):
+    uni = University.objects.get(id=uid)
+    uni.delete()
+
+    return redirect('universities')
+
+def loadUniversity(request):
+    get_data = request.GET    
+    uid = get_data.get('uid')
+    university = University.objects.get(id=uid)
+    return render(request, 'ajax/university.html', {'university': university})
+
 def listDirectory(request):
     data = Directory.objects.all()
     return render(request, 'list_directory.html', {'data': data})
@@ -238,7 +296,10 @@ def studentDetail(request, sid):
     student = Student.objects.get(id=sid)
     teachers = Teacher.objects.all()
 
-    return render(request, 'detail_student.html', {'student': student, 'teachers': teachers})
+    info = PersonalInfo.objects.get(student__id=sid)
+    print(info)
+
+    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info})
 
 def teacherDetail(request, tid):
     teacher = Teacher.objects.get(id=tid)
@@ -246,7 +307,14 @@ def teacherDetail(request, tid):
     return render(request, 'detail_teacher.html', {'teacher': teacher})
     
 def assignTeacher(request):
-    pass
+    post_data = request.POST
+    student = Student.objects.get(id=post_data['sid'])
+    teacher = Teacher.objects.get(id=post_data['tid'])
+    student.assigned_teacher = teacher
+
+    student.save()
+
+    return redirect('studentdetail', post_data['sid'])
 
 def assignUniversity(request):
     pass
@@ -255,6 +323,9 @@ def directoryList(request):
     pass
 
 def directoryIndex(request, did):
+    pass
+
+def uploadContent(request, did, sid):
     pass
 
 

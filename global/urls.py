@@ -17,9 +17,12 @@ urlpatterns = [
     path('teachers/', views.listTeachers, name='teachers'),
     path('addteacher', views.addTeacher, name='addteacher'),
     path('students/', views.listStudents, name='students'),
+    path('addstudent', views.addStudent, name='addstudent'),
     path('countries/', views.listCountries, name='countries'),
     path('addcountry/', views.addCountry, name='addcountry'),
     path('universities/', views.listUniversities, name='universities'),
+    path('deleteuni/<int:uid>', views.deleteUniversity, name='deleteuni'),
+    path('loaduniversity/', views.loadUniversity, name='loaduniversity'),
     path('adduniversity', views.addUniversity, name='adduniversity'),
     path('directories/', views.listDirectory, name='directories'),
     path('adddirectory/', views.addDirectory, name='adddirectory'),
@@ -27,6 +30,7 @@ urlpatterns = [
     path('addqualification', views.addQualification, name='addqualification'),
     path('studentdetail/<int:sid>/', views.studentDetail, name='studentdetail'),
     path('teacherdetail/<int:tid>/', views.teacherDetail, name='teacherdetail'),
+    path('assignteacher/', views.assignTeacher, name='assignteacher'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

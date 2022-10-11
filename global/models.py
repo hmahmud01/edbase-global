@@ -25,6 +25,25 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
+class Country(models.Model):
+    name = models.CharField(max_length=64, null=True, blank=True)
+    short = models.CharField(max_length=5, null=True, blank=True)
+
+    def __str__(self):
+        return self.short
+
+class University(models.Model):
+    name = models.CharField(max_length=128, null=True, blank=True)
+    country = models.ForeignKey(Country, related_name='university_country', on_delete=models.CASCADE)
+    url = models.CharField(max_length=128, null=True, blank=True)
+    image = models.FileField('university_image', upload_to='university', blank=True, null=True)
+    description = models.TextField(null=True, blank=True)
+    status = models.BooleanField(default=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     user_type = models.CharField(max_length=64, default='student', blank=True, null=True)
@@ -37,7 +56,7 @@ class Student(models.Model):
     school = models.CharField(max_length=128, null=True, blank=True)
     status = models.BooleanField(default=False, null=True, blank=True)    
     qualification = models.ForeignKey(Qualification, related_name='student_qualification', on_delete=models.CASCADE)
-    assigned_teacher = models.ForeignKey(Teacher, related_name='assigned_teacher', on_delete=models.CASCADE, null=True)
+    assigned_teacher = models.OneToOneField(Teacher, related_name='assigned_teacher', on_delete=models.CASCADE, null=True)
     taken_care = models.BooleanField(default=False)
     visited = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
@@ -68,25 +87,12 @@ class PersonalInfo(models.Model):
     def __str__(self):
         return self.student.name
 
-
-class Country(models.Model):
-    name = models.CharField(max_length=64, null=True, blank=True)
-    short = models.CharField(max_length=5, null=True, blank=True)
-
-    def __str__(self):
-        return self.short
-
-class University(models.Model):
-    name = models.CharField(max_length=128, null=True, blank=True)
-    country = models.ForeignKey(Country, related_name='university_country', on_delete=models.CASCADE)
-    url = models.CharField(max_length=128, null=True, blank=True)
-    image = models.FileField('university_image', upload_to='university', blank=True, null=True)
-    description = models.TextField(null=True, blank=True)
-    status = models.BooleanField(default=True)
-    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+class StudentUniversityIndex(models.Model):
+    student = models.ForeignKey(Student, related_name='student_university', on_delete=models.CASCADE)
+    university = models.ForeignKey(University, related_name='uni_student', on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.student.name
 
 class Directory(models.Model):
     title = models.CharField(max_length=64, null=True, blank=True)
