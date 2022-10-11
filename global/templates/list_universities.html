@@ -70,84 +70,21 @@
     <section>
         <div class="row">
             {% for university in data %}
-            <div class="col-md-6 col-lg-3">
-                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
-                        alt="Card image cap">
+            <div class="col-md-6 col-lg-3 h-100">
+                <div class="card mb-4">
+                    <img class="card-img-top img-fluid" style="height: 190px;" src="/media/{{ university.image }}" alt="{{ university.name }}">
                     <div class="card-body">
-                        <h5 class="card-title">University title</h5>
-                        <p class="card-text">Short Description</p>
+                        <h5 class="card-title">{{ university.name }}</h5>
+                        <p>{{ university.country }}</p>
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-muted">Location</li>
-                    </ul>
-                    <div class="card-body">
-                        <a class="btn btn-outline-primary" href="#">Some link</a>
-                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="2" onclick="func(this)"
+                    <div class="card-footer">
+                        <a class="btn btn-outline-danger" href="{% url 'deleteuni' university.id %}">Delete</a>
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="{{ university.id }}" onclick="func(this)"
                             href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
-            <div class="col-md-6 col-lg-3">
-                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">University title</h5>
-                        <p class="card-text">Short Description</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-muted">Location</li>
-                    </ul>
-                    <div class="card-body">
-                        <a class="btn btn-outline-primary" href="#">Some link</a>
-                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="2" onclick="func(this)"
-                            href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="col-md-6 col-lg-3">
-                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the
-                            bulk of the card's content.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-muted">Vice tote bag shabby chic </li>
-                        <li class="list-group-item text-muted">Portland Etsy craft beer</li>
-                    </ul>
-                    <div class="card-body">
-                        <a class="btn btn-outline-primary" href="#">Card link</a>
-                        <button class="btn btn-primary" type="button" data-id="2" onclick="func(this)"
-                            data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
-                            aria-controls="offcanvasExample">
-                            Button with data-bs-target
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card mb-4"><img class="card-img-top img-fluid" src="/static/img/mockup3.jpg"
-                        alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the
-                            bulk of the card's content.</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item text-muted">Vice tote bag shabby chic </li>
-                        <li class="list-group-item text-muted">Portland Etsy craft beer</li>
-                    </ul>
-                    <div class="card-body">
-                        <a class="btn btn-outline-primary" href="#">Card link</a>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                            data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                            Button with data-bs-target
-                        </button>
-                    </div>
-                </div>
-            </div> -->
 
             <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
                 aria-labelledby="offcanvasExampleLabel">
@@ -158,29 +95,8 @@
                 </div>
                 <div class="offcanvas-body">
                     <div class="container-fluid px-0">
-                        <div class="row gx-0 min-vh-100">
-                            <div class="col-md-8 col-lg-6 col-xl-4 px-5 d-flex align-items-center shadow">
-                                <div class="w-100 py-5">
-                                    <div class="">
-                                        <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
-                                        <h1 class="h3 text-uppercase">University</h1>
-                                    </div> 
-                                    <div class="">
-                                        <p class="text-sm">                                            
-                                            Where does it come from?  <br>
-                                            Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32. <br>
-                                            The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
-                                        </p>
-                                        <a href="">University URL</a>
-                                        <p class="text-muted">University Location : AUS</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-lg-6 col-xl-8 d-none d-md-block">
-                                <!-- Image-->
-                                <div class="bg-cover h-100" style="background-image: url(/static/cred/uni.jpg); filter: grayscale(20%);">
-                                </div>
-                            </div>
+                        <div class="" id="loaduni">
+
                         </div>
                     </div>
                 </div>
@@ -193,9 +109,23 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     function func(d){
         console.log(d.getAttribute("data-id"));
+        var url = "{% url 'loaduniversity' %}"; 
+        console.log(url);
+        const uid = d.getAttribute("data-id");
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'uid' : uid,
+            },
+            success: function(data){
+                $('#loaduni').html(data);
+            }
+        })
     }
 </script>
 {% endblock %}

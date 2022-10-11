@@ -30,7 +30,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Student Registration</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="get" action="">
+                <form method="post" action="{% url 'addstudent' %}" enctype="multipart/form-data">{% csrf_token %}
                     <div class="modal-body">
 
                         <p class="fs-2">Academic Information</p>
@@ -98,18 +98,18 @@
                                 <input class="form-control" id="parents_phone" name="parent_phone" type="text" required>
                             </div>
                             <div class="col-6">
-                                <label class="form-label" for="praent_email">Parent's Email (Any One) </label>
-                                <input class="form-control" id="praent_email" name="praent_email" type="email" required>
+                                <label class="form-label" for="parent_email">Parent's Email (Any One) </label>
+                                <input class="form-control" id="parent_email" name="parent_email" type="email" required>
                             </div>
                         </div>
 
                         <div class="row mb-3">
                             <div class="col-6">
-                                <label class="form-label" for="street_1">Address </label>
+                                <label class="form-label" for="street_1">Street Address 1 </label>
                                 <input class="form-control" id="street_1" name="street_1" type="text" required>
                             </div>
                             <div class="col-6">
-                                <label class="form-label" for="street_2">Address </label>
+                                <label class="form-label" for="street_2">Street Address 2 </label>
                                 <input class="form-control" id="street_2" name="street_2" type="text" required>
                             </div>
                         </div>
@@ -146,7 +146,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
                     </div>
                 </form>
             </div>
@@ -172,7 +172,7 @@
                     <tbody>
                         {% for student in data %}
                         <tr>
-                            <td><a href="{% url 'studentdetail' student.id %}" class="text-muted">{{ student.user.id }}</a></td>
+                            <td><a href="{% url 'studentdetail' student.id %}" class="text-muted">{{ student.id }}</a></td>
                             <td>Memora</td>
                             <td>nielsencobb@memora.com</td>
                             <td>+1 (851) 552-2735</td>

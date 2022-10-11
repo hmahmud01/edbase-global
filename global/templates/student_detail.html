@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Profile </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <h1 class="page-heading">{{ student.name }}</h1>
+    </div>
+    <section>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-profile mb-4">
+                    <div class="card-header" style="background-image: url(/static/img/photos/paul-morris-116514-unsplash.jpg);">
+                    </div>
+                    <div class="card-body text-center"><img class="card-profile-img" src="/media/{{ info.photo }}"
+                            alt="{{ student.name }}">
+                        <h3 class="mb-3">{{ student.name }}</h3>
+                        <p class="mb-4">Edbase Global Applicant</p>
+                        <button class="btn btn-outline-dark btn-sm"><span class="fab fa-twitter"></span> Follow</button>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="card-heading">Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <p class="fs-6">Name : <span class="fw-bold">{{ student.name }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Mobile : <span class="fw-bold">{{ student.mobile }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Email : <span class="fw-bold">{{ student.email }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">School : <span class="fw-bold">{{ student.school }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Status : <span class="fw-bold">{{ student.status }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Qualification : <span class="fw-bold">{{ student.qualification }}</span></p>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        {% if student.assigned_teacher is not None %}
+                        <div class="mb-3">
+                            <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>
+                        </div>
+                        {% else %}
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assign_teacher">
+                            Assign A Teacher
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <div class="modal fade" id="assign_teacher" tabindex="-1" aria-labelledby="assign_teacher" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="add_country">Assign A Teacher</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{% url 'assignteacher' %}" method="post">{% csrf_token %}
+                                    <input type="hidden" value="{{ student.id }}" name="sid">
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Teacher</label>
+                                            <select class="form-select" aria-label="Default select country" name="tid">
+                                                <option selected>Open this select menu</option>
+                                                {% for teacher in teachers %}
+                                                <option value="{{ teacher.id }}">{{ teacher.name }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 ps-3">
+                                <h4>{{ student.name }}</h4>
+                                <p class="text-muted mb-0">Coder</p>
+                                <ul class="social-links list-inline mb-0 mt-2">
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="{{ student.name }}'s Facebook"><i
+                                                class="fab fa-facebook"></i></a></li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="{{ student.mobile }}"><i class="fa fa-phone"></i></a>
+                                    </li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="@user"><i class="fab fa-skype"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="card-heading">Profile Detail</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Unique Id : <span class="fw-bold">{{ info.unique_id }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Passport : <span class="fw-bold">{{ info.passport }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Mother's Name : <span class="fw-bold">{{ info.mother }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Father's Name : <span class="fw-bold">{{ info.father }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Parent's Email : <span class="fw-bold">{{ info.parent_email }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12">
+                                <div class="mb-3">
+                                    <p class="fs-6">Address : <span class="fw-bold">{{ info.street_1 }} {{ info.street_2 }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="mb-3">
+                                    <p class="fs-6">City : <span class="fw-bold">{{ info.city }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="mb-3">
+                                    <p class="fs-6">Zip Code : <span class="fw-bold">{{ info.zip_code }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 col-md-4">
+                                <div class="mb-3">
+                                    <p class="fs-6">Country : <span class="fw-bold">{{ info.country }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Date of Birth : <span class="fw-bold">{{ info.dob }}</span></p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-6">
+                                <div class="mb-3">
+                                    <p class="fs-6">Blood Group : <span class="fw-bold">{{ info.blood_group }}</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <button class="btn btn-primary" type="submit">Update Profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
