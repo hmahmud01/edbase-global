@@ -14,9 +14,11 @@
     <div class="page-header">
         <div class="d-flex justify-content-between">
             <h1 class="page-heading">Teacher Index</h1>
+            {% if request.user.is_superuser %}
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_Teacher">
                 Add A Teacher
             </button>
+            {% endif %}
         </div>
 
     </div>
@@ -30,7 +32,7 @@
                     <h5 class="modal-title" id="addTeacher">Add a Teacher</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{% url 'addteacher' %}" method="post"> {% csrf_token %}
+                <form action="{% url 'addteacher' %}" method="post" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="name" class="form-label">Teacher Name</label>

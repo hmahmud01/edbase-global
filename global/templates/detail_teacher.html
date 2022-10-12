@@ -1,11 +1,85 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block content %}
 <div class="container-fluid px-lg-4 px-xl-5">
-    <section class="mb-3 mb-lg-5">
-        <h1>Teacher</h1>
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item active">Profile </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <h1 class="page-heading">{{ teacher.name }}</h1>
+    </div>
+    <section>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card card-profile mb-4">
+                    <div class="card-header"
+                        style="background-image: url(/static/img/photos/paul-morris-116514-unsplash.jpg);">
+                    </div>
+                    <div class="card-body text-center"><img class="card-profile-img" src="/media/{{ teacher.photo }}"
+                            alt="{{ student.name }}">
+                        <h3 class="mb-3">{{ teacher.name }}</h3>
+                        <p class="mb-4">Edbase Global Teacher</p>
+                        <!-- <button class="btn btn-outline-dark btn-sm"><span class="fab fa-twitter"></span> Follow</button> -->
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 ps-3">
+                                <h4>{{ teacher.name }}</h4>
+                                <p class="text-muted mb-0">Connect</p>
+                                <ul class="social-links list-inline mb-0 mt-2">
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="{{ student.name }}'s Facebook"><i
+                                                class="fab fa-facebook"></i></a></li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="{{ student.mobile }}"><i
+                                                class="fa fa-phone"></i></a>
+                                    </li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
+                                            data-placement="top" title="@user"><i class="fab fa-skype"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="card-heading">Profile</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <p class="fs-6">Username : <span class="fw-bold">{{ teacher.user.username }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Name : <span class="fw-bold">{{ teacher.name }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Mobile : <span class="fw-bold">{{ teacher.phone }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Email : <span class="fw-bold">{{ teacher.email }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Qualification : <span class="fw-bold">{{ teacher.qualification }}</span></p>
+                        </div>
+                        <div class="mb-3">
+                            <p class="fs-6">Status : <span class="fw-bold">{{ teacher.status }}</span></p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </section>
 </div>
-
-{% block content %}
 {% endblock %}

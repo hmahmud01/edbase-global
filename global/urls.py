@@ -34,6 +34,9 @@ urlpatterns = [
     path('assignteacher/', views.assignTeacher, name='assignteacher'),
     path('suggestuni/', views.suggestUni, name='suggestuni'),
     path('deletesuggestion/<int:iid>', views.deleteSuggestion, name='deletesuggestion'),
+    path('myprofile/', views.myProfile, name='myprofile'),
+    path('directoryindex/<int:did>', views.directoryIndex, name='directoryindex'),
+    path('uploadcontent/', views.uploadContent, name='uploadcontent')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

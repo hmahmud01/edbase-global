@@ -47,25 +47,12 @@ def home(request):
         return render(request, 'index.html', {'data': data})
     else:
         if Teacher.objects.filter(user_id=user.id).exists():
-            print("TEACHER")
-            print(Teacher.objects.get(user_id=user.id))
             return render(request, 'index_teacher.html')
         elif Student.objects.filter(user_id=user.id).exists():
-            print("STUDENT")
-            print(Student.objects.filter(user_id=user.id))
-            return render(request, 'index_student.html')
+            directories = Directory.objects.all()
+            return render(request, 'index_student.html', {'directories': directories})
         else:
             return redirect('failed')
-        # try:            
-        #     req_user = Teacher.objects.get(user=user.id)
-        #     print("TEACHER")
-        #     print(req_user)
-        #     return render(request, 'index_teacher.html')
-        # except:
-        #     req_user = Student.objects.get(user=user.id)
-        #     print("STUDENT")
-        #     print(req_user)
-        #     return render(request, 'index_student.html')
 
 def register(request):
     data = ""
@@ -139,6 +126,7 @@ def listTeachers(request):
 def addTeacher(request):
     teachers = Teacher.objects.all()
     post_data = request.POST
+    file_data = request.FILES
     username = post_data['email']
     if User.objects.filter(username=username).exists():
         alert="Teacher Already Exists"
@@ -153,6 +141,7 @@ def addTeacher(request):
             email = post_data['email'],
             level = post_data['level'],
             qualification = qualifcation,
+            photo = file_data['photo'],
             user_type = TEACHER_TYPE,            
         )
         teacher.save()
@@ -342,13 +331,52 @@ def deleteSuggestion(request, iid):
 
     return redirect('studentdetail', sid)
 
+
+# STUDENT AREA
+
+def myProfile(request):
+    user_type = None
+
+    try:
+        student = request.user.student
+        teachers = Teacher.objects.all()
+        universities = University.objects.all()
+
+        indexs = StudentUniversityIndex.objects.filter(student__id = student.id)
+
+        info = PersonalInfo.objects.get(student__id=student.id)
+        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs})
+    except:
+        teacher = request.user.teacher
+        return render(request, 'detail_teacher.html', {'teacher': teacher})
+
 def directoryList(request):
     pass
 
 def directoryIndex(request, did):
-    pass
+    directory = Directory.objects.get(id=did)
+    contents = DirectoryIndex.objects.filter(directory__id=did).filter(student__id=request.user.student.id)
+    return render(request, 'directory_index.html', {'contents': contents, 'directory': directory})
 
-def uploadContent(request, did, sid):
-    pass
+def uploadContent(request):
+    student = request.user.student
+    post_data = request.POST
+    file_data = request.FILES
 
+    directory = Directory.objects.get(id=post_data['did'])
+    contents = file_data.getlist('content')
 
+    for files in contents:
+        content = Content(
+            file_content = files
+        )
+        content.save()
+        didx = DirectoryIndex(
+            directory = directory,
+            student = student,
+            content = content
+        )
+
+        didx.save()
+
+    return redirect('directoryindex', post_data['did'])
