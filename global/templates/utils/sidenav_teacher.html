@@ -2,11 +2,35 @@
     <h6 class="sidebar-heading">Main</h6>
     <ul class="list-unstyled">
         <li class="sidebar-list-item">
+            <a class="sidebar-link text-muted" href="{% url 'home' %}">
+                <svg class="svg-icon svg-icon-md me-3">
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#portfolio-grid-1"> </use>
+                </svg>
+                <span class="sidebar-link-title">Dashboard</span>
+            </a>
+        </li>
+        <li class="sidebar-list-item">
             <a class="sidebar-link text-muted" href="{% url 'students' %}">
                 <svg class="svg-icon svg-icon-md me-3">
                     <use xlink:href="/static/icons/orion-svg-sprite.svg#configuration-1"> </use>
                 </svg>
-                <span class="sidebar-link-title">Teacher</span>
+                <span class="sidebar-link-title">Student List</span>
+            </a>
+        </li>
+        <li class="sidebar-list-item">
+            <a class="sidebar-link text-muted" href="{% url 'myprofile' %}">
+                <svg class="svg-icon svg-icon-md me-3">
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#configuration-1"> </use>
+                </svg>
+                <span class="sidebar-link-title">My Profile</span>
+            </a>
+        </li>
+        <li class="sidebar-list-item">
+            <a class="sidebar-link text-muted" href="{% url 'universities' %}">
+                <svg class="svg-icon svg-icon-md me-3">
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#real-estate-1"> </use>
+                </svg>
+                <span class="sidebar-link-title">University List</span>
             </a>
         </li>
     </ul>

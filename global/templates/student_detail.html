@@ -59,10 +59,12 @@
                             <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>
                         </div>
                         {% else %}
+                        {% if request.user.is_superuser or request.user.teacher %}
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#assign_teacher">
                             Assign A Teacher
                         </button>
+                        {% endif %}
                         {% endif %}
                     </div>
 
@@ -195,12 +197,14 @@
                             </div>
                         </div>
                     </div>
+                    {% if request.user.is_superuser or request.user.teacher %}
                     <div class="card-footer text-end">
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#assign_versity">
                             Suggest University
                         </button>
                     </div>
+                    {% endif %}
                     <div class="modal fade" id="assign_versity" tabindex="-1" aria-labelledby="assign_teacher"
                         aria-hidden="true">
                         <div class="modal-dialog">

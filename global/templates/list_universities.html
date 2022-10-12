@@ -14,10 +14,12 @@
     <div class="page-header">
         <div class="d-flex justify-content-between">
             <h1 class="page-heading">University Index</h1>
+            {% if request.user.is_superuser %}
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                 data-bs-target="#add_university">
                 Add A University
             </button>
+            {% endif %}
         </div>
 
     </div>
@@ -78,7 +80,9 @@
                         <p>{{ university.country }}</p>
                     </div>
                     <div class="card-footer">
+                        {% if request.user.is_superuser %}
                         <a class="btn btn-outline-danger" href="{% url 'deleteuni' university.id %}">Delete</a>
+                        {% endif %}
                         <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="{{ university.id }}" onclick="func(this)"
                             href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
                     </div>
