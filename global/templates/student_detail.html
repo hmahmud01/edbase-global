@@ -19,13 +19,14 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="card card-profile mb-4">
-                    <div class="card-header" style="background-image: url(/static/img/photos/paul-morris-116514-unsplash.jpg);">
+                    <div class="card-header"
+                        style="background-image: url(/static/img/photos/paul-morris-116514-unsplash.jpg);">
                     </div>
                     <div class="card-body text-center"><img class="card-profile-img" src="/media/{{ info.photo }}"
                             alt="{{ student.name }}">
                         <h3 class="mb-3">{{ student.name }}</h3>
                         <p class="mb-4">Edbase Global Applicant</p>
-                        <button class="btn btn-outline-dark btn-sm"><span class="fab fa-twitter"></span> Follow</button>
+                        <!-- <button class="btn btn-outline-dark btn-sm"><span class="fab fa-twitter"></span> Follow</button> -->
                     </div>
                 </div>
                 <div class="card mb-4">
@@ -58,18 +59,21 @@
                             <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>
                         </div>
                         {% else %}
-                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assign_teacher">
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#assign_teacher">
                             Assign A Teacher
                         </button>
                         {% endif %}
                     </div>
 
-                    <div class="modal fade" id="assign_teacher" tabindex="-1" aria-labelledby="assign_teacher" aria-hidden="true">
+                    <div class="modal fade" id="assign_teacher" tabindex="-1" aria-labelledby="assign_teacher"
+                        aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="add_country">Assign A Teacher</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
                                 <form action="{% url 'assignteacher' %}" method="post">{% csrf_token %}
                                     <input type="hidden" value="{{ student.id }}" name="sid">
@@ -85,7 +89,8 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                         <button type="submit" class="btn btn-primary">Save changes</button>
                                     </div>
                                 </form>
@@ -106,7 +111,8 @@
                                             data-placement="top" title="{{ student.name }}'s Facebook"><i
                                                 class="fab fa-facebook"></i></a></li>
                                     <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
-                                            data-placement="top" title="{{ student.mobile }}"><i class="fa fa-phone"></i></a>
+                                            data-placement="top" title="{{ student.mobile }}"><i
+                                                class="fa fa-phone"></i></a>
                                     </li>
                                     <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
                                             data-placement="top" title="@user"><i class="fab fa-skype"></i></a></li>
@@ -173,13 +179,58 @@
                             </div>
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
-                                    <p class="fs-6">Blood Group : <span class="fw-bold">{{ info.blood_group }}</span></p>
+                                    <p class="fs-6">Blood Group : <span class="fw-bold">{{ info.blood_group }}</span>
+                                    </p>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="col-sm-12 col-md-12">
+                                <div class="mb-3">
+                                    <ul>
+                                        {% for idx in indexs %}
+                                        <li><a href="{% url 'unidetail' idx.university.id %}">{{ idx.university }}</a>  - {{ idx.university.country }} - <a href="{% url 'deletesuggestion' idx.id%}" class="btn btn-sm">Delete</a></li>
+                                        {% endfor %}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="card-footer text-end">
-                        <button class="btn btn-primary" type="submit">Update Profile</button>
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#assign_versity">
+                            Suggest University
+                        </button>
+                    </div>
+                    <div class="modal fade" id="assign_versity" tabindex="-1" aria-labelledby="assign_teacher"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="add_country">Suggest University</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <form action="{% url 'suggestuni' %}" method="post">{% csrf_token %}
+                                    <input type="hidden" value="{{ student.id }}" name="sid">
+                                    <div class="modal-body">
+                                        <label class="col-md-3 form-label">University</label>
+                                        <div class="col-md-9">
+                                            {% for university in universities %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" id="{{ university.id }}" name="universities" value="{{ university.id }}" type="checkbox">
+                                                <label class="custom-control-label" for="{{ university.id }}">{{ university.name }} - {{ university.country }}</label>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
