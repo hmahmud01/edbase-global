@@ -116,6 +116,11 @@ class DirectoryIndex(models.Model):
     def __str__(self):
         return self.directory
 
+    def fileName(self):
+        return self.content.file_content
+        # name = self.content.file_content.rsplit("/")
+        # return name[1]
+
 
 # TODO
 # DIRECTORY CONTENT CLASS NEED TO REWORK

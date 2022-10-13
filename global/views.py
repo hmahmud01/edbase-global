@@ -164,7 +164,7 @@ def studentDetail(request, sid):
     indexs = StudentUniversityIndex.objects.filter(student__id = sid)
 
     info = PersonalInfo.objects.get(student__id=sid)
-    print(info)
+
 
     return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs})
 
