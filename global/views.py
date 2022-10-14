@@ -149,14 +149,20 @@ def addTeacher(request):
         alert="Teacher Created Successfully"
         return render(request, 'list_teachers.html', {'data': teachers, 'alert': alert})
 
-def listStudents(request):
-    data = Student.objects.all()    
+def listStudents(request):    
     qualifications = Qualification.objects.all()
     users = User.objects.all()
-    print(users)
+    
+    if request.user.is_superuser:
+        data = Student.objects.all()    
+    else:
+        print(request.user.teacher.id)
+        data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
+
     return render(request, 'list_students.html', {'data': data, 'qualifications': qualifications, 'users': users})
 
 def studentDetail(request, sid):
+
     student = Student.objects.get(id=sid)
     teachers = Teacher.objects.all()
     universities = University.objects.all()
@@ -164,9 +170,29 @@ def studentDetail(request, sid):
     indexs = StudentUniversityIndex.objects.filter(student__id = sid)
 
     info = PersonalInfo.objects.get(student__id=sid)
-
-
-    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs})
+    print("STUDENT DETAIL")
+    directories = Directory.objects.all()
+    files = []
+    print(directories)
+    for directory in directories:
+        contents = DirectoryIndex.objects.filter(directory__id=directory.id).filter(student__id=sid)                
+        if contents.count() != 0:
+            content = {
+                'title': directory.title,
+                'id': directory.id,
+                'data': contents
+            }
+            files.append(content)
+        else:
+            content = {
+                'title': directory.title,
+                'id': directory.id,
+                'data': None
+            }
+            files.append(content)
+    
+    print(files)
+    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files})
 
 def addStudent(request):
     post_data = request.POST
