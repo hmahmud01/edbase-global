@@ -13,7 +13,7 @@
     <!-- Page Header-->
     <div class="page-header">
         <div class="d-flex justify-content-between">
-            <h1 class="page-heading">Data Table</h1>
+            <h1 class="page-heading">Student List</h1>
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Register A Student
             </button>
@@ -162,22 +162,24 @@
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Institute</th>
+                            <th>Status</th>
                             <th>Email</th>
                             <th>Phone</th>
-                            <th>City</th>
-                            <th>Orders</th>
+                            <th>Application Status</th>
+                            <th>Qualification</th>
+                            <th>Assigned teacher</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for student in data %}
                         <tr>
                             <td><a href="{% url 'studentdetail' student.id %}" class="text-muted">{{ student.id }}</a></td>
-                            <td>Memora</td>
-                            <td>nielsencobb@memora.com</td>
-                            <td>+1 (851) 552-2735</td>
-                            <td>Graniteville</td>
-                            <td>0 </td>
+                            <td>{{ student.status }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.mobile }}</td>
+                            <td>{{ student.taken_care }}</td>
+                            <td>{{ student.qualification.title }}</td>
+                            <td>{{ student.assigned_teacher }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
