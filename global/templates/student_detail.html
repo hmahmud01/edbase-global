@@ -254,7 +254,7 @@
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                <button class="nav-link" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
                                     type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
                             </li>
                             <li class="nav-item" role="presentation">
@@ -267,7 +267,7 @@
                             </li>
                         </ul>
                         <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">T1
+                            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">T1
                             </div>
                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">T2</div>
                             <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">T3</div>
@@ -278,4 +278,13 @@
         </div>
     </section>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  var firstTabEl = document.querySelector('#myTab li:first-child button')
+  var firstTab = new bootstrap.Tab(firstTabEl)
+
+  firstTab.show()
+</script>
 {% endblock %}
