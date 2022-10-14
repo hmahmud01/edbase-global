@@ -56,7 +56,8 @@
                     <div class="card-footer text-end">
                         {% if student.assigned_teacher is not None %}
                         <div class="mb-3">
-                            <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>
+                            <p class="fs-6">Assigned Teacher : <span class="fw-bold">
+                                {{ student.assigned_teacher }}</span></p>
                         </div>
                         {% else %}
                         {% if request.user.is_superuser or request.user.teacher %}
@@ -151,7 +152,8 @@
                             </div>
                             <div class="col-sm-6 col-md-6">
                                 <div class="mb-3">
-                                    <p class="fs-6">Parent's Email : <span class="fw-bold">{{ info.parent_email }}</span></p>
+                                    <p class="fs-6">Parent's Email : <span class="fw-bold">
+                                        {{ info.parent_email }}</span></p>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-12">
@@ -190,7 +192,9 @@
                                 <div class="mb-3">
                                     <ul>
                                         {% for idx in indexs %}
-                                        <li><a href="{% url 'unidetail' idx.university.id %}">{{ idx.university }}</a>  - {{ idx.university.country }} - <a href="{% url 'deletesuggestion' idx.id%}" class="btn btn-sm">Delete</a></li>
+                                        <li><a href="{% url 'unidetail' idx.university.id %}">{{ idx.university }}</a> -
+                                            {{ idx.university.country }} - <a href="{% url 'deletesuggestion' idx.id%}"
+                                                class="btn btn-sm">Delete</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -221,8 +225,10 @@
                                         <div class="col-md-9">
                                             {% for university in universities %}
                                             <div class="form-check">
-                                                <input class="form-check-input" id="{{ university.id }}" name="universities" value="{{ university.id }}" type="checkbox">
-                                                <label class="custom-control-label" for="{{ university.id }}">{{ university.name }} - {{ university.country }}</label>
+                                                <input class="form-check-input" id="{{ university.id }}"
+                                                    name="universities" value="{{ university.id }}" type="checkbox">
+                                                <label class="custom-control-label" for="{{ university.id }}">{{
+                                                    university.name }} - {{ university.country }}</label>
                                             </div>
                                             {% endfor %}
                                         </div>
@@ -234,6 +240,37 @@
                                     </div>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <h4 class="card-heading">File COntents</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home"
+                                    type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile"
+                                    type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact"
+                                    type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">T1
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">T2</div>
+                            <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">T3</div>
                         </div>
                     </div>
                 </div>
