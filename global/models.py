@@ -114,7 +114,7 @@ class DirectoryIndex(models.Model):
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
-        return self.directory
+        return self.directory.title
 
     def fileName(self):
         return self.content.file_content
