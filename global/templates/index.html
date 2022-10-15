@@ -3,61 +3,13 @@
 
 {% block content %}
 <div class="container-fluid px-lg-4 px-xl-5">
-    <section class="mb-3 mb-lg-5">
-        <div class="row">
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card-widget h-100">
-                    <div class="card-widget-body">
-                        <div class="dot me-3 bg-indigo"></div>
-                        <div class="text">
-                            <h6 class="mb-0">Data consumed</h6><span class="text-gray-500">145,14 GB</span>
-                        </div>
-                    </div>
-                    <div class="icon text-white bg-indigo"><i class="fas fa-server"></i></div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card-widget h-100">
-                    <div class="card-widget-body">
-                        <div class="dot me-3 bg-green"></div>
-                        <div class="text">
-                            <h6 class="mb-0">Open cases</h6><span class="text-gray-500">32</span>
-                        </div>
-                    </div>
-                    <div class="icon text-white bg-green"><i class="far fa-clipboard"></i></div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card-widget h-100">
-                    <div class="card-widget-body">
-                        <div class="dot me-3 bg-blue"></div>
-                        <div class="text">
-                            <h6 class="mb-0">Work orders</h6><span class="text-gray-500">400</span>
-                        </div>
-                    </div>
-                    <div class="icon text-white bg-blue"><i class="fa fa-dolly-flatbed"></i></div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card-widget h-100">
-                    <div class="card-widget-body">
-                        <div class="dot me-3 bg-red"></div>
-                        <div class="text">
-                            <h6 class="mb-0">New invoices</h6><span class="text-gray-500">123</span>
-                        </div>
-                    </div>
-                    <div class="icon text-white bg-red"><i class="fas fa-receipt"></i></div>
-                </div>
-            </div>
-        </div>
-    </section>
     <section class="mb-4 mb-lg-5">
-        <h2 class="section-heading section-heading-ms mb-4 mb-lg-5">Finances 💰</h2>
+        <h2 class="section-heading section-heading-ms mb-4 mb-lg-5">Overall Status</h2>
         <div class="row">
             <div class="col-lg-7 mb-4 mb-lg-0">
                 <div class="card h-100">
                     <div class="card-header">
-                        <h4 class="card-heading">Your Account Balance</h4>
+                        <h4 class="card-heading">Student Registration Growth</h4>
                     </div>
                     <div class="card-body">
                         <div class="chart-holder w-100">
@@ -69,13 +21,14 @@
             <div class="col-lg-5 mb-4 mb-lg-0">
                 <div class="h-50 pb-4 pb-lg-2">
                     <div class="card h-100">
-                        <div class="card-body d-flex">
+                        <div class="card-body d-flex">                            
                             <div class="row w-100 align-items-center">
+                                <h3 class="card-heading">This month registration</h3>
                                 <div class="col-sm-5 mb-4 mb-sm-0">
-                                    <h2 class="mb-0 d-flex align-items-center"><span>86.4</span><span
+                                    <h2 class="mb-0 d-flex align-items-center"><span>22</span><span
                                             class="dot bg-green d-inline-block ms-3"></span></h2><span
-                                        class="text-muted text-uppercase small">Work hours</span>
-                                    <hr><small class="text-muted">Hours worked this month</small>
+                                        class="text-muted text-uppercase small">Students</span>
+                                    <hr><small class="text-muted">Over total 100 Student in the System</small>
                                 </div>
                                 <div class="col-sm-7">
                                     <canvas id="pieChartHome1"></canvas>
@@ -88,11 +41,12 @@
                     <div class="card h-100">
                         <div class="card-body d-flex">
                             <div class="row w-100 align-items-center">
+                                <h3 class="card-heading">Application Stutatus</h3>
                                 <div class="col-sm-5 mb-4 mb-sm-0">
-                                    <h2 class="mb-0 d-flex align-items-center"><span>325</span><span
+                                    <h2 class="mb-0 d-flex align-items-center"><span>10</span><span
                                             class="dot bg-indigo d-inline-block ms-3"></span></h2><span
-                                        class="text-muted text-uppercase small">Tasks Completed</span>
-                                    <hr><small class="text-muted">Tasks Completed this months</small>
+                                        class="text-muted text-uppercase small">Applications Done</span>
+                                        <hr><small class="text-muted">Over total 100 Student in the System</small>
                                 </div>
                                 <div class="col-sm-7">
                                     <canvas id="pieChartHome2"></canvas>
@@ -104,53 +58,53 @@
             </div>
         </div>
     </section>
+
     <section class="mb-4 mb-lg-5">
-        <h2 class="section-heading section-heading-ms mb-4 mb-lg-5">Linked Cards 💳 </h2>
+        <h2 class="section-heading section-heading-ms mb-4 mb-lg-5">Shortcuts </h2>
         <div class="row text-dark">
             <div class="col-md-6 col-xl-4 mb-4">
                 <div class="card credit-card bg-hover-gradient-indigo">
                     <div class="credict-card-content">
-                        <div class="h1 mb-3 mb-lg-1"><i class="fab fa-cc-visa"></i></div>
+                        <div class="h1 mb-3 mb-lg-1"><i class="fas fa-user-graduate fa-2x"></i></div>
                         <div class="credict-card-bottom">
                             <div class="text-uppercase flex-shrink-0 me-1 mb-1">
-                                <div class="fw-bold">Card Number</div><small class="text-gray-500">1245 1478
-                                    1362 6985</small>
+                                <div class="fw-bold">Students</div>
+                                <small class="text-gray-500">Registered Active Students in The system</small>
                             </div>
-                            <h4 class="mb-1">$417.78</h4>
+                            <h4 class="mb-1">108</h4>
                         </div>
-                    </div><a class="stretched-link" href="#"></a>
+                    </div><a class="stretched-link" href="{% url 'students' %}"></a>
                 </div>
             </div>
             <div class="col-md-6 col-xl-4 mb-4">
                 <div class="card credit-card bg-hover-gradient-blue">
                     <div class="credict-card-content">
-                        <div class="h1 mb-3 mb-lg-1"><i class="fab fa-cc-mastercard"></i></div>
+                        <div class="h1 mb-3 mb-lg-1"><i class="fas fa-school fa-2x"></i></div>
                         <div class="credict-card-bottom">
                             <div class="text-uppercase flex-shrink-0 me-1 mb-1">
-                                <div class="fw-bold">Card Number</div><small class="text-gray-500">1245 1478
-                                    1362 6985</small>
+                                <div class="fw-bold">Teachers</div><small class="text-gray-500">Registered Active Teacher in The system</small>
                             </div>
-                            <h4 class="mb-1">$224.17</h4>
+                            <h4 class="mb-1">10</h4>
                         </div>
-                    </div><a class="stretched-link" href="#"></a>
+                    </div><a class="stretched-link" href="{% url 'teachers' %}"></a>
                 </div>
             </div>
             <div class="col-md-6 col-xl-4 mb-4">
                 <div class="card credit-card bg-hover-gradient-green">
                     <div class="credict-card-content">
-                        <div class="h1 mb-3 mb-lg-1"><i class="fab fa-cc-discover"></i></div>
+                        <div class="h1 mb-3 mb-lg-1"><i class="fas fa-university fa-2x"></i></div>
                         <div class="credict-card-bottom">
                             <div class="text-uppercase flex-shrink-0 me-1 mb-1">
-                                <div class="fw-bold">Card Number</div><small class="text-gray-500">1245 1478
-                                    1362 6985</small>
+                                <div class="fw-bold">Universities</div><small class="text-gray-500">Registered Universities in The system</small>
                             </div>
-                            <h4 class="mb-1">$568.00</h4>
+                            <h4 class="mb-1">12</h4>
                         </div>
-                    </div><a class="stretched-link" href="#"></a>
+                    </div><a class="stretched-link" href="{% url 'universities' %}"></a>
                 </div>
             </div>
         </div>
     </section>
+
 </div>
 
 {% endblock %}
