@@ -27,6 +27,7 @@ urlpatterns = [
     path('adduniversity', views.addUniversity, name='adduniversity'),
     path('directories/', views.listDirectory, name='directories'),
     path('adddirectory/', views.addDirectory, name='adddirectory'),
+    path('statusupdate/<int:did>/<str:status>', views.statusUpdateDirectory, name='statusupdate'),
     path('qualifications/', views.listQualifications, name='qualifications'),
     path('addqualification', views.addQualification, name='addqualification'),
     path('studentdetail/<int:sid>/', views.studentDetail, name='studentdetail'),

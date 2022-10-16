@@ -74,9 +74,9 @@
                             {% endif %}
                             <td>
                                 {% if directory.status is True %}
-                                <a href="" class="btn btn-sm btn-warning">De-activate</a>
+                                <a href="{% url 'statusupdate' directory.id deactivate %}" class="btn btn-sm btn-warning">De-activate</a>
                                 {% else %}
-                                <a href="" class="btn btn-sm btn-info">Activate</a>
+                                <a href="{% url 'statusupdate' directory.id activate %}" class="btn btn-sm btn-info">Activate</a>
                                 {% endif %}
                                 <a href="" class="btn btn-sm btn-danger">Delete</a>
                             </td>

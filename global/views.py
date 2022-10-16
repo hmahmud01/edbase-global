@@ -13,6 +13,9 @@ TEACHER_TYPE = "Teacher"
 STUDENT_TYPE = "Student"
 DEFAULT_PASS = "edbase2022"
 
+ACTIVATE = "activate"
+DEACTIVATE = "deactivate"
+
 def landing(request):
     return render(request, 'landing/index.html')
 
@@ -49,7 +52,7 @@ def home(request):
         if Teacher.objects.filter(user_id=user.id).exists():
             return render(request, 'index_teacher.html')
         elif Student.objects.filter(user_id=user.id).exists():
-            directories = Directory.objects.all()
+            directories = Directory.objects.all().filter(status=True)
             return render(request, 'index_student.html', {'directories': directories})
         else:
             return redirect('failed')
@@ -156,7 +159,6 @@ def listStudents(request):
     if request.user.is_superuser:
         data = Student.objects.all()    
     else:
-        print(request.user.teacher.id)
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
 
     return render(request, 'list_students.html', {'data': data, 'qualifications': qualifications, 'users': users})
@@ -171,7 +173,7 @@ def studentDetail(request, sid):
 
     info = PersonalInfo.objects.get(student__id=sid)
     print("STUDENT DETAIL")
-    directories = Directory.objects.all()
+    directories = Directory.objects.all().filter(status=True)
     files = []
     print(directories)
     for directory in directories:
@@ -293,7 +295,7 @@ def loadUniversity(request):
 
 def listDirectory(request):
     data = Directory.objects.all()
-    return render(request, 'list_directory.html', {'data': data})
+    return render(request, 'list_directory.html', {'data': data, 'activate': ACTIVATE, 'deactivate': DEACTIVATE})
 
 def addDirectory(request):
     directory = Directory(
@@ -302,6 +304,17 @@ def addDirectory(request):
     directory.save()
 
     return redirect('directories')
+
+def statusUpdateDirectory(request, did, status):
+    directory = Directory.objects.get(id=did)
+    if status == "activate":
+        directory.status = True
+    elif status == "deactivate":
+        directory.status = False
+
+    directory.save()
+
+    return redirect('directories') 
 
 def listQualifications(request):
     data = Qualification.objects.all()    
@@ -323,8 +336,8 @@ def addQualification(request):
 
 def teacherDetail(request, tid):
     teacher = Teacher.objects.get(id=tid)
-
-    return render(request, 'detail_teacher.html', {'teacher': teacher})
+    data = Student.objects.filter(assigned_teacher__id=tid)
+    return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data})
     
 def assignTeacher(request):
     post_data = request.POST
@@ -369,12 +382,36 @@ def myProfile(request):
         universities = University.objects.all()
 
         indexs = StudentUniversityIndex.objects.filter(student__id = student.id)
+                
+        print("STUDENT DETAIL")
+        directories = Directory.objects.all().filter(status=True)
+        files = []
+        print(directories)
+        for directory in directories:
+            contents = DirectoryIndex.objects.filter(directory__id=directory.id).filter(student__id=student.id)                
+            if contents.count() != 0:
+                content = {
+                    'title': directory.title,
+                    'id': directory.id,
+                    'data': contents
+                }
+                files.append(content)
+            else:
+                content = {
+                    'title': directory.title,
+                    'id': directory.id,
+                    'data': None
+                }
+                files.append(content)
+        
+        print(files)
 
         info = PersonalInfo.objects.get(student__id=student.id)
-        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs})
+        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files})
     except:
         teacher = request.user.teacher
-        return render(request, 'detail_teacher.html', {'teacher': teacher})
+        data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
+        return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data})
 
 def directoryList(request):
     pass
