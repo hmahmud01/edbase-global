@@ -14,9 +14,11 @@
     <div class="page-header">
         <div class="d-flex justify-content-between">
             <h1 class="page-heading">Student List</h1>
+            {% if user.is_superuser %}
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                 Register A Student
             </button>
+            {% endif %}
         </div>
 
     </div>

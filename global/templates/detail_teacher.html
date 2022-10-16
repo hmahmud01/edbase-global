@@ -79,6 +79,44 @@
 
                 </div>
             </div>
+            {% if user.is_superuser or user.teacher %}
+             <div class="col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4 class="card-heading">Enlisted Students</h4>
+                    </div>
+                    <div class="card-body">
+                        <table class="table" id="datatable1">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Application Status</th>
+                                    <th>Qualification</th>
+                                    <th>Assigned teacher</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for student in data %}
+                                <tr>
+                                    <td><a href="{% url 'studentdetail' student.id %}" class="text-muted">{{ student.id }}</a></td>
+                                    <td>{{ student.status }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>{{ student.mobile }}</td>
+                                    <td>{{ student.taken_care }}</td>
+                                    <td>{{ student.qualification.title }}</td>
+                                    <td>{{ student.assigned_teacher }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
         </div>
     </section>
 </div>
