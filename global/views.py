@@ -116,10 +116,16 @@ def signupData(request):
 
         return redirect('success')
 
+# <QueryDict: {'csrfmiddlewaretoken': ['ykJzfEEyP10TYifqEf6O30UnS8aSBldZqwNvZZTVEcdTEgGdnut8tthjgUicK792'], 
+# 'name': ['TE'], 'mobile': ['912123'], 
+# 'guardian_mobile': ['123'], 'email': ['test@test.com'], 'school': ['MGBHS'], 
+# 'qual': ['1'], 'country': ['1', '2', '3']}>
 def signUp_v2(request):
     post_data = request.POST
 
     print(post_data)
+
+    return redirect('success')
 
 def successPage(request):
     return render(request, 'success.html')
