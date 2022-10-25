@@ -60,7 +60,8 @@ def home(request):
 def register(request):
     data = ""
     qualifications = Qualification.objects.all()
-    return render(request, 'register.html', {'data': data, 'qualifications': qualifications})
+    countries = Country.objects.all()
+    return render(request, 'register_v2.html', {'data': data, 'qualifications': qualifications, 'countries': countries})
 
 # <QueryDict: {'csrfmiddlewaretoken': ['7Bo3ThkJZP34z5MvGa2pNDLEKNxNj5wvBLk5mW4pkOzB0SoSK6wYjYRAuJqgsOGB'], 
 # 'name': ['Alomgir'], 'mobile': ['1545212'], 'guardian_mobile': ['123561'], 'email': ['alomgir@chacha'], 
@@ -114,6 +115,11 @@ def signupData(request):
         info.save()
 
         return redirect('success')
+
+def signUp_v2(request):
+    post_data = request.POST
+
+    print(post_data)
 
 def successPage(request):
     return render(request, 'success.html')
