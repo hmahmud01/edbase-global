@@ -122,10 +122,62 @@ def signupData(request):
 # 'qual': ['1'], 'country': ['1', '2', '3']}>
 def signUp_v2(request):
     post_data = request.POST
+    country_list = post_data.getlist('country')
+    username = post_data['email']
+    qualification = Qualification.objects.get(id=post_data['qual'])
 
-    print(post_data)
+    if User.objects.filter(username=username).exists():
+        return redirect('failed')
+    else:
+        user = User.objects.create_user(post_data['email'], post_data['email'], DEFAULT_PASS)
+        student = Student(
+            user = user,
+            name = post_data['name'],
+            mobile = post_data['mobile'],
+            guardian_mobile = post_data['guardian_mobile'],
+            email = post_data['email'],
+            school = post_data['school'],
+            qualification = qualification,
+        )
 
-    return redirect('success')
+        student.save()
+        for ctry in country_list:
+            country = Country.objects.get(id=ctry)
+            cdx = StudentCountryIndex(
+                student = student,
+                country = country
+            )
+
+            cdx.save()
+
+        return redirect('success')
+
+def studentUpdate(request):
+    post_data = request.POST
+    student = Student.objects.get(id=post_data['sid'])
+    unique_id = "STD" + str(student.id)
+    info = PersonalInfo(
+        student=student,
+        unique_id=unique_id,
+        passport=post_data['passport'],
+        father=post_data['father'],
+        mother=post_data['mother'],
+        father_mobile=post_data['parent_phone'],
+        mother_mobile=post_data['parent_phone'],
+        parent_email=post_data['parent_email'],
+        street_1=post_data['street_1'],
+        street_2=post_data['street_2'],
+        city=post_data['city'],
+        zip_code=post_data['zip_code'],
+        country=post_data['country'],
+        dob=post_data['dob'],
+        blood_group=post_data['blood_group'],
+        photo=file_data['photo'],
+    )
+
+    info.save()
+
+    return redirect('myprofile')
 
 def successPage(request):
     return render(request, 'success.html')
@@ -395,10 +447,9 @@ def myProfile(request):
 
         indexs = StudentUniversityIndex.objects.filter(student__id = student.id)
                 
-        print("STUDENT DETAIL")
         directories = Directory.objects.all().filter(status=True)
         files = []
-        print(directories)
+
         for directory in directories:
             contents = DirectoryIndex.objects.filter(directory__id=directory.id).filter(student__id=student.id)                
             if contents.count() != 0:
@@ -415,8 +466,6 @@ def myProfile(request):
                     'data': None
                 }
                 files.append(content)
-        
-        print(files)
 
         info = PersonalInfo.objects.get(student__id=student.id)
         return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files})
