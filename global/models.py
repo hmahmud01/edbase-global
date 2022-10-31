@@ -87,6 +87,13 @@ class PersonalInfo(models.Model):
     def __str__(self):
         return self.student.name
 
+class StudentCountryIndex(models.Model):
+    student = models.ForeignKey(Student, related_name='student_country', on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, related_name='ctry_student', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.student.name
+
 class StudentUniversityIndex(models.Model):
     student = models.ForeignKey(Student, related_name='student_university', on_delete=models.CASCADE)
     university = models.ForeignKey(University, related_name='uni_student', on_delete=models.CASCADE)

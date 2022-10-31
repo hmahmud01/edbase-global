@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // White DataTable
 
     const dataTable = new simpleDatatables.DataTable("#datatable1", {
-        searchable: false,
+        searchable: true,
     });
 
     function adjustTableColumns() {
