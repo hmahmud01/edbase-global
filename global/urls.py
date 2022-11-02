@@ -38,6 +38,8 @@ urlpatterns = [
     path('suggestuni/', views.suggestUni, name='suggestuni'),
     path('deletesuggestion/<int:iid>', views.deleteSuggestion, name='deletesuggestion'),
     path('myprofile/', views.myProfile, name='myprofile'),
+    path('studentunis/', views.studentUnis, name='studentunis'),
+    path('poststudentuni/', views.postStudentUni, name='poststudentuni'),
     path('directoryindex/<int:did>', views.directoryIndex, name='directoryindex'),
     path('uploadcontent/', views.uploadContent, name='uploadcontent')
 ]

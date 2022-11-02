@@ -53,6 +53,8 @@ def home(request):
             return render(request, 'index_teacher.html')
         elif Student.objects.filter(user_id=user.id).exists():
             directories = Directory.objects.all().filter(status=True)
+            profile = request.user.student
+            
             return render(request, 'index_student.html', {'directories': directories})
         else:
             return redirect('failed')
@@ -141,6 +143,12 @@ def signUp_v2(request):
         )
 
         student.save()
+
+        info = PersonalInfo(
+            student = student
+        )
+
+        info.save()
         for ctry in country_list:
             country = Country.objects.get(id=ctry)
             cdx = StudentCountryIndex(
@@ -444,12 +452,10 @@ def myProfile(request):
         student = request.user.student
         teachers = Teacher.objects.all()
         universities = University.objects.all()
-
         indexs = StudentUniversityIndex.objects.filter(student__id = student.id)
-                
         directories = Directory.objects.all().filter(status=True)
-        files = []
 
+        files = []
         for directory in directories:
             contents = DirectoryIndex.objects.filter(directory__id=directory.id).filter(student__id=student.id)                
             if contents.count() != 0:
@@ -467,12 +473,63 @@ def myProfile(request):
                 }
                 files.append(content)
 
-        info = PersonalInfo.objects.get(student__id=student.id)
-        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files})
+
+        institutes = []
+        countries = Country.objects.all()
+
+        for country in countries:
+            universities = StudentUniversityIndex.objects.filter(university__country__id=country.id).filter(student__id=student.id)
+            if universities.count() != 0:
+                content = {
+                    'country': country.name,
+                    'short': country.short,
+                    'id': country.id,
+                    'data': universities
+                }
+                institutes.append(content)
+            else:
+                content = {
+                    'country': country.name,
+                    'short': country.short,
+                    'id': country.id,
+                    'data': None
+                }
+                institutes.append(content)
+            
+                
+        # info = PersonalInfo.objects.get(student__id=student.id)
+        info = None
+
+        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'institutes': institutes})
+            
     except:
         teacher = request.user.teacher
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
         return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data})
+        
+def studentUnis(request):
+    get_data = request.GET    
+    cid = get_data.get('cid')
+    unis = University.objects.filter(country__id=cid)
+    return render(request, 'ajax/uni_list.html', {'unis': unis})
+
+def postStudentUni(request):
+    post_data = request.POST
+    print(request.POST)
+    student = Student.objects.get(id=post_data['sid'])
+    unis = post_data.getlist('unis')
+
+    for uni in unis:
+        university = University.objects.get(id=uni)
+        studentUni = StudentUniversityIndex(
+            student = student,
+            university = university
+        )
+
+        studentUni.save()
+    
+    return redirect('myprofile')
+
 
 def directoryList(request):
     pass
