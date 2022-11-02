@@ -7,7 +7,7 @@
     <!-- Breadcrumbs -->
     <div class="page-breadcrumb">
         <ul class="breadcrumb">
-            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
             <li class="breadcrumb-item active">Profile </li>
         </ul>
     </div>
@@ -132,7 +132,7 @@
                                 <h5 class="modal-title" id="exampleModalLabel">Student Registration</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form method="post" action="{% url 'updatestudent' %}" enctype="multipart/form-data">{% csrf_token %}
+                            <form method="post" action="{% url 'studentupdate' %}" enctype="multipart/form-data">{% csrf_token %}
                                 <div class="modal-body">
                                     <input type="hidden" value="{{ student.id }}" name="sid">
                                     <p class="fs-2">Personal Information</p>

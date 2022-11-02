@@ -128,6 +128,15 @@ class DirectoryIndex(models.Model):
         # name = self.content.file_content.rsplit("/")
         # return name[1]
 
+class SystemLog(models.Model):
+    title = models.CharField(max_length=64, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    link = models.TextField(null=True, blank=True)
+    seen = models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 # TODO
 # DIRECTORY CONTENT CLASS NEED TO REWORK
