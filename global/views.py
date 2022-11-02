@@ -150,30 +150,36 @@ def signUp_v2(request):
 
             cdx.save()
 
+        unique_id = "STD" + str(student.id)
+        info = PersonalInfo(
+            student=student,
+            unique_id=unique_id,
+        )
+
+        info.save()
+
         return redirect('success')
 
 def studentUpdate(request):
     post_data = request.POST
     student = Student.objects.get(id=post_data['sid'])
-    unique_id = "STD" + str(student.id)
-    info = PersonalInfo(
-        student=student,
-        unique_id=unique_id,
-        passport=post_data['passport'],
-        father=post_data['father'],
-        mother=post_data['mother'],
-        father_mobile=post_data['parent_phone'],
-        mother_mobile=post_data['parent_phone'],
-        parent_email=post_data['parent_email'],
-        street_1=post_data['street_1'],
-        street_2=post_data['street_2'],
-        city=post_data['city'],
-        zip_code=post_data['zip_code'],
-        country=post_data['country'],
-        dob=post_data['dob'],
-        blood_group=post_data['blood_group'],
-        photo=file_data['photo'],
-    )
+    info = PersonalInfo.objects.get(student=student)
+    file_data = request.FILES
+
+    info.passport = post_data['passport']
+    info.father = post_data['father']
+    info.mother = post_data['mother']
+    info.father_mobile = post_data['parent_phone']
+    info.mother_mobile = post_data['parent_phone']
+    info.parent_email = post_data['parent_email']
+    info.street_1 = post_data['street_1']
+    info.street_2 = post_data['street_2']
+    info.city = post_data['city']
+    info.zip_code = post_data['zip_code']
+    info.country = post_data['country']
+    info.dob = post_data['dob']
+    info.blood_group = post_data['blood_group']
+    info.photo=file_data['photo']
 
     info.save()
 
@@ -442,11 +448,14 @@ def myProfile(request):
 
     try:
         student = request.user.student
+        print(student)
         teachers = Teacher.objects.all()
+        print(teachers)
         universities = University.objects.all()
+        print(universities)
 
         indexs = StudentUniversityIndex.objects.filter(student__id = student.id)
-                
+        print(indexs)
         directories = Directory.objects.all().filter(status=True)
         files = []
 
@@ -467,8 +476,11 @@ def myProfile(request):
                 }
                 files.append(content)
 
-        info = PersonalInfo.objects.get(student__id=student.id)
-        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files})
+        print(files)
+        info = PersonalInfo.objects.get(student=student)
+        print(info)
+
+        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'info': info})
     except:
         teacher = request.user.teacher
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
