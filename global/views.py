@@ -54,8 +54,28 @@ def home(request):
         elif Student.objects.filter(user_id=user.id).exists():
             directories = Directory.objects.all().filter(status=True)
             profile = request.user.student
-            
-            return render(request, 'index_student.html', {'directories': directories})
+            institutes = []
+            countries = Country.objects.all()
+
+            for country in countries:
+                universities = StudentUniversityIndex.objects.filter(university__country__id=country.id).filter(student__id=request.user.student.id)
+                if universities.count() != 0:
+                    content = {
+                        'country': country.name,
+                        'short': country.short,
+                        'id': country.id,
+                        'data': universities
+                    }
+                    institutes.append(content)
+                else:
+                    content = {
+                        'country': country.name,
+                        'short': country.short,
+                        'id': country.id,
+                        'data': None
+                    }
+                    institutes.append(content)
+            return render(request, 'index_student.html', {'directories': directories, 'student': profile, 'institutes': institutes})
         else:
             return redirect('failed')
 
@@ -158,30 +178,36 @@ def signUp_v2(request):
 
             cdx.save()
 
+        unique_id = "STD" + str(student.id)
+        info = PersonalInfo(
+            student=student,
+            unique_id=unique_id,
+        )
+
+        info.save()
+
         return redirect('success')
 
 def studentUpdate(request):
     post_data = request.POST
     student = Student.objects.get(id=post_data['sid'])
-    unique_id = "STD" + str(student.id)
-    info = PersonalInfo(
-        student=student,
-        unique_id=unique_id,
-        passport=post_data['passport'],
-        father=post_data['father'],
-        mother=post_data['mother'],
-        father_mobile=post_data['parent_phone'],
-        mother_mobile=post_data['parent_phone'],
-        parent_email=post_data['parent_email'],
-        street_1=post_data['street_1'],
-        street_2=post_data['street_2'],
-        city=post_data['city'],
-        zip_code=post_data['zip_code'],
-        country=post_data['country'],
-        dob=post_data['dob'],
-        blood_group=post_data['blood_group'],
-        photo=file_data['photo'],
-    )
+    info = PersonalInfo.objects.get(student=student)
+    file_data = request.FILES
+
+    info.passport = post_data['passport']
+    info.father = post_data['father']
+    info.mother = post_data['mother']
+    info.father_mobile = post_data['parent_phone']
+    info.mother_mobile = post_data['parent_phone']
+    info.parent_email = post_data['parent_email']
+    info.street_1 = post_data['street_1']
+    info.street_2 = post_data['street_2']
+    info.city = post_data['city']
+    info.zip_code = post_data['zip_code']
+    info.country = post_data['country']
+    info.dob = post_data['dob']
+    info.blood_group = post_data['blood_group']
+    info.photo=file_data['photo']
 
     info.save()
 
@@ -266,7 +292,30 @@ def studentDetail(request, sid):
             files.append(content)
     
     print(files)
-    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files})
+
+    institutes = []
+    countries = Country.objects.all()
+
+    for country in countries:
+        universities = StudentUniversityIndex.objects.filter(university__country__id=country.id).filter(student__id=sid)
+        if universities.count() != 0:
+            content = {
+                'country': country.name,
+                'short': country.short,
+                'id': country.id,
+                'data': universities
+            }
+            institutes.append(content)
+        else:
+            content = {
+                'country': country.name,
+                'short': country.short,
+                'id': country.id,
+                'data': None
+            }
+            institutes.append(content)
+    
+    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files, 'institutes': institutes})
 
 def addStudent(request):
     post_data = request.POST
@@ -419,6 +468,20 @@ def assignTeacher(request):
 
     student.save()
 
+    sid = post_data['sid']
+
+    title = "Teacher Assigned"
+    description = "Description"
+    link = f'<a href="/studentdetail/{sid}">Link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
     return redirect('studentdetail', post_data['sid'])
 
 def suggestUni(request):
@@ -473,7 +536,6 @@ def myProfile(request):
                 }
                 files.append(content)
 
-
         institutes = []
         countries = Country.objects.all()
 
@@ -495,13 +557,11 @@ def myProfile(request):
                     'data': None
                 }
                 institutes.append(content)
-            
-                
-        # info = PersonalInfo.objects.get(student__id=student.id)
-        info = None
 
-        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'institutes': institutes})
-            
+        info = PersonalInfo.objects.get(student=student)
+
+
+        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'info': info, 'institutes': institutes})
     except:
         teacher = request.user.teacher
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
@@ -530,6 +590,52 @@ def postStudentUni(request):
     
     return redirect('myprofile')
 
+
+def studentUnis(request):
+    get_data = request.GET    
+    cid = get_data.get('cid')
+    unis = University.objects.filter(country__id=cid)
+    return render(request, 'ajax/uni_list.html', {'unis': unis})
+
+def postStudentUni(request):
+    post_data = request.POST
+    print(request.POST)
+    student = Student.objects.get(id=post_data['sid'])
+    unis = post_data.getlist('unis')
+
+    for uni in unis:
+        university = University.objects.get(id=uni)
+        studentUni = StudentUniversityIndex(
+            student = student,
+            university = university
+        )
+
+        studentUni.save()
+
+    return redirect('myprofile')
+
+def studentUnis(request):
+    get_data = request.GET    
+    cid = get_data.get('cid')
+    unis = University.objects.filter(country__id=cid)
+    return render(request, 'ajax/uni_list.html', {'unis': unis})
+
+def postStudentUni(request):
+    post_data = request.POST
+    print(request.POST)
+    student = Student.objects.get(id=post_data['sid'])
+    unis = post_data.getlist('unis')
+
+    for uni in unis:
+        university = University.objects.get(id=uni)
+        studentUni = StudentUniversityIndex(
+            student = student,
+            university = university
+        )
+
+        studentUni.save()
+
+    return redirect('myprofile')
 
 def directoryList(request):
     pass
@@ -561,3 +667,9 @@ def uploadContent(request):
         didx.save()
 
     return redirect('directoryindex', post_data['did'])
+
+
+def systemLog(request):
+    logs = SystemLog.objects.all()
+
+    return render(request, 'systemlog.html', {'logs': logs})
