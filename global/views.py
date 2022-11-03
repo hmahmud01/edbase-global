@@ -36,12 +36,14 @@ def verifyLogin(request):
             password = post_data['pass']
         )
         if user is None:
-            return redirect('login')
+            alert = "Username or Password is not Correct"
+            return render(request, 'login.html', {'alert': alert})
         else:
             auth_login(request, user)
             return redirect('home')
     else:
-        return redirect('login')
+        alert = "Either username or password is empty"
+        return render(request, 'login.html', {'alert': alert})
         
 def home(request):
     data = ""
@@ -163,6 +165,12 @@ def signUp_v2(request):
         )
 
         student.save()
+
+        info = PersonalInfo(
+            student = student
+        )
+
+        info.save()
         for ctry in country_list:
             country = Country.objects.get(id=ctry)
             cdx = StudentCountryIndex(
@@ -181,6 +189,22 @@ def signUp_v2(request):
         info.save()
 
         return redirect('success')
+
+def resetPassword(request):
+    return render(request, "passwordreset.html")
+
+def changePassword(request):
+    user = request.user
+    post_data = request.POST
+
+    if post_data['pass'] != post_data['pass_conf']:
+        alert = "Please enter same password for both input"
+        return render(request, 'passwordreset.html', {"alert": alert})
+    else:
+        user.set_password(post_data['pass'])
+        user.save()
+        logout(request)
+        return redirect('login')
 
 def studentUpdate(request):
     post_data = request.POST
@@ -511,8 +535,8 @@ def myProfile(request):
         universities = University.objects.all()
         indexs = StudentUniversityIndex.objects.filter(student__id = student.id)
         directories = Directory.objects.all().filter(status=True)
-        files = []
 
+        files = []
         for directory in directories:
             contents = DirectoryIndex.objects.filter(directory__id=directory.id).filter(student__id=student.id)                
             if contents.count() != 0:
@@ -560,6 +584,54 @@ def myProfile(request):
         teacher = request.user.teacher
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
         return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data})
+        
+def studentUnis(request):
+    get_data = request.GET    
+    cid = get_data.get('cid')
+    unis = University.objects.filter(country__id=cid)
+    country = Country.objects.get(id=cid)
+    return render(request, 'ajax/uni_list.html', {'unis': unis, 'country': country})
+
+def postStudentUni(request):
+    post_data = request.POST
+    print(request.POST)
+    student = Student.objects.get(id=post_data['sid'])
+    unis = post_data.getlist('unis')
+
+    for uni in unis:
+        university = University.objects.get(id=uni)
+        studentUni = StudentUniversityIndex(
+            student = student,
+            university = university
+        )
+
+        studentUni.save()
+    
+    return redirect('myprofile')
+
+
+def studentUnis(request):
+    get_data = request.GET    
+    cid = get_data.get('cid')
+    unis = University.objects.filter(country__id=cid)
+    return render(request, 'ajax/uni_list.html', {'unis': unis})
+
+def postStudentUni(request):
+    post_data = request.POST
+    print(request.POST)
+    student = Student.objects.get(id=post_data['sid'])
+    unis = post_data.getlist('unis')
+
+    for uni in unis:
+        university = University.objects.get(id=uni)
+        studentUni = StudentUniversityIndex(
+            student = student,
+            university = university
+        )
+
+        studentUni.save()
+
+    return redirect('myprofile')
 
 def studentUnis(request):
     get_data = request.GET    

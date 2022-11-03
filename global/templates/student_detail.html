@@ -57,12 +57,12 @@
                         {% if student.assigned_teacher is not None %}
                         <div class="row justify-content-between">
                             <div class="col-8">
-                                <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>                             
+                                <p class="fs-6">Assigned Counselor : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>                             
                             </div>
                             {% if not request.user.student %}
                             <div class="col-4">
                                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assign_teacher">
-                                    Re Assign Teacher
+                                    Re Assign Counselor
                                 </button>
                             </div>
                             {% endif %}
@@ -71,8 +71,10 @@
                         {% if request.user.is_superuser or request.user.teacher %}
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                             data-bs-target="#assign_teacher">
-                            Assign A Teacher
+                            Assign A Counselor
                         </button>
+                        {% else %}
+                        <p>No Counselor Assigned Yet</p>
                         {% endif %}
                         {% endif %}
                     </div>
@@ -373,8 +375,10 @@
                                     <p class="lead">{{ file.title }} Contents</p>
                                     {% if file.data is not None %}
                                     <div class="row">
+                                        <ul>
                                         {% for content in file.data %}
-                                        <div class="col-md-4 col-lg-3 h-100">
+                                        <li><a class="" href="/media/{{ content.content.file_content }}"><i class="fa fa-file"></i> {{ content.content.file_content }}</a></li>
+                                        <!-- <div class="col-md-4 col-lg-3 h-100">
                                             <div class="card mb-4">
                                                 <div class="card-img-top img-fluid text-center p-5"><i class="fa fa-file fa-3x"></i></div>
                                                 <div class="card-body">
@@ -383,8 +387,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         {% endfor %}
+                                        </ul>
                                     </div>
                                     
                                     {% else %}
@@ -417,11 +422,13 @@
                             {% for institute in institutes %}
                             <div class="tab-pane fade show" id="institute{{ institute.id }}" role="tabpanel" aria-labelledby="{{ institute.id }}-tab">
                                 <div class="p-5">
-                                    <p class="lead">{{ institute.title }} Contents</p>
+                                    <p class="lead">{{ institute.country }} Contents</p>
                                     {% if institute.data is not None %}
-                                    <div class="row">
+                                    <div class="">
+                                        <ul>
                                         {% for content in institute.data %}
-                                        <div class="col-md-4 col-lg-3 h-100">
+                                        <li><a class="" href="{% url 'unidetail' content.university.id %}"><i class="fas fa-university"></i> {{ content.university }}</a></li>
+                                        <!-- <div class="col-md-4 col-lg-3 h-100">
                                             <div class="card mb-4">
                                                 <div class="card-img-top img-fluid text-center p-5"><i class="fa fa-file fa-3x"></i></div>
                                                 <div class="card-body">
@@ -430,8 +437,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         {% endfor %}
+                                        </ul>
                                     </div>
 
                                     {% else %}
@@ -457,6 +465,7 @@
                 </div>
             </div>
         </div>
+        
     </section>
 </div>
 {% endblock %}
@@ -471,6 +480,26 @@
 
     firstTab.show();
     secondTab.show();    
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function func(d){
+        console.log(d.getAttribute("data-id"));
+        var url = "{% url 'studentunis' %}"; 
+        console.log(url);
+        const cid = d.getAttribute("data-id");
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'cid' : cid,
+            },
+            success: function(data){
+                $('#loaduni').html(data);
+            }
+        })
+    }
 </script>
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

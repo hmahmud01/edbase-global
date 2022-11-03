@@ -5,11 +5,9 @@
 
 <div class="container-fluid px-lg-4 px-xl-5">
     <section class="mb-3 mb-lg-5">
-        <h1>STUDENT</h1>
-
         <div class="card mb-4">
             <div class="card-header">
-                <h4 class="card-heading">Profile</h4>
+                <h4 class="card-heading">Short Detail Information of {{ student.name }}</h4>
             </div>
             <div class="card-body">
                 <div class="mb-3">
@@ -35,15 +33,30 @@
                 {% if student.assigned_teacher is not None %}
                 <div class="row justify-content-between">
                     <div class="col-8">
-                        <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>                             
+                        <p class="fs-6">Assigned Counselor : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>                             
                     </div>
-                </div>    
+                </div>   
+                {% else %}
+                <p>No Counselor Assigned Yet</p> 
                 {% endif %}
             </div>
 
         </div>
 
-        <div class="row">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="card-heading">Links To The File Directory</h4>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for dir in directories %}
+                    <li><a class="" href="{% url 'directoryindex' dir.id %}"><i class="far fa-folder"></i> {{ dir.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- <div class="row">
             {% for dir in directories %}
             <div class="col-md-6 col-lg-3 h-100">
                 <div class="card mb-4">
@@ -56,7 +69,8 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
+            
+        </div> -->
 
 
         <div class="row">
@@ -78,11 +92,13 @@
                             {% for institute in institutes %}
                             <div class="tab-pane fade show" id="institute{{ institute.id }}" role="tabpanel" aria-labelledby="{{ institute.id }}-tab">
                                 <div class="p-5">
-                                    <p class="lead">{{ institute.title }} Contents</p>
+                                    <p class="lead">{{ institute.country }} Contents</p>
                                     {% if institute.data is not None %}
-                                    <div class="row">
+                                    <div class="">
+                                        <ul>
                                         {% for content in institute.data %}
-                                        <div class="col-md-4 col-lg-3 h-100">
+                                        <li><a class="" href="{% url 'unidetail' content.university.id %}"><i class="fas fa-university"></i> {{ content.university }}</a></li>
+                                        <!-- <div class="col-md-4 col-lg-3 h-100">
                                             <div class="card mb-4">
                                                 <div class="card-img-top img-fluid text-center p-5"><i class="fa fa-file fa-3x"></i></div>
                                                 <div class="card-body">
@@ -91,8 +107,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         {% endfor %}
+                                        </ul>
                                     </div>
 
                                     {% else %}
