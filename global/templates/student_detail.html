@@ -53,12 +53,20 @@
                             <p class="fs-6">Qualification : <span class="fw-bold">{{ student.qualification }}</span></p>
                         </div>
                     </div>
-                    <div class="card-footer text-end">
+                    <div class="card-footer ">
                         {% if student.assigned_teacher is not None %}
-                        <div class="mb-3">
-                            <p class="fs-6">Assigned Teacher : <span class="fw-bold">
-                                {{ student.assigned_teacher }}</span></p>
-                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-8">
+                                <p class="fs-6">Assigned Teacher : <span class="fw-bold">{{ student.assigned_teacher }}</span></p>                             
+                            </div>
+                            {% if not request.user.student %}
+                            <div class="col-4">
+                                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#assign_teacher">
+                                    Re Assign Teacher
+                                </button>
+                            </div>
+                            {% endif %}
+                        </div>                        
                         {% else %}
                         {% if request.user.is_superuser or request.user.teacher %}
                         <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
@@ -115,11 +123,15 @@
                                                 class="fab fa-facebook"></i></a></li>
                                     <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
                                         data-placement="top" title="{{ student.mobile }}"><i class="fa fa-phone"></i></a></li>
-                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
-                                        data-placement="top" title="@user"><i class="fab fa-skype"></i></a></li>
+                                    <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip" data-placement="top" title="@user"><i class="fab fa-skype"></i></a></li>
+                                    {% if request.user.student %}
                                     <li class="list-inline-item"><button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                        <i class="fab fa-skype"></i> Update Profile
-                                    </button></li>
+                                        <i class="fas fa-recycle"></i> Update Profile</button>
+                                    </li>
+                                    <li class="list-inline-item"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        <i class="fas fa-share-alt"></i> Update Social</button>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </div>
                         </div>
@@ -284,8 +296,11 @@
                                     <ul>
                                         {% for idx in indexs %}
                                         <li><a href="{% url 'unidetail' idx.university.id %}">{{ idx.university }}</a> -
-                                            {{ idx.university.country }} - <a href="{% url 'deletesuggestion' idx.id%}"
-                                                class="btn btn-sm">Delete</a></li>
+                                            {{ idx.university.country }}  
+                                            {% if not request.user.student %}
+                                            - <a href="{% url 'deletesuggestion' idx.id%}" class="btn btn-sm">Delete</a>
+                                            {% endif %}
+                                            </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -340,7 +355,7 @@
             <div class="col-md-12">
                 <div class="card mb-5">
                     <div class="card-header">
-                        <h4 class="card-heading">File COntents</h4>
+                        <h4 class="card-heading">File Contents</h4>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -383,6 +398,65 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-5">
+                    <div class="card-header">
+                        <h4 class="card-heading">Universities Suggested or Interested</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="myIns" role="tablist">
+                            {% for institute in institutes %}
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="{{ institute.id }}-tab" data-bs-toggle="tab" data-bs-target="#institute{{ institute.id }}"
+                                    type="button" role="tab" aria-controls="{{ institute.id }}" aria-selected="true"><i class="fas fa-globe-asia"></i> {{ institute.country }}</button>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            {% for institute in institutes %}
+                            <div class="tab-pane fade show" id="institute{{ institute.id }}" role="tabpanel" aria-labelledby="{{ institute.id }}-tab">
+                                <div class="p-5">
+                                    <p class="lead">{{ institute.title }} Contents</p>
+                                    {% if institute.data is not None %}
+                                    <div class="row">
+                                        {% for content in institute.data %}
+                                        <div class="col-md-4 col-lg-3 h-100">
+                                            <div class="card mb-4">
+                                                <div class="card-img-top img-fluid text-center p-5"><i class="fa fa-file fa-3x"></i></div>
+                                                <div class="card-body">
+                                                    <div class="d-grid col-12 mx-auto">
+                                                        <a class="btn btn-outline-secondary" type="button" href="">{{ content.university }}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+
+                                    {% else %}
+                                    <p class="lead fw-bold">No University Added Yet</p>
+                                    {% if request.user.student %}
+                                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#universityinterest" data-id="{{ institute.id }}" onclick="func(this)">
+                                        <i class="fas fa-globe-europe"></i> Add Your University of Interest
+                                    </button>
+                                    {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="universityinterest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="" id="loaduni">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </div>
 {% endblock %}
@@ -392,6 +466,30 @@
     var firstTabEl = document.querySelector('#myTab li:first-child button');
     var firstTab = new bootstrap.Tab(firstTabEl);
 
-    firstTab.show()
+    var secondTabEl = document.querySelector('#myIns li:first-child button');
+    var secondTab = new bootstrap.Tab(secondTabEl);
+
+    firstTab.show();
+    secondTab.show();    
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function func(d){
+        console.log(d.getAttribute("data-id"));
+        var url = "{% url 'studentunis' %}"; 
+        console.log(url);
+        const cid = d.getAttribute("data-id");
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'cid' : cid,
+            },
+            success: function(data){
+                $('#loaduni').html(data);
+            }
+        })
+    }
 </script>
 {% endblock %}
