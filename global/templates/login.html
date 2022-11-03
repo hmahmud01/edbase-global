@@ -5,15 +5,30 @@
 <div class="container-fluid px-0">
     <div class="row gx-0 min-vh-100">
         <div class="col-md-9 col-lg-6 col-xl-4 px-5 d-flex align-items-center shadow">
+            <!-- <div class="row">
+                {% if alert %}
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                    {{ alert }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                {% endif %}
+            </div> -->
+            
             <div class="w-100 py-5">
                 <div class="text-center">
                     <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
                     <h1 class="h2 text-uppercase mb-3">Edbase</h1>
                     <h1 class="h4 text-uppercase mb-3">Login System</h1>
+                    {% if alert %}
+                    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                        {{ alert }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endif %}
                 </div>
                 <form method="post" action="{% url 'verifylogin' %}">{% csrf_token %}
                     <div class="mb-3">
-                        <label class="form-label">Username</label>
+                        <label class="form-label">Username (Email)</label>
                         <input class="form-control" name="username" type="text" autocomplete="off">
                     </div>
                     <div class="mb-4">

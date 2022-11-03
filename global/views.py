@@ -36,12 +36,14 @@ def verifyLogin(request):
             password = post_data['pass']
         )
         if user is None:
-            return redirect('login')
+            alert = "Username or Password is not Correct"
+            return render(request, 'login.html', {'alert': alert})
         else:
             auth_login(request, user)
             return redirect('home')
     else:
-        return redirect('login')
+        alert = "Either username or password is empty"
+        return render(request, 'login.html', {'alert': alert})
         
 def home(request):
     data = ""
@@ -187,6 +189,22 @@ def signUp_v2(request):
         info.save()
 
         return redirect('success')
+
+def resetPassword(request):
+    return render(request, "passwordreset.html")
+
+def changePassword(request):
+    user = request.user
+    post_data = request.POST
+
+    if post_data['pass'] != post_data['pass_conf']:
+        alert = "Please enter same password for both input"
+        return render(request, 'passwordreset.html', {"alert": alert})
+    else:
+        user.set_password(post_data['pass'])
+        user.save()
+        logout(request)
+        return redirect('login')
 
 def studentUpdate(request):
     post_data = request.POST
@@ -571,7 +589,8 @@ def studentUnis(request):
     get_data = request.GET    
     cid = get_data.get('cid')
     unis = University.objects.filter(country__id=cid)
-    return render(request, 'ajax/uni_list.html', {'unis': unis})
+    country = Country.objects.get(id=cid)
+    return render(request, 'ajax/uni_list.html', {'unis': unis, 'country': country})
 
 def postStudentUni(request):
     post_data = request.POST
