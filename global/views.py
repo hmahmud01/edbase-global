@@ -166,11 +166,6 @@ def signUp_v2(request):
 
         student.save()
 
-        info = PersonalInfo(
-            student = student
-        )
-
-        info.save()
         for ctry in country_list:
             country = Country.objects.get(id=ctry)
             cdx = StudentCountryIndex(
@@ -181,6 +176,7 @@ def signUp_v2(request):
             cdx.save()
 
         unique_id = "STD" + str(student.id)
+
         info = PersonalInfo(
             student=student,
             unique_id=unique_id,
