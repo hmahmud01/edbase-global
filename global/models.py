@@ -87,6 +87,15 @@ class PersonalInfo(models.Model):
     def __str__(self):
         return self.student.name
 
+class Social(models.Model):
+    user = models.OneToOneField(User, related_name='user_social', on_delete=models.CASCADE)
+    fb = models.TextField(null=True, blank=True)
+    skype = models.TextField(null=True, blank=True)
+    linkedin = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return str(self.user.id)
+
 class StudentCountryIndex(models.Model):
     student = models.ForeignKey(Student, related_name='student_country', on_delete=models.CASCADE)
     country = models.ForeignKey(Country, related_name='ctry_student', on_delete=models.CASCADE)

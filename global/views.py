@@ -9,7 +9,7 @@ from django.conf import settings
 
 from .models import *
 
-TEACHER_TYPE = "Teacher"
+TEACHER_TYPE = "Counselor"
 STUDENT_TYPE = "Student"
 DEFAULT_PASS = "edbase2022"
 
@@ -138,6 +138,18 @@ def signupData(request):
 
         info.save()
 
+        title = "New Student Created"
+        description = "A new student has been registered to the System."
+        link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
+
         return redirect('success')
 
 # <QueryDict: {'csrfmiddlewaretoken': ['ykJzfEEyP10TYifqEf6O30UnS8aSBldZqwNvZZTVEcdTEgGdnut8tthjgUicK792'], 
@@ -184,6 +196,18 @@ def signUp_v2(request):
 
         info.save()
 
+        title = "New Student Created"
+        description = "A new student has been registered to the System."
+        link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
+
         return redirect('success')
 
 def resetPassword(request):
@@ -199,6 +223,18 @@ def changePassword(request):
     else:
         user.set_password(post_data['pass'])
         user.save()
+
+        title = "Password Change"
+        description = "A Student Has Changed his/her password."
+        link = f'<a href="/studentdetail/{request.user.student.id}">Student link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
         logout(request)
         return redirect('login')
 
@@ -225,6 +261,18 @@ def studentUpdate(request):
 
     info.save()
 
+    title = "Student Profile Update"
+    description = "A Student Has Updated his/her profile."
+    link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
     return redirect('myprofile')
 
 def successPage(request):
@@ -244,7 +292,7 @@ def addTeacher(request):
     file_data = request.FILES
     username = post_data['email']
     if User.objects.filter(username=username).exists():
-        alert="Teacher Already Exists"
+        alert="Counselor Already Exists"
         return render(request, 'list_teachers.html', {'data': teacher, 'alert': alert})
     else:
         user = User.objects.create_user(post_data['email'], post_data['email'], DEFAULT_PASS)
@@ -262,6 +310,18 @@ def addTeacher(request):
         teacher.save()
         print("teacher added")
         alert="Teacher Created Successfully"
+
+        title = "Counselor Created"
+        description = "A New Counselor Has been created to the System"
+        link = f'<a href="/teacherdetail/{teacher.id}">Counselor link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
         return render(request, 'list_teachers.html', {'data': teachers, 'alert': alert})
 
 def listStudents(request):    
@@ -375,6 +435,18 @@ def addStudent(request):
 
         info.save()
 
+        title = "New Student Created"
+        description = "A new student has been registered to the System."
+        link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
+
         return redirect('students')
 
 def listCountries(request):
@@ -389,6 +461,19 @@ def addCountry(request):
     )
 
     country.save()
+
+    title = "A New Country Added"
+    description = f"{country.name} is added to the Country list for the system to appear in application functionalities."
+    link = f'<a href="/countries">Country list</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+    
     return redirect('countries')
 
 def listUniversities(request):
@@ -414,11 +499,36 @@ def addUniversity(request):
         image = file_data['image']
     )
     university.save()
+
+    title = "New University Added"
+    description = f"{university.name} has been added to the University List."
+    link = f'<a href="/unidetail/{university.id}">University link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
     return redirect('universities')
 
 def deleteUniversity(request, uid):
     uni = University.objects.get(id=uid)
+    name = uni.name
     uni.delete()
+
+    title = "University Deleted"
+    description = f"{name} has been deleted from the System"
+    link = None
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
 
     return redirect('universities')
 
@@ -438,6 +548,18 @@ def addDirectory(request):
     )
     directory.save()
 
+    title = "New Directory Created"
+    description = f"{directory.title} has been added to the directory list for file uploads."
+    link = f'<a href="/directories">Directory list</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
     return redirect('directories')
 
 def statusUpdateDirectory(request, did, status):
@@ -448,6 +570,18 @@ def statusUpdateDirectory(request, did, status):
         directory.status = False
 
     directory.save()
+
+    title = "Directory Status"
+    description = f"{directories.title} status has been udpated"
+    link = f'<a href="/directories">Directory Link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
 
     return redirect('directories') 
 
@@ -465,9 +599,20 @@ def addQualification(request):
 
     qual.save()
 
+    title = "New Qualification Added"
+    description = f"{qual.title} has been added to the Qualifaction list."
+    link = f'<a href="/qualifications">Qualification list</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
     return redirect('qualifications')
     
-
 
 def teacherDetail(request, tid):
     teacher = Teacher.objects.get(id=tid)
@@ -508,7 +653,19 @@ def suggestUni(request):
             student = student,
             university = univ
         )
-        idx.save()    
+        idx.save() 
+
+    title = "University Suggested"
+    description = f"{student.name} has been suggested universities by {request.user.teacher.name}"
+    link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()   
 
     return redirect('studentdetail', post_data['sid'])
 
@@ -588,52 +745,29 @@ def studentUnis(request):
     country = Country.objects.get(id=cid)
     return render(request, 'ajax/uni_list.html', {'unis': unis, 'country': country})
 
-def postStudentUni(request):
-    post_data = request.POST
-    print(request.POST)
-    student = Student.objects.get(id=post_data['sid'])
-    unis = post_data.getlist('unis')
+# def postStudentUni(request):
+#     post_data = request.POST
+#     print(request.POST)
+#     student = Student.objects.get(id=post_data['sid'])
+#     unis = post_data.getlist('unis')
 
-    for uni in unis:
-        university = University.objects.get(id=uni)
-        studentUni = StudentUniversityIndex(
-            student = student,
-            university = university
-        )
+#     for uni in unis:
+#         university = University.objects.get(id=uni)
+#         studentUni = StudentUniversityIndex(
+#             student = student,
+#             university = university
+#         )
 
-        studentUni.save()
+#         studentUni.save()
     
-    return redirect('myprofile')
+#     return redirect('myprofile')
 
 
-def studentUnis(request):
-    get_data = request.GET    
-    cid = get_data.get('cid')
-    unis = University.objects.filter(country__id=cid)
-    return render(request, 'ajax/uni_list.html', {'unis': unis})
-
-def postStudentUni(request):
-    post_data = request.POST
-    print(request.POST)
-    student = Student.objects.get(id=post_data['sid'])
-    unis = post_data.getlist('unis')
-
-    for uni in unis:
-        university = University.objects.get(id=uni)
-        studentUni = StudentUniversityIndex(
-            student = student,
-            university = university
-        )
-
-        studentUni.save()
-
-    return redirect('myprofile')
-
-def studentUnis(request):
-    get_data = request.GET    
-    cid = get_data.get('cid')
-    unis = University.objects.filter(country__id=cid)
-    return render(request, 'ajax/uni_list.html', {'unis': unis})
+# def studentUnis(request):
+#     get_data = request.GET    
+#     cid = get_data.get('cid')
+#     unis = University.objects.filter(country__id=cid)
+#     return render(request, 'ajax/uni_list.html', {'unis': unis})
 
 def postStudentUni(request):
     post_data = request.POST
@@ -650,7 +784,42 @@ def postStudentUni(request):
 
         studentUni.save()
 
+    title = "Student University Selected"
+    description = f"{student.name} has Selected University"
+    link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
     return redirect('myprofile')
+
+# def studentUnis(request):
+#     get_data = request.GET    
+#     cid = get_data.get('cid')
+#     unis = University.objects.filter(country__id=cid)
+#     return render(request, 'ajax/uni_list.html', {'unis': unis})
+
+# def postStudentUni(request):
+#     post_data = request.POST
+#     print(request.POST)
+#     student = Student.objects.get(id=post_data['sid'])
+#     unis = post_data.getlist('unis')
+
+#     for uni in unis:
+#         university = University.objects.get(id=uni)
+#         studentUni = StudentUniversityIndex(
+#             student = student,
+#             university = university
+#         )
+
+#         studentUni.save()
+
+#     return redirect('myprofile')
 
 def directoryList(request):
     pass
@@ -681,7 +850,64 @@ def uploadContent(request):
 
         didx.save()
 
+    title = "Student Uploaded Content"
+    description = f"{student.name} has Uploaded Content in {directory.title}"
+    link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
     return redirect('directoryindex', post_data['did'])
+
+def updateSocial(request):
+    post_data = request.POST
+
+    social = Social(
+        user = request.user,
+        fb = post_data['fb'],
+        skype = post_data['skype'],
+        linkedin = post_data['linkedin']
+    )
+
+    social.save()
+
+    try:
+        student = request.user.student
+
+        title = "Social Updated"
+        description = f"{student.name} has updated his Social Information"
+        link = f'<a href="/studentdetail/{student.id}">Student link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
+
+        return redirect('studentdetail', student.id)
+    except:
+        teacher = request.user.teacher
+
+        title = "Social Update"
+        description = f"{teacher.name} has updated his Social Information"
+        link = f'<a href="/teacherdetail/{teacher.id}">Counselor link</a>'
+
+        log = SystemLog(
+            title = title,
+            description = description,
+            link = link
+        )
+
+        log.save()
+
+        return redirect('teacherdetail', teacher.id)
 
 
 def systemLog(request):
