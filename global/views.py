@@ -388,8 +388,15 @@ def studentDetail(request, sid):
                 'data': None
             }
             institutes.append(content)
+
+    social_data = Social.objects.filter(user_id=student.user.id)
+    if len(social_data) > 0:
+        social = social_data[0]
+        print(social)
+    else:
+        social = {'fb': None, 'skype': None, 'linkedin': None}
     
-    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files, 'institutes': institutes})
+    return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'info': info, 'universities': universities, 'indexs': indexs, 'files': files, 'institutes': institutes, 'social': social})
 
 def addStudent(request):
     post_data = request.POST
@@ -617,7 +624,14 @@ def addQualification(request):
 def teacherDetail(request, tid):
     teacher = Teacher.objects.get(id=tid)
     data = Student.objects.filter(assigned_teacher__id=tid)
-    return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data})
+
+    social_data = Social.objects.filter(user_id=teacher.user.id)
+    if len(social_data) > 0:
+        social = social_data[0]
+        print(social)
+    else:
+        social = {'fb': None, 'skype': None, 'linkedin': None}
+    return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data, 'social': social})
     
 def assignTeacher(request):
     post_data = request.POST
@@ -682,6 +696,14 @@ def deleteSuggestion(request, iid):
 def myProfile(request):
     user_type = None
 
+    social_data = Social.objects.filter(user_id=request.user.id)
+
+    if len(social_data) > 0:
+        social = social_data[0]
+        print(social)
+    else:
+        social = {'fb': None, 'skype': None, 'linkedin': None}
+
     try:
         student = request.user.student
         teachers = Teacher.objects.all()
@@ -731,13 +753,13 @@ def myProfile(request):
 
         info = PersonalInfo.objects.get(student=student)
 
-        social = Social.objects.filter(user_id=request.user.id)[0]
-        print(social)
+        # social = Social.objects.filter(user_id=request.user.id)[0]
+        # print(social)
         return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'info': info, 'institutes': institutes, 'social': social})
     except:
         teacher = request.user.teacher
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
-        social = Social.objects.filter(user=request.user)[0]
+        # social = Social.objects.filter(user=request.user)[0]
         return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data, 'social':social})
         
 def studentUnis(request):
@@ -869,16 +891,26 @@ def uploadContent(request):
 def updateSocial(request):
     post_data = request.POST
 
-    social = Social(
-        user = request.user,
-        fb = post_data['fb'],
-        skype = post_data['skype'],
-        linkedin = post_data['linkedin']
-    )
+    social_data = Social.objects.filter(user_id=request.user.id)
 
-    social.save()
+    if len(social_data) > 0:
+        social = social_data[0]
 
-    print(social)
+        social.fb = post_data['fb']
+        social.skype = post_data['skype']
+        social.linkedin = post_data['linkedin']
+
+        social.save()
+    
+    else:
+        social = Social(
+            user = request.user,
+            fb = post_data['fb'],
+            skype = post_data['skype'],
+            linkedin = post_data['linkedin']
+        )
+
+        social.save()
 
     try:
         student = request.user.student
