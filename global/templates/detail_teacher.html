@@ -44,8 +44,54 @@
                                     </li>
                                     <li class="list-inline-item"><a href="javascript:void(0)" data-bs-toggle="tooltip"
                                             data-placement="top" title="@user"><i class="fab fa-skype"></i></a></li>
+                                    {% if request.user.teacher %}
+                                    <li class="list-inline-item"><button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#updatesocial">
+                                        <i class="fas fa-share-alt"></i> Update Social</button>
+                                    </li>
+                                    {% endif %}
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="updatesocial" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Social Information</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form method="post" action="{% url 'updatesocial' %}" enctype="multipart/form-data">{% csrf_token %}
+                                <div class="modal-body">
+                                    <p class="fs-2">Please Provide your social information links.</p>
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label" for="fb">Facebook <i class="fab fa-facebook"></i></label>
+                                            <input class="form-control" id="fb" name="fb" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label" for="skype">Skype <i class="fab fa-skype"></i> </label>
+                                            <input class="form-control" id="skype" name="skype" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <div class="col-12">
+                                            <label class="form-label" for="linkedin">LinkedIn <i class="fab fa-linkedin"></i> </label>
+                                            <input class="form-control" id="linkedin" name="linkedin" type="text">
+                                        </div>
+                                    </div>
+        
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

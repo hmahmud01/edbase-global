@@ -731,12 +731,14 @@ def myProfile(request):
 
         info = PersonalInfo.objects.get(student=student)
 
-
-        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'info': info, 'institutes': institutes})
+        social = Social.objects.filter(user_id=request.user.id)[0]
+        print(social)
+        return render(request, 'student_detail.html', {'student': student, 'teachers': teachers, 'universities': universities, 'indexs': indexs, 'files': files, 'info': info, 'institutes': institutes, 'social': social})
     except:
         teacher = request.user.teacher
         data = Student.objects.filter(assigned_teacher__id=request.user.teacher.id)
-        return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data})
+        social = Social.objects.filter(user=request.user)[0]
+        return render(request, 'detail_teacher.html', {'teacher': teacher, 'data': data, 'social':social})
         
 def studentUnis(request):
     get_data = request.GET    
@@ -875,6 +877,8 @@ def updateSocial(request):
     )
 
     social.save()
+
+    print(social)
 
     try:
         student = request.user.student

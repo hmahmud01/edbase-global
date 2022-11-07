@@ -44,7 +44,7 @@ urlpatterns = [
     path('poststudentuni/', views.postStudentUni, name='poststudentuni'),
     path('directoryindex/<int:did>', views.directoryIndex, name='directoryindex'),
     path('uploadcontent/', views.uploadContent, name='uploadcontent'),
-    path('updatesocial/', views.updatesocial, name='updatesocial'),
+    path('updatesocial/', views.updateSocial, name='updatesocial'),
     path('systemlog/', views.systemLog, name='systemlog'),
 ]
 
