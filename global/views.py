@@ -7,6 +7,8 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
 
+from datetime import datetime
+
 from .models import *
 
 TEACHER_TYPE = "Counselor"
@@ -48,7 +50,29 @@ def verifyLogin(request):
 def home(request):
     data = ""
     user  = request.user
-    if user.is_superuser:    
+    if user.is_superuser:
+        students = Student.objects.all().count()
+        counselors = Teacher.objects.all().count()
+        countries = Country.objects.all().count()
+        applications = PersonalInfo.objects.all().count()
+        universities = University.objects.all().count()
+
+        today = datetime.now()
+        
+        student_this_month = Student.objects.filter(created_at__month=today.month).count()
+        application_this_month = PersonalInfo.objects.filter(student__created_at__month=today.month).count()
+
+
+        data = {
+            'students': students,
+            'counselors': counselors,
+            'countries': countries,
+            'applications': applications,
+            'universities': universities,
+            'student_this_month': student_this_month,
+            'application_this_month': application_this_month
+        }
+
         return render(request, 'index.html', {'data': data})
     else:
         if Teacher.objects.filter(user_id=user.id).exists():
