@@ -1,0 +1,43 @@
+{% extends 'utils/login_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row gx-0 min-vh-100">
+        <div class="col-md-9 col-lg-6 col-xl-8 px-5 d-flex align-items-center shadow">
+            <div class="w-100 py-5">
+                <div class="text-center">
+                    <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
+                    <h1 class="h2 text-uppercase mb-3">Edbase</h1>
+                    <h1 class="h4 text-uppercase mb-3">Registration System</h1>
+                </div>
+                <!-- <p class="text-muted text-sm mb-4">Please Register with your proper Information</p> -->
+                <form method="post" action="" enctype="multipart/form-data">{% csrf_token %}
+                    <p class="fs-2">Your Profile Fund</p>
+                    <p>Add Fund To Your profile</p>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <label class="form-label" for="name">Please Enter the Fund Code </label>
+                            <input class="form-control" id="name" name="name" type="text" required>
+                        </div>
+                    </div>
+                    <div class="d-grid mb-5">
+                        <button type="submit" class="btn btn-primary text-uppercase">Add Fund</button>
+                    </div>
+                    <!-- Link-->
+                </form>
+                <p class="text-center"><small class="text-muted text-center">Check Profile <a
+                            href="{% url 'login' %}">Log in</a>.</small></p>
+                <p class="mb-2 mb-md-0 text-muted text-center text-sm">Edbase &copy; 2022</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">
+            <!-- Image-->
+            <div class="bg-cover h-100"
+                style="background-image: url(/static/cred/cred-2.jpg); background-repeat: no-repeat; background-attachment: fixed;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

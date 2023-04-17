@@ -16,8 +16,20 @@ ul {
     padding: 0;
 }
 
-header {
+.header-main {
     min-height: 100vh;
+    background: url(/static/asset/img/phy-1.jpg) no-repeat center;
+    background-size: cover;
+}
+
+.header-videos {
+    height: 30vh !important;
+    background: url(/static/asset/img/phy-2.jpg) no-repeat center;
+    background-size: cover;
+}
+
+.header-physics {
+    height: 30vh !important;
     background: url(/static/asset/img/back-5.jpg) no-repeat center;
     background-size: cover;
 }

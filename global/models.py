@@ -2,6 +2,32 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Subscription(models.Model):
+    title = models.CharField(max_length=128)
+    cost = models.FloatField()
+    models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class UserSubscription(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    subscriptionStatus = models.BooleanField(default=False)
+    subscriptionType = models.OneToOneField(Subscription, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.subscriptionStatus
+
+class SubscriptionCode(models.Model):
+    code = models.CharField(max_length=256)
+    ref = models.OneToOneField(Subscription, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    timePeriod = models.IntegerField(default=0)
+    user = models.OneToOneField(UserSubscription, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.code
+
 class Qualification(models.Model):    
     title = models.CharField(max_length=128)
     level = models.CharField(max_length=128)
@@ -150,3 +176,53 @@ class SystemLog(models.Model):
 # TODO
 # DIRECTORY CONTENT CLASS NEED TO REWORK
 # UNIVERSITY STATUS FIELD NEEDED
+
+
+
+# TODO
+# REWORKING ON SUBSCRIPTION PART
+
+class Course(models.Model):
+    title = models.CharField(max_length=256)
+    detail = models.TextField()
+    subscriptionReq = models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class Lecture(models.Model):
+    title = models.CharField(max_length=256)
+    detail = models.TextField()
+    videoUrl = models.CharField(max_length=256)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    thumb = models.FileField('lecture_image', upload_to='lectures', blank=True, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class LectureMedia(models.Model):
+    title = models.CharField(max_length=256)
+    detail = models.TextField()
+    videoUrl = models.CharField(max_length=256)
+    thumb = models.FileField('free_lecture_image', upload_to='free_lectures', blank=True, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class ArticleCategory(models.Model):
+    title = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.title
+        
+class Article(models.Model):
+    title = models.CharField(max_length=128)
+    detail = models.TextField()
+    category = models.ForeignKey(ArticleCategory, on_delete=models.CASCADE)
+    thumb = models.FileField('article_image', upload_to='articles', blank=True, null=True)
+
+    def __str__(self):
+        return self.title

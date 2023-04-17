@@ -7,6 +7,11 @@ from . import views
 urlpatterns = [
     path('', views.landing, name='site'),
     path('home/', views.home, name='home'),
+    path('videos/', views.landing_videos, name='videos'),
+    path('physics/', views.landing_physics, name='physics'),
+    path('profile/', views.student_profile, name='profile'),
+    path('addfund/', views.add_fund, name='addfund'),
+    path('subscribe/', views.subscribe, name='subscribe'),
     path('userlogout/', views.userLogout, name='userlogout'),
     path('login/', views.login, name='login'),
     path('verifylogin/', views.verifyLogin, name='verifylogin'),
@@ -46,6 +51,7 @@ urlpatterns = [
     path('uploadcontent/', views.uploadContent, name='uploadcontent'),
     path('updatesocial/', views.updateSocial, name='updatesocial'),
     path('systemlog/', views.systemLog, name='systemlog'),
+    path('articles/', views.articles, name='articles')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

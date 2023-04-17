@@ -16,8 +16,27 @@ DEFAULT_PASS = "edbase2022"
 ACTIVATE = "activate"
 DEACTIVATE = "deactivate"
 
+
 def landing(request):
-    return render(request, 'landing/index.html')
+    header_class = "header-main"
+    return render(request, 'landing/index.html', {'header_main': header_class})
+
+def landing_videos(request):
+    header_class = "header-videos"
+    return render(request, 'landing/videos.html', {'header_main': header_class})
+
+def landing_physics(request):
+    header_class = "header-physics"
+    return render(request, 'landing/physics.html', {'header_main': header_class})
+
+def student_profile(request):
+    return render(request, 'landing/profile.html', {'data': ""})
+
+def add_fund(request):
+    return render(request, 'landing/addfund.html', {'data': ""})
+
+def subscribe(request):
+    return render(request, 'landing/subscribe.html', {'data': ""})
 
 def userLogout(request):
     logout(request)
@@ -950,3 +969,56 @@ def systemLog(request):
     logs = SystemLog.objects.all()
 
     return render(request, 'systemlog.html', {'logs': logs})
+
+
+# ALL SUBSCRIPTION PLAN
+
+def articles(request):
+    articles = Article.objects.all()
+
+    return render(request, 'subscription/article.html', {'articles': articles})
+
+def courses(request):
+    courses = Course.objects.all()
+
+    return render(request, 'subscription/article.html', {'courses': courses})
+
+def lecture(request, cid):
+    lectures = Lecture.objects.filter(course___=cid)
+
+    return render(request, 'subscription/article.html', {'lectures': lectures})
+
+def lectureDetail(request, did):
+    lecture = Lecture.objects.get(id=did)
+
+    return render(request, 'subscription/article.html', {'lecture': lecture})
+
+def lectureMedia(request):
+    freelectures = LectureMedia.objects.all()
+
+    return render(request, 'subscription/article.html', {'freelectures': freelectures})
+
+def activateSubscription(request):
+    user = request.user
+    post_data = request.POST
+
+    code = post_data['code']
+
+    if SubscriptionCode.objects.filter(code=code).exists():
+        code_obj = SubscriptionCode.object.get(code=code)
+        if code.status:
+            msg = "Your Code is already activated"
+        else:
+            msg = "Your Code has been actiavated"
+            usersubscription= UserSubscription(
+                user = user,
+                subscriptionStatus = True,
+                subscriptionType = code_obj.ref
+            )
+
+            user.save()
+            code_obj.user = usersubscription
+            code_obj.status = False
+            code_obj.save()
+    else:
+        msg = "CODE IS INVALID"
