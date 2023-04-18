@@ -178,8 +178,6 @@ class SystemLog(models.Model):
 # DIRECTORY CONTENT CLASS NEED TO REWORK
 # UNIVERSITY STATUS FIELD NEEDED
 
-
-
 # TODO
 # REWORKING ON SUBSCRIPTION PART
 
@@ -212,7 +210,9 @@ class Course(models.Model):
 class Lecture(models.Model):
     title = models.CharField(max_length=256)
     detail = models.TextField()
-    videoUrl = models.CharField(max_length=256)
+    videoUrl = models.CharField(max_length=256, null=True, blank=True)
+    zipContent = models.FileField('interactives', upload_to='interactives', null=True, blank=True)
+    zipurl = models.CharField(max_length=256, null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     thumb = models.FileField('lecture_image', upload_to='lectures', blank=True, null=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)

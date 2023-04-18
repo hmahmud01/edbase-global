@@ -9,6 +9,10 @@ from django.conf import settings
 
 from .models import *
 
+from django.conf import settings
+import os
+import zipfile
+
 TEACHER_TYPE = "Counselor"
 STUDENT_TYPE = "Student"
 DEFAULT_PASS = "edbase2022"
@@ -49,30 +53,96 @@ def physicsIndex(request):
 
 def courseIndex(request):
     courses = Course.objects.all()
-    lectures = Lectures.objects.all()
+    lectures = Lecture.objects.all()
     course_types = CourseType.objects.all()
     
-    return render(request, 'eskayadmin/courses.html', {'data': ""})
+    return render(request, 'eskayadmin/courses.html', {'courses': courses, 'lectures': lectures, 'coursetypes': course_types})
 
 def addCourse(request):
+    post_data = request.POST
+    file_data = request.FILES
+    subscriptionReq = False
+    print(post_data)
+    print(file_data)
+
+    req = post_data['subscriptionReq']
+    if req == "1":
+        subscriptionReq = True
+
+    coursetype = CourseType.objects.get(id=post_data['coursetype'])
+    
+    course = Course(
+        title=post_data['title'],
+        detail=post_data['detail'],
+        fee=post_data['fee'],
+        subscriptionReq=subscriptionReq,
+        coursetype=coursetype,
+        thumb=file_data['thumb']
+    )
+
+    course.save()
+
     return redirect('courseindex')
 
 def addCourseType(request):
+    post_data = request.POST
+    coursetype = CourseType(
+        title = post_data['title']
+    )
+
+    coursetype.save()
     return redirect('courseindex')
 
 def addLecture(request):
+    post_data = request.POST
+    file_data = request.FILES
+    parent_dir = "/"
+
+    content = file_data['zipcontent']
+    print("PRINTNG DIR")
+    print(settings.MEDIA_URL, settings.MEDIA_ROOT)
+    print(content)
+
+    # os.path.basename(content.name)
+
+    content_dir_name = os.path.basename(content.name)[:-4]
+    dir_name = "interactives"
+    path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+    print(path)
+    if os.path.exists(path):
+        print("Path exists")
+    else:
+        os.mkdir(path)
+    
+    os.chdir(path)
+    index_source = path + "/" + content_dir_name + "/index.html"
+    print(index_source)
+
+    with zipfile.ZipFile(content) as f:
+        f.extractall()
+
+
     return redirect('courseindex')
 
 def filterCourse(request):
     get_data = request.GET
     data = get_data.get('type')
-    return render(request, 'ajax/courses.html', {"data": data})
+    subscriptionReq = False
+    if data == "2":
+        subscriptionReq = True
 
-# def subscriptionToggle(request):
-#     pass
+    courses = Course.objects.filter(subscriptionReq=subscriptionReq)
+    print(courses)
+    return render(request, 'ajax/courses.html', {"courses": courses})
+
+def subscriptionToggle(request, cid):
+    pass
 
 def subscriptionKeyList(request):
     return render(request, 'eskayadmin/keylist.html', {"data": ''})
+
+def generateKeys(request):
+    return redirect('subscriptionkeylist')
 
 
 def userLogout(request):
@@ -96,6 +166,15 @@ def verifyLogin(request):
             return render(request, 'login.html', {'alert': alert})
         else:
             auth_login(request, user)
+            try:
+                print("printing USER AGENT")
+                print(request.user_agent.device)
+                print(request.user_agent.device.family)
+                print(request.user_agent.os)
+                print(request.user_agent.os.family)
+                print(request.user_agent.os.version)
+            except:
+                pass
             return redirect('home')
     else:
         alert = "Either username or password is empty"

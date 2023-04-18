@@ -20,7 +20,7 @@ urlpatterns = [
     path('addcoursetype/', views.addCourseType, name='addcoursetype'),
     path('addlecture/', views.addLecture, name='addlecture'),
     path('filtercourse/', views.filterCourse, name='filtercourse'),
-    # path('subscriptiontoggle/', views.subscriptionToggle, 'subscriptiontoggle'),
+    path('subscriptiontoggle/<int:cid>/', views.subscriptionToggle, name='subscriptiontoggle'),
     path('subscriptionkeylist/', views.subscriptionKeyList, name='subscriptionkeylist'),
     path('userlogout/', views.userLogout, name='userlogout'),
     path('login/', views.login, name='login'),

@@ -17,11 +17,34 @@
             {% if request.user.is_superuser %}
             <div>
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                data-bs-target="#add_course">
+                data-bs-target="#generateKey">
                 Generate 100 Keys
             </button>
             </div>
             {% endif %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="generateKey" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adduniversity">Generate Key</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'addcoursetype' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label"></label>
+                            <input type="number" class="form-control" id="name" name="amount" placeholder="Type Name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
