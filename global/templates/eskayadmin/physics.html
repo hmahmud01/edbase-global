@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Physics Interactive Courses Index </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <div class="d-flex justify-content-between">
+            <h1 class="page-heading">Physics Index</h1>
+            {% if request.user.is_superuser %}
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#add_university">
+                Add A University
+            </button>
+            {% endif %}
+        </div>
+
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="add_university" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adduniversity">Add a University</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'adduniversity' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">University Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="University Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Country</label>
+                            <select class="form-select" aria-label="Default select country" name="country_id">
+                                <option selected>Open this select menu</option>
+                                {% for country in countries %}
+                                <option value="{{ country.id }}">{{ country.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="mb-3">
+                                <label for="url" class="form-label">URL</label>
+                                <input type="text" class="form-control" id="url" name="url" placeholder="URL">
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Description</label>
+                                <textarea class="form-control" id="description" rows="3" name="description"></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="image" class="form-label">Image</label>
+                                <input class="form-control form-control-sm" id="image" name="image" type="file">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <section>
+        <div class="row">
+            {% for university in data %}
+            <div class="col-md-6 col-lg-3 h-100">
+                <div class="card mb-4">
+                    <img class="card-img-top img-fluid" style="height: 190px;" src="/media/{{ university.image }}" alt="{{ university.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ university.name }}</h5>
+                        <p>{{ university.country }}</p>
+                    </div>
+                    <div class="card-footer">
+                        {% if request.user.is_superuser %}
+                        <a class="btn btn-outline-danger" href="{% url 'deleteuni' university.id %}">Delete</a>
+                        {% endif %}
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="{{ university.id }}" onclick="func(this)"
+                            href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">University Information</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="container-fluid px-0">
+                        <div class="" id="loaduni">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function func(d){
+        console.log(d.getAttribute("data-id"));
+        var url = "{% url 'loaduniversity' %}"; 
+        console.log(url);
+        const uid = d.getAttribute("data-id");
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'uid' : uid,
+            },
+            success: function(data){
+                $('#loaduni').html(data);
+            }
+        })
+    }
+</script>
+{% endblock %}

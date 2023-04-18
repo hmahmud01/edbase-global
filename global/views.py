@@ -38,6 +38,39 @@ def add_fund(request):
 def subscribe(request):
     return render(request, 'landing/subscribe.html', {'data': ""})
 
+def articleIndex(request):
+    return render(request, 'eskayadmin/articles.html', {'data': ""})
+
+def videoIndex(request):
+    return render(request, 'eskayadmin/videos.html', {'data': ""})
+
+def physicsIndex(request):
+    return render(request, 'eskayadmin/physics.html', {'data': ""})
+
+def courseIndex(request):
+    return render(request, 'eskayadmin/courses.html', {'data': ""})
+
+def addCourse(request):
+    return redirect('courseindex')
+
+def addCourseType(request):
+    return redirect('courseindex')
+
+def addLecture(request):
+    return redirect('courseindex')
+
+def filterCourse(request):
+    get_data = request.GET
+    data = get_data.get('type')
+    return render(request, 'ajax/courses.html', {"data": data})
+
+# def subscriptionToggle(request):
+#     pass
+
+def subscriptionKeyList(request):
+    return render(request, 'eskayadmin/keylist.html', {"data": ''})
+
+
 def userLogout(request):
     logout(request)
     return redirect('/')

@@ -1,11 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
+import uuid
 
 
 class Subscription(models.Model):
     title = models.CharField(max_length=128)
     cost = models.FloatField()
-    models.TextField(null=True, blank=True)
+    # models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -182,10 +183,27 @@ class SystemLog(models.Model):
 # TODO
 # REWORKING ON SUBSCRIPTION PART
 
+class CourseType(models.Model):
+    title = models.CharField(max_length=256)
+    def __str__(self):
+        return self.title
+
+class SubsciptionKey(models.Model):
+    subscriptionKey=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
+    shortKey = models.CharField(max_length=12, null=True)
+    amount = models.FloatField()
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.subscriptionKey[:8]
+
 class Course(models.Model):
     title = models.CharField(max_length=256)
     detail = models.TextField()
+    fee = models.FloatField()
     subscriptionReq = models.BooleanField(default=False)
+    coursetype = models.ForeignKey(CourseType, on_delete=models.CASCADE)
+    thumb = models.FileField('course_image', upload_to='courses', blank=True, null=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
