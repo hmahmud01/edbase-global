@@ -195,8 +195,107 @@
                 </div>
             </div>
         </div>
-
     </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Course</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Country</p>
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Shortcode</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for country in data %}
+                        <tr>
+                            <td>{{ country.id }}</td>
+                            <td>{{ country.name }}</td>
+                            <td>{{ country.short }}</td>
+                            <td>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Course Type</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Country</p>
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Shortcode</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for country in data %}
+                        <tr>
+                            <td>{{ country.id }}</td>
+                            <td>{{ country.name }}</td>
+                            <td>{{ country.short }}</td>
+                            <td>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Lectures</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Country</p>
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Shortcode</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for country in data %}
+                        <tr>
+                            <td>{{ country.id }}</td>
+                            <td>{{ country.name }}</td>
+                            <td>{{ country.short }}</td>
+                            <td>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
 </div>
 
 {% endblock %}

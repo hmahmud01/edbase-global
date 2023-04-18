@@ -48,6 +48,10 @@ def physicsIndex(request):
     return render(request, 'eskayadmin/physics.html', {'data': ""})
 
 def courseIndex(request):
+    courses = Course.objects.all()
+    lectures = Lectures.objects.all()
+    course_types = CourseType.objects.all()
+    
     return render(request, 'eskayadmin/courses.html', {'data': ""})
 
 def addCourse(request):

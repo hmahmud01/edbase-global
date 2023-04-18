@@ -18,139 +18,10 @@
             <div>
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                 data-bs-target="#add_course">
-                Add A Course
-            </button>
-            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
-                data-bs-target="#add_course_type">
-                Add A Course Type
-            </button>
-            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
-                data-bs-target="#add_lecture">
-                Add A Lecture
+                Generate 100 Keys
             </button>
             </div>
             {% endif %}
-        </div>
-    </div>
-
-
-    <div class="modal fade" id="add_course" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adduniversity">Add a Course</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{% url 'addcoursetype' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Course Name</label>
-                            <input type="text" class="form-control" id="name" name="title" placeholder="University Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Type</label>
-                            <select class="form-select" aria-label="Default select country" name="coursetype">
-                                <option selected>Open this select menu</option>
-                                {% for country in countries %}
-                                <option value="{{ country.id }}">{{ country.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <label for="name" class="form-label">Subscription Type</label>
-                            <select class="form-select" aria-label="Default select country" name="subscriptionReq">
-                                <option value="notrequired" selected>Not Required</option>
-                                <option value="required">Required</option>
-                            </select>
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Description</label>
-                                <textarea class="form-control" id="description" rows="3" name="detail"></textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="image" class="form-label">Thumbnail Image</label>
-                                <input class="form-control form-control-sm" id="image" name="thumb" type="file">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="add_course_type" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adduniversity">Add a Course Type</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{% url 'addcourse' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Course Type</label>
-                            <input type="text" class="form-control" id="name" name="title" placeholder="Type Name">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    
-    <div class="modal fade" id="add_lecture" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="adduniversity">Add A Lecture</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="{% url 'addlecture' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Lecture Name</label>
-                            <input type="text" class="form-control" id="name" name="title" placeholder="University Name">
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Course Type</label>
-                            <select class="form-select" aria-label="Default select country" id="courseType" name="coursetype" onchange="typeFunc()">
-                                <option value="1">Open this select menu</option>
-                                <option value="2">Free</option>
-                                {% for country in countries %}
-                                <option value="{{ country.id }}">{{ country.name }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Course</label>
-                            <select class="form-select" aria-label="Default select country" id="loadcourses" name="course">
-                            </select>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Video Url</label>
-                            <input type="text" class="form-control" id="name" name="videoUrl" placeholder="Video Name">
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Detail</label>
-                            <textarea class="form-control" id="description" rows="3" name="detail"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="image" class="form-label">Thumbnail Image</label>
-                            <input class="form-control form-control-sm" id="image" name="thumb" type="file">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 
@@ -192,6 +63,38 @@
             </div>
         </div>
 
+    </section>
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Subscrition Keys</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Country</p>
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Shortcode</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for country in data %}
+                        <tr>
+                            <td>{{ country.id }}</td>
+                            <td>{{ country.name }}</td>
+                            <td>{{ country.short }}</td>
+                            <td>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </section>
 </div>
 
