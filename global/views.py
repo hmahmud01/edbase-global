@@ -45,7 +45,7 @@ def videos_content(request, cid):
 @login_required(login_url="/login/")
 def landing_physics(request):
     header_class = "header-physics"
-    courses = Course.objects.filter(coursetype__title="Interatives")
+    courses = Course.objects.filter(coursetype__title="Interactives")
     return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses})
 
 @login_required(login_url="/login/")
