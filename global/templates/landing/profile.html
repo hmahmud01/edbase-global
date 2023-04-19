@@ -8,37 +8,42 @@
             <div class="w-100 py-5">
                 <div class="text-center">
                     <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
-                    <h1 class="h2 text-uppercase mb-3">Edbase</h1>
-                    <h1 class="h4 text-uppercase mb-3">Registration System</h1>
+                    <h1 class="h2 text-uppercase mb-3">Eskay</h1>
+                    <h1 class="h4 text-uppercase mb-3">Student Profile</h1>
                 </div>
-                <!-- <p class="text-muted text-sm mb-4">Please Register with your proper Information</p> -->
-                <form method="post" action="{% url 'registerv2' %}" enctype="multipart/form-data">{% csrf_token %}
-                    <p class="fs-2">Academic Information</p>
-                    <p>Fill up your academic information</p>
+                <div class="row">
+                    <p class="fs-2">Profile Information</p>
                     <hr>
-                    
-
-                    <div class="mb-3">
-                        <label class="form-label" for="school">Which Country you are intersted in</label>
-                        {% for ctry in countries %}
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{ ctry.id }}" id="{{ ctry.short }}" name="country">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                {{ ctry.name }}
-                            </label>
-                        </div>
-                        {% endfor %}
-
+                    <div class="col-md-6">
+                        <p class="fs-5">Basic Info</p>
+                        <p class="g-0 m-0">User Name: {{ user.username }}</p>
+                        <p class="g-0 m-0">Id: ESK-STUDENT-{{ user.id }}</p>
+                        <p class="g-0 m-0">Name: {{ user.student.name }}</p>
+                        <p class="g-0 m-0">Mobile: {{ user.student.mobile }}</p>
+                        <p class="g-0 m-0">Email: {{ user.student.email }}</p>
+                        <p class="g-0 m-0">Guardian Mobile: {{ user.student.guardian_mobile }}</p>
+                        <p class="g-0 m-0">School: {{ user.student.school }}</p>
+                        <p class="g-0 m-0">Qualified Till Now: {{ user.student.qualification }}</p>
                     </div>
-
-                    <div class="d-grid mb-5">
-                        <button type="submit" class="btn btn-primary text-uppercase">Register</button>
+                    <div class="col-md-6">
+                        <p class="fs-5">Credit Info</p>
+                        <p class="g-0 m-0">Available Credit: {{ available_credit }}</p>
                     </div>
-                    <!-- Link-->
-                </form>
-                <p class="text-center"><small class="text-muted text-center">Already have an account? <a
-                            href="{% url 'login' %}">Log in</a>.</small></p>
-                <p class="mb-2 mb-md-0 text-muted text-center text-sm">Edbase &copy; 2022</p>
+                    <hr>
+                    <p class="fs-2">Enlisted Courses Information</p>
+                    <div class="col-md-12">
+                        <div class="list-group">
+                            {% for course in courses %}
+                            <a href="{% url 'physicscontent' course.course.id %}" class="list-group-item list-group-item-action">{{ course.course.title }}</a>
+                            {% endfor %}
+                          </div>
+                    </div>
+                </div>
+
+                <p class="text-center"><small class="text-muted text-center">Have A Wallet Code? <a
+                            href="{% url 'addfund' %}">Wallet Recharge</a>.</small> <br> <a href="/">Back To Home</a></p>
+                            
+                <p class="mb-2 mb-md-0 text-muted text-center text-sm">Eskay &copy; 2023</p>
             </div>
         </div>
         <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">

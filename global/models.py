@@ -188,12 +188,13 @@ class CourseType(models.Model):
 
 class SubsciptionKey(models.Model):
     subscriptionKey=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
-    shortKey = models.CharField(max_length=12, null=True)
+    shortKey = models.CharField(max_length=12, null=True, unique=True)
     amount = models.FloatField()
+    active_status = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
-        return self.subscriptionKey[:8]
+        return self.shortKey
 
 class Course(models.Model):
     title = models.CharField(max_length=256)
@@ -244,3 +245,23 @@ class Article(models.Model):
 
     def __str__(self):
         return self.title
+
+class StudentWallet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    key = models.OneToOneField(SubsciptionKey, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        msg = "user {} credited to {} for {} dollars."
+        done = msg.format(self.user.username, self.key.shortKey, self.key.amount)
+        return done
+
+class StudentEnlistedCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        msg = "user {} subscribed to {}"
+        done = msg.format(self.user.username, self.course.title)
+        return done

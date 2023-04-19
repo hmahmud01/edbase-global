@@ -18,7 +18,7 @@ ul {
 
 .header-main {
     min-height: 100vh;
-    background: url(/static/asset/img/phy-1.jpg) no-repeat center;
+    background: url(/static/asset/img/phy-10.jpg) no-repeat center;
     background-size: cover;
 }
 
@@ -30,7 +30,7 @@ ul {
 
 .header-physics {
     height: 30vh !important;
-    background: url(/static/asset/img/back-5.jpg) no-repeat center;
+    background: url(/static/asset/img/phy-9.jpg) no-repeat center;
     background-size: cover;
 }
 
@@ -251,7 +251,7 @@ nav .fa-bars:hover {
 
 
 .idea-background {
-    background-image: url(/static/asset/img/back-4.jpg);
+    background-image: url(/static/asset/img/phy-9.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -265,7 +265,7 @@ nav .fa-bars:hover {
 }
 
 .join-background {
-    background-image: url(/static/asset/img/back-2.jpg);
+    background-image: url(/static/asset/img/phy-6.jpg);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -313,4 +313,19 @@ nav .fa-bars:hover {
 .hv:hover {
     color: #0d6efd !important;
     transition: 0.3s;
+}
+
+.course-landing-text {
+    height: 60px;
+    line-height: 20px;
+    font-size: 16px;
+    overflow: hidden;
+}
+
+.bg-interact { 
+    background-color: #fd5c0d !important;
+}
+
+.bg-video { 
+    background-color: #dffd0d !important;
 }

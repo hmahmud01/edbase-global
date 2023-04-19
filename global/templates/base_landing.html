@@ -16,7 +16,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <script src="https://kit.fontawesome.com/9ed85cc722.js" crossorigin="anonymous"></script>
-    <title>Edbase Global</title>
+    <title>Eskay</title>
 </head>
 
 <body>
@@ -63,14 +63,14 @@
                 </div>
             </div>
             <div class="container-custom">
-                <a href="#" class="brand">Edbase Global</a>
+                <a href="#" class="brand">Eskay</a>
                 <div class="container-custom-inner">
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="#about">About</a></li>
+                        <!-- <li><a href="#about">About</a></li> -->
                         <li><a href="/videos">Videos</a></li>
                         <li><a href="/physics">Interactives</a></li>
-                        <li><a href="#join">Join</a></li>
+                        <!-- <li><a href="#join">Join</a></li> -->
                     </ul>
                     <!-- <form action="">
                         <div class="input-wrap">
@@ -80,7 +80,11 @@
                     </form> -->
                 </div>
                 
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-light" id="menu-btn">{{user.username}}</a>
+                {% else %}
                 <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light" id="menu-btn">Login</a>
+                {% endif %}
                 <!-- <i class="fas fa-bars menu-btn" id="menu-btn"></i> -->
             </div>
         </nav>
@@ -116,7 +120,7 @@
                 <div class="col-md-6">
                     <div class="d-flex align-items-center justify-content-end h-100 w-100 p-5 footer">
                         <div>
-                            <p class="text-white fs-4 text-end fw-bold">Edbase Global</p>
+                            <p class="text-white fs-4 text-end fw-bold">Eskay</p>
                             <ul class="social-media footer-social text-end text-white">
                                 <li><a href="">
                                         <i class="fab fa-facebook"></i>

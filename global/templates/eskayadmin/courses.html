@@ -24,7 +24,7 @@
                 data-bs-target="#add_course_type">
                 Add A Course Type
             </button>
-            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
                 data-bs-target="#add_lecture">
                 Add A Lecture
             </button>
@@ -118,25 +118,23 @@
                 </div>
                 <form action="{% url 'addlecture' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Lecture Name</label>
-                            <input type="text" class="form-control" id="name" name="title" placeholder="University Name">
-                        </div>
+                        
                         <div class="mb-3">
                             <label for="name" class="form-label">Course Type</label>
                             <select class="form-select" aria-label="Default select country" id="courseType" name="coursetype" onchange="typeFunc()">
-                                <option value="0">Open this select menu</option>
                                 <option value="2">Paid</option>
                                 <option value="1">Free</option>
-                                {% for country in countries %}
-                                <option value="{{ country.id }}">{{ country.name }}</option>
-                                {% endfor %}
                             </select>
                         </div>
                         <div class="mb-3">
                             <label for="name" class="form-label">Course</label>
                             <select class="form-select" aria-label="Default select country" id="loadcourses" name="course">
                             </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Lecture Name</label>
+                            <input type="text" class="form-control" id="name" name="title" placeholder="Lecture Title">
                         </div>
 
                         <div class="mb-3">
@@ -208,10 +206,35 @@
     <section>
         <div class="card mb-4">
             <div class="card-header">
+                <div class="card-heading">Course Type</div>
+            </div>
+            <div class="card-body text-muted">
+                <table class="table" id="datatable2">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for types in coursetypes %}
+                        <tr>
+                            <td>{{ types.id }}</td>
+                            <td>{{ types.title }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
                 <div class="card-heading">Course</div>
             </div>
             <div class="card-body text-muted">
-                <p>List of Country</p>
                 <table class="table" id="datatable1">
                     <thead>
                         <tr>
@@ -248,54 +271,36 @@
     <section>
         <div class="card mb-4">
             <div class="card-header">
-                <div class="card-heading">Course Type</div>
-            </div>
-            <div class="card-body text-muted">
-                <p>List of Country</p>
-                <table class="table" id="datatable2">
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for types in coursetypes %}
-                        <tr>
-                            <td>{{ types.id }}</td>
-                            <td>{{ types.title }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-
-    <section>
-        <div class="card mb-4">
-            <div class="card-header">
                 <div class="card-heading">Lectures</div>
             </div>
             <div class="card-body text-muted">
-                <p>List of Country</p>
                 <table class="table" id="datatable3">
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Name</th>
-                            <th>Shortcode</th>
+                            <th>Title</th>
+                            <th>Course </th>
+                            <th>Course Type </th>
+                            <th>Thumb</th>
+                            <th>App Link</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for country in data %}
+                        {% for lecture in lectures %}
                         <tr>
-                            <td>{{ country.id }}</td>
-                            <td>{{ country.name }}</td>
-                            <td>{{ country.short }}</td>
+                            <td>{{ lecture.id }}</td>
+                            <td>{{ lecture.title }}</td>
+                            <td>{{ lecture.course }}</td>
+                            <td>{{ lecture.course.coursetype.title }}</td>
+                            <td><img src="/media/{{ lecture.thumb }}" alt="{{ course.thumb }}" style="width: 32px"></td>
+                            {% if lecture.course.coursetype.title == 'Video' %}
+                            <td> <a href="{{ lecture.videoUrl }}" target="_blank">{{ lecture.videoUrl }}</a></td>
+                            {% else %}
+                            <td> <a href="{{ lecture.zipurl }}" target="_blank">{{ lecture.zipurl }}</a></td>
+                            {% endif %}                            
                             <td>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                                <a href="{% url 'deletelecture' lecture.id %}" class="btn btn-sm btn-danger btn-disabled">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}

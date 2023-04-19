@@ -10,10 +10,12 @@
                     <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
                     <h1 class="h2 text-uppercase mb-3">Eskay</h1>
                 </div>
-                <p class="text-center">{{ msg }}</p>
-                <p class="text-center"><small class="text-muted text-center"><a
-                            href="{% url 'profile' %}">Back To Profile</a>.</small></p>
-                            <p class="mb-2 mb-md-0 text-muted text-center text-sm">Eskay &copy; 2023</p>
+                <p>{{ msg }}</p>
+
+                <p class="text-center"><small class="text-muted text-center">
+                    <a href="{% url 'profile'  %}">Profile</a>.
+                </small></p>
+                <p class="mb-2 mb-md-0 text-muted text-center text-sm">Eskay &copy; 2023</p>
             </div>
         </div>
         <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">

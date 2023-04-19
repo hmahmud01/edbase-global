@@ -7,19 +7,20 @@
     <div class="page-breadcrumb">
         <ul class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-            <li class="breadcrumb-item active">Course Index </li>
+            <li class="breadcrumb-item active">Subscription Key Index </li>
         </ul>
     </div>
     <!-- Page Header-->
     <div class="page-header">
         <div class="d-flex justify-content-between">
-            <h1 class="page-heading">Course Index</h1>
+            <h1 class="page-heading">Subscription Key Index</h1>
             {% if request.user.is_superuser %}
             <div>
             <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
                 data-bs-target="#generateKey">
                 Generate 100 Keys
             </button>
+            <a href="{% url 'csvkeys' %}" class="btn btn-sm btn-success">Export CSV</a>
             </div>
             {% endif %}
         </div>
@@ -32,11 +33,16 @@
                     <h5 class="modal-title" id="adduniversity">Generate Key</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="{% url 'addcoursetype' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <form action="{% url 'generatekeys' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="name" class="form-label"></label>
-                            <input type="number" class="form-control" id="name" name="amount" placeholder="Type Name">
+                            <label for="name" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="name" name="amount" placeholder="Amount for 100 keys">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Iterator</label>
+                            <input type="number" class="form-control" id="name" name="iterator" placeholder="Iterator">
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -93,25 +99,26 @@
                 <div class="card-heading">Subscrition Keys</div>
             </div>
             <div class="card-body text-muted">
-                <p>List of Country</p>
                 <table class="table" id="datatable1">
                     <thead>
                         <tr>
                             <th>Id</th>
-                            <th>Name</th>
-                            <th>Shortcode</th>
-                            <th>Actions</th>
+                            <th>Key Code</th>
+                            <th>amount</th>
+                            <th>Active Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for country in data %}
+                        {% for key in keys %}
                         <tr>
-                            <td>{{ country.id }}</td>
-                            <td>{{ country.name }}</td>
-                            <td>{{ country.short }}</td>
-                            <td>
-                                <a href="" class="btn btn-sm btn-danger">Delete</a>
-                            </td>
+                            <td>{{ key.subscriptionKey }}</td>
+                            <td>{{ key.shortKey }}</td>
+                            <td>{{ key.amount }}</td>
+                            {% if key.active_status %}
+                            <td><span class="badge badge-danger-light">Activated</span></td>
+                            {% else %}
+                            <td><span class="badge badge-success-light">Inactive</span></td>
+                            {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
