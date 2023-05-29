@@ -368,7 +368,9 @@
     }
 
     function typeFunc(){
+        
         var type = document.getElementById("courseType").value;
+        console.log("course", type);
         var url = "{% url 'filtercourse' %}";
         $.ajax({
             url: url,

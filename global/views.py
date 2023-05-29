@@ -262,6 +262,7 @@ def deleteLecture(request, lid):
     return redirect('courseindex')
 
 def filterCourse(request):
+    print("inside filter")
     get_data = request.GET
     data = get_data.get('type')
     subscriptionReq = False

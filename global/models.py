@@ -271,3 +271,31 @@ class StudentEnlistedCourse(models.Model):
         msg = "user {} subscribed to {}"
         done = msg.format(self.user.username, self.course.title)
         return done
+
+
+# COURSE HIERERCHY MODELS B -> L -> S -> T
+class Batch(models.Model):
+    title = models.CharField(max_length=64)
+    detail = models.TextField(null=True, blank=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class Level(models.Model):
+    title = models.CharField(max_length=64)
+    detail = models.TextField(null=True, blank=True)
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class Subject(models.Model):
+    title = models.CharField(max_length=64)
+    detail = models.TextField(null=True, blank=True)
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+class Topic(models.Model):
+    
