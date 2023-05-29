@@ -14,9 +14,15 @@
     <div class="page-header">
         <div class="d-flex justify-content-between">
             <h1 class="page-heading">Qualification Index</h1>
-            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_qualification">
-                Add A Qualification
-            </button>
+            <div>
+                <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_qualification">
+                    Add A Qualification
+                </button>
+                <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_board">
+                    Add A Board
+                </button>
+            </div>
+
         </div>
 
     </div>
@@ -51,7 +57,59 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="add_board" tabindex="-1" aria-labelledby="add_board" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addqualification">Add a Board</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'addboard' %}" method="post"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Board Title</label>
+                            <input type="text" class="form-control" id="title" name="title"
+                                placeholder="Board Title">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Board Index</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Qualifications</p>
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for board in boards %}
+                        <tr>
+                            <td>{{ board.id }}</td>
+                            <td>{{ board.title }}</td>
+                            <td>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <div class="card mb-4">
             <div class="card-header">
                 <div class="card-heading">Qualification Index</div>

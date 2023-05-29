@@ -56,6 +56,7 @@ urlpatterns = [
     path('statusupdate/<int:did>/<str:status>', views.statusUpdateDirectory, name='statusupdate'),
     path('qualifications/', views.listQualifications, name='qualifications'),
     path('addqualification', views.addQualification, name='addqualification'),
+    path('addboard', views.addBoard, name='addboard'),
     path('studentdetail/<int:sid>/', views.studentDetail, name='studentdetail'),
     path('teacherdetail/<int:tid>/', views.teacherDetail, name='teacherdetail'),
     path('assignteacher/', views.assignTeacher, name='assignteacher'),
@@ -68,7 +69,10 @@ urlpatterns = [
     path('uploadcontent/', views.uploadContent, name='uploadcontent'),
     path('updatesocial/', views.updateSocial, name='updatesocial'),
     path('systemlog/', views.systemLog, name='systemlog'),
-    path('articles/', views.articles, name='articles')
+    path('articles/', views.articles, name='articles'),
+    path('checkout/', views.checkout, name="checkout"),
+    path('cart/', views.cart, name="cart"),
+    path('pricing/', views.pricing, name="pricing"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

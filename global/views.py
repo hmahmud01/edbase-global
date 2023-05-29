@@ -176,8 +176,11 @@ def courseIndex(request):
     courses = Course.objects.all()
     lectures = Lecture.objects.all()
     course_types = CourseType.objects.all()
+
+    qualifications = Qualification.objects.all()    
+    boards = Board.objects.all()
     
-    return render(request, 'eskayadmin/courses.html', {'courses': courses, 'lectures': lectures, 'coursetypes': course_types})
+    return render(request, 'eskayadmin/courses.html', {'courses': courses, 'lectures': lectures, 'coursetypes': course_types, 'qualifications': qualifications, 'boards': boards})
 
 def addCourse(request):
     post_data = request.POST
@@ -895,7 +898,8 @@ def statusUpdateDirectory(request, did, status):
 
 def listQualifications(request):
     data = Qualification.objects.all()    
-    return render(request, 'list_qualifications.html', {'data': data})
+    boards = Board.objects.all()
+    return render(request, 'list_qualifications.html', {'data': data, 'boards': boards})
 
 def addQualification(request):
     post_data = request.POST
@@ -909,6 +913,28 @@ def addQualification(request):
 
     title = "New Qualification Added"
     description = f"{qual.title} has been added to the Qualifaction list."
+    link = f'<a href="/qualifications">Qualification list</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
+    return redirect('qualifications')
+
+def addBoard(request):
+    post_data = request.POST
+    board = Board(
+        title=post_data['title']
+    )
+
+    board.save()
+
+    title = "New Board Added"
+    description = f"{board.title} has been added to the Qualifaction list."
     link = f'<a href="/qualifications">Qualification list</a>'
 
     log = SystemLog(
@@ -1304,3 +1330,15 @@ def activateSubscription(request):
             code_obj.save()
     else:
         msg = "CODE IS INVALID"
+
+def pricing(request):
+    header_class = "header-physics"
+    return render(request, "landing/pricing.html", {'header_main': header_class})
+
+def checkout(request):
+    header_class = "header-physics"
+    return render(request, "landing/checkout.html", {'header_main': header_class})
+
+def cart(request):
+    header_class = "header-physics"
+    return render(request, "landing/cart.html", {'header_main': header_class})

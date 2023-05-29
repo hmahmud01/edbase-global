@@ -29,6 +29,12 @@ class SubscriptionCode(models.Model):
     def __str__(self):
         return self.code
 
+class Board(models.Model):
+    title = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.title
+
 class Qualification(models.Model):    
     title = models.CharField(max_length=128)
     level = models.CharField(max_length=128)
