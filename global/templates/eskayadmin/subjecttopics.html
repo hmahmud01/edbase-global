@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Subject & Topic Index </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <div class="d-flex justify-content-between">
+            <h1 class="page-heading">Subject & Topic Index</h1>
+            {% if request.user.is_superuser %}
+            <div>
+                <div class="btn-group me-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#subjectmodal">
+                        Add Subject
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#topicmodal">
+                        Add Topic
+                    </button>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <!-- MODAL -->
+    <div class="modal fade" id="subjectmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addsubject' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Type</label>
+                                        <input type="text" class="form-control" id="type" name="type">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="desc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="thumb" class="form-label">Thumbnail</label>
+                                        <input class="form-control" type="file" id="thumb" name="thumb">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Subscription Type</label>
+                                        <select class="form-select form-select-sm" name="subscriptiontype"
+                                            aria-label=".form-select-sm example" required>
+                                            <option selected value="notrequired">Not Required</option>
+                                            <option value="required">Required</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Select Batch Level</label>
+                                        <select class="form-select form-select-sm" name="level"
+                                            aria-label=".form-select-sm example" required>
+                                            {% for level in levels %}
+                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="topicmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addtopics' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="desc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Subscription Type</label>
+                                        <select class="form-select form-select-sm" name="subscriptiontype"
+                                            aria-label=".form-select-sm example" required>
+                                            <option selected value="notrequired">Not Required</option>
+                                            <option value="required">Required</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Subject</label>
+                                        <select class="form-select form-select-sm" name="subject" required>
+                                            {% for subject in subjects %}
+                                            <option value="{{ subject.id }}">{{ subject.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="thumb" class="form-label">Thumbnail</label>
+                                        <input class="form-control" type="file" id="thumb" name="thumb">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Fee" class="form-label">Fee</label>
+                                        <input type="number" class="form-control" id="fee" name="fee">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="exercise" class="form-label">Exercise</label>
+                                        <input class="form-control" type="file" id="exercise" name="exercise" multiple>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Select Batch Level</label>
+                                        <select class="form-select form-select-sm" name="level"
+                                            aria-label=".form-select-sm example" required>
+                                            {% for level in levels %}
+                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="videourl" class="form-label">Video URL</label>
+                                        <input type="text" class="form-control" id="videourl" name="videourl">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="zipcontent" class="form-label">Zip Archieve</label>
+                                        <input class="form-control" type="file" id="zipcontent" name="zipcontent">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    <!-- MODAL ENDS -->
+
+    <h2>Subject</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Level</th>
+                    <th scope="col">SubjectType</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject in subjects %}
+                <tr>
+                    <td>{{ subject.title }}</td>
+                    <td>{{ subject.level.title }}</td>
+                    <td>{{ subject.subjectType }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <h2>Topic</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Fee</th>
+                    <th scope="col">SubscriptinType</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for topic in topics %}
+                <tr>
+                    <td>{{ topic.title }}</td>
+                    <td>{{ topic.subject.title }}</td>
+                    <td>{{ topic.fee }}</td>
+                    <td>{{ topic.subcriptionType }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

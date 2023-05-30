@@ -73,6 +73,16 @@ urlpatterns = [
     path('checkout/', views.checkout, name="checkout"),
     path('cart/', views.cart, name="cart"),
     path('pricing/', views.pricing, name="pricing"),
+    path('batchlevel/', views.batchlevel, name="batchlevel"),
+    path('addbatch/', views.addBatch, name="addbatch"),
+    path('addlevel/', views.addLevel, name="addlevel"),
+    path('subjecttopics/', views.subjecttopics, name="subjecttopics"),
+    path('addsubject/', views.addSubject, name="addsubject"),
+    path('addtopics/', views.addTopics, name="addtopics"),
+    path('bundle/', views.bundle, name="bundle"),
+    path('addbundle/', views.addBundle, name="addbundle"),
+    path('addkeys/', views.addKeys, name="addkeys"),
+    path('exportbundlewallets/', views.exportBundleWallets, name="exportbundlewallets"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -217,45 +217,6 @@ def addCourseType(request):
     coursetype.save()
     return redirect('courseindex')
 
-def addLecture(request):
-    post_data = request.POST
-    file_data = request.FILES
-    parent_dir = "/"
-
-    try:
-        content = file_data['zipcontent']
-
-        content_dir_name = os.path.basename(content.name)[:-4]
-        dir_name = "interactives"
-        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
-        print(path)
-        if os.path.exists(path):
-            print("Path exists")
-        else:
-            os.mkdir(path)
-        
-        os.chdir(path)
-        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
-
-        with zipfile.ZipFile(content) as f:
-            f.extractall()
-    except:
-        index_source = ""
-
-    course = Course.objects.get(id=post_data['course'])
-
-    lecture = Lecture(
-        title = post_data['title'],
-        detail = post_data['detail'],
-        videoUrl = post_data['videoUrl'],
-        zipurl = index_source,
-        course = course,
-        thumb = file_data['thumb']
-    )
-
-    lecture.save()
-    return redirect('courseindex')
-
 def deleteLecture(request, lid):
     lecture = Lecture.objects.get(id=lid)
     lecture.delete()
@@ -1343,3 +1304,246 @@ def checkout(request):
 def cart(request):
     header_class = "header-physics"
     return render(request, "landing/cart.html", {'header_main': header_class})
+
+def batchlevel(request):
+    batchs = Batch.objects.all()
+    levels = Level.objects.all()
+    return render(request, 'eskayadmin/batchlevel.html', {'batchs': batchs, 'levels': levels})
+
+def addBatch(request):
+    post_data = request.POST
+    print(post_data)
+
+    batch = Batch(
+        title = post_data['title']
+    )
+    batch.save()
+    return redirect('batchlevel')
+
+def addLevel(request):
+    post_data = request.POST
+    print(post_data)
+    batch = Batch.objects.get(id=post_data['batch'])    
+    level = Level(
+        title = post_data['title'],
+        batch = batch
+    )
+
+    level.save()
+    return redirect('batchlevel')
+
+def subjecttopics(request):
+    batchs = Batch.objects.all()
+    levels = Level.objects.all()
+    subjects = Subject.objects.all()
+    topics = Topic.objects.all()
+    return render(request, 'eskayadmin/subjecttopics.html', {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels})
+
+# <QueryDict: {'csrfmiddlewaretoken': ['GESeUKiZzcxw9iZxRru0pnMsSOT8gePzGBPWWBU3WI7PzjRmx2HYMOViSav6BQFb'], 
+# 'title': ['sdf'], 'type': ['sfe'], 'desc': ['sfes'], 'subscriptiontype': ['1'], 'level': ['1']}>
+# <MultiValueDict: {'thumb': [<InMemoryUploadedFile: 82279090_10222317071502570_3655072904686600192_n.jpg (image/jpeg)>]}>
+def addSubject(request):
+    post_data = request.POST
+    file_data = request.FILES
+    level = Level.objects.get(id=post_data['level'])
+    print(post_data)
+    print(file_data)
+
+    subject = Subject(
+        title = post_data['title'],
+        detail = post_data['desc'],
+        level = level,
+        subjectType = post_data['subscriptiontype'],
+        thumb = file_data['thumb']
+    )
+
+    subject.save()
+
+    return redirect('subjecttopics')
+
+# <QueryDict: {'csrfmiddlewaretoken': 
+# ['jJ2mmscQemNjlh7jnMQUMKdnjicFz2O3jGZ4ojOUBSnCLiZ83n3S9bmdjEODUEEF'], 
+# 'title': ['start 1', 'NA'], 'desc': ['desc'], 'subscriptiontype': ['1', '1'], 
+# 'subject': ['1'], 'fee': ['200']}>
+# 2023-05-31 01:40:26 <MultiValueDict: 
+# {'thumb': [<TemporexportCsvKeysaryUploadedFile: 82279090_10222317071502570_3655072904686600192_n.jpg (image/jpeg)>], 
+# 'exercise': [<TemporaryUploadedFile: New Text Document (2).txt (text/plain)>, 
+# <TemporaryUploadedFile: New Text Document.txt (text/plain)>],
+# 'zipcontent': [<TemporaryUploadedFile: Build_uncompressed.zip (application/x-zip-compressed)>]}>
+def addTopics(request):
+    post_data = request.POST
+    file_data_exercise = request.FILES.getlist('exercise')
+    file_data = request.FILES
+
+    thumb = file_data['thumb']
+    parent_dir = "/"
+
+    print(post_data)
+    print(file_data)
+
+    subject =Subject.objects.get(id=post_data['subject'])
+    level = Level.objects.get(id=post_data['level'])
+    subscriptionType = False
+
+    if post_data['subscriptiontype'] == 1:
+        subscriptionType = True
+    
+
+    topic = Topic(
+        title = post_data['title'],
+        detail = post_data['desc'],
+        subject = subject,
+        subcriptionType = subscriptionType,
+        thumb = thumb,
+        fee = post_data['fee'],
+    )
+
+    topic.save()
+
+    for practise in file_data_exercise:
+        topicexercise = TopicExercise(
+            topic = topic,
+            exercise = practise
+        )
+
+        topicexercise.save()
+
+    try:
+        content = file_data['zipcontent']
+
+        content_dir_name = os.path.basename(content.name)[:-4]
+        dir_name = "topicZips"
+        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+        print(path)
+        if os.path.exists(path):
+            print("Path exists")
+        else:
+            os.mkdir(path)
+        
+        os.chdir(path)
+        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
+        print(index_source)
+        with zipfile.ZipFile(content) as f:
+            f.extractall()
+    except:
+        index_source = ""
+        
+    content = TopicContent(
+        topic= topic,
+        videoUrl = post_data['videourl'],
+        zipurl = index_source,
+        thumb = topic.thumb
+    )
+
+    content.save()
+    return redirect('subjecttopics')
+
+def bundle(request):
+    bundles = Bundle.objects.all()
+    keys = BundleWallet.objects.all()
+    topics = Topic.objects.all()
+    return render(request, 'eskayadmin/bundle.html', {'bundles': bundles, 'keys': keys, "topics": topics})
+
+
+# <QueryDict: {'csrfmiddlewaretoken': ['Fxoz8EJiXIBLbtZa0h7teclWEdwmVPtzFulhavlmkeb4BuRZGSkrBDuMEz8kgrjb'], 
+# 'title': ['Economic Bundle'], 'bundle': ['Student'], 'bundleContents': ['11', '12']}>
+def addBundle(request):
+    post_data = request.POST
+    print(post_data)
+
+    fee = 0
+
+    for content in post_data.getlist('bundleContents'):
+        topic = Topic.objects.get(id=content)
+        fee += topic.fee
+
+    bundle = Bundle(
+        title = post_data['title'],
+        bundleType = post_data['bundle'],
+        fee = fee,
+        subscriptionReq = True
+    )
+
+    bundle.save()
+
+    for content in post_data.getlist('bundleContents'):
+        topic = Topic.objects.get(id=content)
+        bundlecontent = BundleContent(
+            bundle = bundle,
+            topic = topic
+        )
+        bundlecontent.save()
+    return redirect('bundle')
+
+
+# <QueryDict: {'csrfmiddlewaretoken': ['ozbjDA67pI2vTMrYbk028ak56n04tSROow81FrIbMeCOjNjNRVd0vBtV6JC2OuHq'], 'counter': ['23'], 'bundle': ['1']}>
+def addKeys(request):
+    post_data = request.POST
+    iterator = post_data['counter']
+    today = datetime.date.today()
+    year = today.year
+    bundle = Bundle.objects.get(id=post_data['bundle'])
+    for i in range(int(iterator)):
+        generator = get_random_string(7)
+        code = "ESK" + generator + str(year)[-2:]
+        subscriptionkey = BundleWallet(
+            shortKey=code,
+            amount=bundle.fee,
+            bundle=bundle
+        )
+        subscriptionkey.save()    
+
+    return redirect('bundle')
+
+def exportBundleWallets(request):
+    keys = BundleWallet.objects.filter(active_status=False)
+    key_vals = keys.values_list('subscriptionKey','shortKey', 'amount')
+
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=SubscriptionKeys.csv'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Code', 'Amount'])
+    for val in key_vals:
+        writer.writerow(val)
+
+    print(writer)
+    return response
+
+def addLecture(request):
+    post_data = request.POST
+    file_data = request.FILES
+    parent_dir = "/"
+
+    try:
+        content = file_data['zipcontent']
+
+        content_dir_name = os.path.basename(content.name)[:-4]
+        dir_name = "interactives"
+        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+        print(path)
+        if os.path.exists(path):
+            print("Path exists")
+        else:
+            os.mkdir(path)
+        
+        os.chdir(path)
+        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
+
+        with zipfile.ZipFile(content) as f:
+            f.extractall()
+    except:
+        index_source = ""
+
+    course = Course.objects.get(id=post_data['course'])
+
+    lecture = Lecture(
+        title = post_data['title'],
+        detail = post_data['detail'],
+        videoUrl = post_data['videoUrl'],
+        zipurl = index_source,
+        course = course,
+        thumb = file_data['thumb']
+    )
+
+    lecture.save()
+    return redirect('courseindex')

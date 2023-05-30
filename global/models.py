@@ -2,45 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 
-
-class Subscription(models.Model):
-    title = models.CharField(max_length=128)
-    cost = models.FloatField()
-    # models.TextField(null=True, blank=True)
-
-    def __str__(self):
-        return self.title
-
-class UserSubscription(models.Model):
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
-    subscriptionStatus = models.BooleanField(default=False)
-    subscriptionType = models.OneToOneField(Subscription, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return self.subscriptionStatus
-
-class SubscriptionCode(models.Model):
-    code = models.CharField(max_length=256)
-    ref = models.OneToOneField(Subscription, on_delete=models.CASCADE)
-    status = models.BooleanField(default=False)
-    timePeriod = models.IntegerField(default=0)
-    user = models.OneToOneField(UserSubscription, on_delete=models.SET_NULL, null=True)
-
-    def __str__(self):
-        return self.code
-
-class Board(models.Model):
-    title = models.CharField(max_length=128)
-
-    def __str__(self):
-        return self.title
-
 class Qualification(models.Model):    
     title = models.CharField(max_length=128)
     level = models.CharField(max_length=128)
-
-    def __str__(self):
-        return self.title
 
 class Teacher(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -58,24 +22,6 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
-class Country(models.Model):
-    name = models.CharField(max_length=64, null=True, blank=True)
-    short = models.CharField(max_length=5, null=True, blank=True)
-
-    def __str__(self):
-        return self.short
-
-class University(models.Model):
-    name = models.CharField(max_length=128, null=True, blank=True)
-    country = models.ForeignKey(Country, related_name='university_country', on_delete=models.CASCADE)
-    url = models.CharField(max_length=128, null=True, blank=True)
-    image = models.FileField('university_image', upload_to='university', blank=True, null=True)
-    description = models.TextField(null=True, blank=True)
-    status = models.BooleanField(default=True)
-    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
-
-    def __str__(self):
-        return self.name
 
 class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -119,6 +65,87 @@ class PersonalInfo(models.Model):
 
     def __str__(self):
         return self.student.name
+
+class UserInstitute(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user_type = models.CharField(max_length=64, default='institute', blank=True, null=True)
+    status = models.BooleanField(default=True)
+    password_change = models.BooleanField(default=False)
+    name = models.CharField(max_length=128, null=True, blank=True)
+    mobile = models.CharField(max_length=11, null=True, blank=True)
+    email = models.EmailField(max_length=128, null=True, blank=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+class InstituteTutor(models.Model):
+    institute = models.OneToOneField(UserInstitute, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+
+    def __def__(self):
+        return self.institute.name
+
+class InstituteStudent(models.Model):
+    institute = models.OneToOneField(UserInstitute, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+
+    def __def__(self):
+        return self.institute.name
+
+class Subscription(models.Model):
+    title = models.CharField(max_length=128)
+    cost = models.FloatField()
+    # models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+class UserSubscription(models.Model):
+    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
+    subscriptionStatus = models.BooleanField(default=False)
+    subscriptionType = models.OneToOneField(Subscription, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.subscriptionStatus
+
+class SubscriptionCode(models.Model):
+    code = models.CharField(max_length=256)
+    ref = models.OneToOneField(Subscription, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    timePeriod = models.IntegerField(default=0)
+    user = models.OneToOneField(UserSubscription, on_delete=models.SET_NULL, null=True)
+
+    def __str__(self):
+        return self.code
+
+class Country(models.Model):
+    name = models.CharField(max_length=64, null=True, blank=True)
+    short = models.CharField(max_length=5, null=True, blank=True)
+
+    def __str__(self):
+        return self.short
+
+class Board(models.Model):
+    title = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.title
+
+    def __str__(self):
+        return self.title
+
+class University(models.Model):
+    name = models.CharField(max_length=128, null=True, blank=True)
+    country = models.ForeignKey(Country, related_name='university_country', on_delete=models.CASCADE)
+    url = models.CharField(max_length=128, null=True, blank=True)
+    image = models.FileField('university_image', upload_to='university', blank=True, null=True)
+    description = models.TextField(null=True, blank=True)
+    status = models.BooleanField(default=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.name
 
 class Social(models.Model):
     user = models.OneToOneField(User, related_name='user_social', on_delete=models.CASCADE)
@@ -252,28 +279,13 @@ class Article(models.Model):
     def __str__(self):
         return self.title
 
-class StudentWallet(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    key = models.OneToOneField(SubsciptionKey, on_delete=models.CASCADE)
-    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
-
-    def __str__(self):
-        msg = "user {} credited to {} for {} dollars."
-        done = msg.format(self.user.username, self.key.shortKey, self.key.amount)
-        return done
-
-class StudentEnlistedCourse(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
-
-    def __str__(self):
-        msg = "user {} subscribed to {}"
-        done = msg.format(self.user.username, self.course.title)
-        return done
-
 
 # COURSE HIERERCHY MODELS B -> L -> S -> T
+class Keywords(models.Model):
+    title = models.CharField(max_length=256)
+    def __str__(self):
+        return self.title
+
 class Batch(models.Model):
     title = models.CharField(max_length=64)
     detail = models.TextField(null=True, blank=True)
@@ -295,7 +307,103 @@ class Subject(models.Model):
     title = models.CharField(max_length=64)
     detail = models.TextField(null=True, blank=True)
     level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    subjectType = models.CharField(max_length=256)
+    thumb = models.FileField('subject_image', upload_to='subjectthumbs', blank=True, null=True)
+    keywords = models.ForeignKey(Keywords, null=True, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
+
+    def __str__(self):
+        return self.title
+
 class Topic(models.Model):
+    title = models.CharField(max_length=64)
+    detail = models.TextField(null=True, blank=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    subcriptionType = models.BooleanField(default=True)
+    thumb = models.FileField('topic_thumb_image', upload_to='topicthumbnails', blank=True, null=True)
+    fee = models.FloatField()
+    view_count = models.IntegerField(default=0)
+    keywords = models.ForeignKey(Keywords, null=True, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
+class TopicContent(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    videoUrl = models.CharField(max_length=256, null=True, blank=True)
+    zipContent = models.FileField('topicZips', upload_to='topicZips', null=True, blank=True)
+    zipurl = models.CharField(max_length=256, null=True, blank=True)
+    thumb = models.FileField('topic_image', upload_to='topicthumbs', blank=True, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.topic.title
+
+class TopicExercise(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    exercise = models.FileField('topicexercise', upload_to='topicexercise', null=True, blank=True)
+
+    def __str__(self):
+        return self.topic.title
+
+# type = student, institute, custom
+class Bundle(models.Model):
+    title = models.CharField(max_length=256, null=True, blank=True)
+    bundleType = models.CharField(max_length=64, null=True, blank=True)
+    fee = models.FloatField()
+    subscriptionReq = models.BooleanField(default=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
     
+    def __str__(self):
+        return self.title
+
+class BundleContent(models.Model):
+    bundle = models.ForeignKey(Bundle, on_delete=models.CASCADE)
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.bundle.title
+
+class BundleWallet(models.Model):
+    subscriptionKey=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
+    shortKey = models.CharField(max_length=12, null=True, unique=True)
+    amount = models.FloatField()
+    active_status = models.BooleanField(default=False)
+    bundle = models.ForeignKey(Bundle, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        return self.shortKey
+
+class StudentEnlistedBundles(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)    
+    bundles = models.ForeignKey(Bundle, null=True, blank=True, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        msg = "user {} subscribed to {}"
+        done = msg.format(self.user.username, self.course.title)
+        return done
+
+class StudentWallet(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    key = models.OneToOneField(SubsciptionKey, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        msg = "user {} credited to {} for {} dollars."
+        done = msg.format(self.user.username, self.key.shortKey, self.key.amount)
+        return done
+
+class StudentEnlistedCourse(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, null=True, blank=True, on_delete=models.CASCADE)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
+
+    def __str__(self):
+        msg = "user {} subscribed to {}"
+        done = msg.format(self.user.username, self.course.title)
+        return done
