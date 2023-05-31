@@ -11,18 +11,18 @@
                     <h1 class="h2 text-uppercase mb-3">Eskay</h1>
                 </div>
                 <!-- <p class="text-muted text-sm mb-4">Please Register with your proper Information</p> -->
-                <form method="post" action="{% url 'recharge' %}" enctype="multipart/form-data">{% csrf_token %}
-                    <p class="fs-2">Your Profile Fund</p>
-                    <p>Add Fund To Your profile</p>
+                <form method="post" action="{% url 'bundlesubscription' %}" enctype="multipart/form-data">{% csrf_token %}
+                    <p class="fs-2">Your Profile </p>
+                    <p>Add Topic Bundle To Your profile</p>
                     <hr>
                     <div class="row mb-3">
                         <div class="col-12">
-                            <label class="form-label" for="name">Please Enter the Fund Code </label>
+                            <label class="form-label" for="name">Please Enter the Bundle Code </label>
                             <input class="form-control" id="name" placeholder="ESK#######23" name="code" type="text" required>
                         </div>
                     </div>
                     <div class="d-grid mb-5">
-                        <button type="submit" class="btn btn-primary text-uppercase">Add Fund</button>
+                        <button type="submit" class="btn btn-primary text-uppercase">Add Bundle</button>
                     </div>
                     <!-- Link-->
                 </form>

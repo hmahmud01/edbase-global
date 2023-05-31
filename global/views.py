@@ -33,48 +33,90 @@ def landing(request):
 def landing_videos(request):
     header_class = "header-videos"
     courses = Course.objects.filter(coursetype__title="Video")
-    return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses})
+    topics = Topic.objects.all()
+    return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics})
+
 
 @login_required(login_url="/login/")
 def videos_content(request, cid):
     header_class = "header-physics"
-    course = Course.objects.get(id=cid)
-    lectures = Lecture.objects.filter(course__id=cid)
-    return render(request, 'landing/videos_content.html',  {'header_main': header_class, 'course': course, 'lectures': lectures})
+    # course = Course.objects.get(id=cid)
+    # lectures = Lecture.objects.filter(course__id=cid)
+    topic = Topic.objects.get(id=cid)
+    content = TopicContent.objects.filter(topic__id=cid)
+    exercises = TopicExercise.objects.filter(topic__id=cid)
+    topic.view_count += 1
+    topic.save()
+    # return render(request, 'landing/videos_content.html',  
+    #         {
+    #             'header_main': header_class, 'course': course, 'lectures': lectures,
+    #             'topic': topic, 'content': content, 'exercises': exercises
+    #         })
+
+    return render(request, 'landing/videos_content.html',  
+            {
+                'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises
+            })
 
 @login_required(login_url="/login/")
 def landing_physics(request):
     header_class = "header-physics"
     courses = Course.objects.filter(coursetype__title="Interactives")
-    return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses})
+    bundles = Bundle.objects.all()
+    return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses, 'bundles': bundles})
 
 @login_required(login_url="/login/")
 def physics_content(request, cid):
     header_class = "header-physics"
-    coursecontent = Course.objects.get(id=cid)
-    lectures = Lecture.objects.filter(course__id=cid)
+    # coursecontent = Course.objects.get(id=cid)
+    # lectures = Lecture.objects.filter(course__id=cid)
     allowed = True
 
-    if coursecontent.subscriptionReq == False:
-        print("SUB NOT REQUIREED:")
-        return render(request, 'landing/physics_content.html',  {'header_main': header_class, 'course': course, 'lectures': lectures, 'allowed': allowed})
+    content = BundleContent.objects.filter(bundle_id=cid)
+    bundle = Bundle.objects.get(id=cid)
+    bundle2 = content[0].bundle
+    print(bundle.fee)
+    print(content)
+    print(bundle2)
+    if bundle.subscriptionReq == False:
+        return render(request, 'landing/physics_content.html',  {
+            'header_main': header_class, 'allowed': allowed,
+            'contents': content, 'bundle': bundle})
     else:
-        print("SUB REQUIREED:")
-        studentCourses = StudentEnlistedCourse.objects.filter(user_id=request.user.id)   
-        if len(studentCourses) == 0:
+        studentbundles = StudentEnlistedBundles.objects.filter(user_id=request.user.id)
+        if len(studentbundles) == 0:
             allowed = False
-            print("NOT ALLOWED")    
         else:
-            for course in studentCourses:
-                print(course)
-                if course.course.id == cid:
-                    print("ALLOWED")
-                    allowed= True                    
-                else:
-                    allowed= False
-                    print("NOT ALLOWED")
+            for bundle in studentbundles:
+                print(bundle)
+                if bundle.bundles.id == cid:
+                    allowed=True
+        
+        return render(request, 'landing/physics_content.html',  {
+            'header_main': header_class, 'allowed': allowed,
+            'contents': content, 'bundle': bundle
+            })
 
-        return render(request, 'landing/physics_content.html',  {'header_main': header_class, 'course': coursecontent, 'lectures': lectures, 'allowed': allowed})
+    # if coursecontent.subscriptionReq == False:
+    #     print("SUB NOT REQUIREED:")
+    #     return render(request, 'landing/physics_content.html',  {'header_main': header_class, 'course': course, 'lectures': lectures, 'allowed': allowed})
+    # else:
+    #     print("SUB REQUIREED:")
+    #     studentCourses = StudentEnlistedCourse.objects.filter(user_id=request.user.id)   
+    #     if len(studentCourses) == 0:
+    #         allowed = False
+    #         print("NOT ALLOWED")    
+    #     else:
+    #         for course in studentCourses:
+    #             print(course)
+    #             if course.course.id == cid:
+    #                 print("ALLOWED")
+    #                 allowed= True                    
+    #             else:
+    #                 allowed= False
+    #                 print("NOT ALLOWED")
+
+    #     return render(request, 'landing/physics_content.html',  {'header_main': header_class, 'course': coursecontent, 'lectures': lectures, 'allowed': allowed})
 
 @login_required(login_url="/login/")
 def student_profile(request):
@@ -89,8 +131,9 @@ def student_profile(request):
 
     available_credit = available_credit - subscribed_fees
 
-    courses = StudentEnlistedCourse.objects.filter(user_id=request.user.id)
-    return render(request, 'landing/profile.html', {'available_credit': available_credit, "courses":courses})
+    bundles = StudentEnlistedBundles.objects.filter(user_id=request.user.id)
+
+    return render(request, 'landing/profile.html', {'available_credit': available_credit, "courses":subscriptions, "bundles": bundles})
 
 @login_required(login_url="/login/")
 def add_fund(request):
@@ -124,6 +167,42 @@ def wallet_recharge(request):
         return render(request, 'landing/subscribe.html', {'msg': msg})
 
     key = SubsciptionKey.objects.get(shortKey=post_data['code'])
+
+@login_required(login_url="/login/")
+def bundle_subscription(request):
+    post_data = request.POST
+    user = request.user
+    print(post_data['code'])
+    try:
+        key = BundleWallet.objects.get(shortKey=post_data['code'])
+        print(key.active_status)
+        print(key)
+        if key.active_status == False:
+            # wallet = BundleWallet(
+            #     user = user,
+            #     key = key
+            # )
+
+            enlist = StudentEnlistedBundles(
+                user = user,
+                bundles = key.bundle
+            )
+
+            enlist.save()
+
+            # wallet.save()
+            key.active_status = True
+            key.save()
+            msg = "YOUR PROFILE HAS BEEN CREDIT WITH THE CODE AMOUNT {}".format(key.amount)
+            return render(request, 'landing/subscribe.html', {'msg': msg})
+        else:
+            msg = "YOUR SUBSCRIPTION CODE IS ALREADY USED. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
+            return render(request, 'landing/subscribe.html', {'msg': msg})
+    except SubsciptionKey.DoesNotExist:
+        msg = "YOUR SUBSCRIPTION CODE IS NOT CORRECT. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
+        return render(request, 'landing/subscribe.html', {'msg': msg})
+
+    # key = SubsciptionKey.objects.get(shortKey=post_data['code'])
     
 
 @login_required(login_url="/login/")

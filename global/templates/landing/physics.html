@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="my-5">
-                <h1 class="text-dark mb-3">Interactives</h1>
+                <!-- <h1 class="text-dark mb-3">Interactives</h1>
                 {% for course in courses %}
                 <div class="col-md-12">
                     <div class="card mb-3 rounded-0">
@@ -29,7 +29,32 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {% endfor %} -->
+                <h1 class="mb-3">Bundles</h1>
+
+                <p class="text-dark">Following bundles are offered as Student packages to explore.</p>
+
+                <div class="row">
+                    {% for bundle in bundles %}
+                    <div class="col-md-3 p-2">
+                        <div class="card rounded-0">
+                            <img src="/static/asset/img/phy-10.jpg"
+                                height="200px" class="card-img-top rounded-0">
+                            <div class="card-body bg-primary">
+                                <h5 class="card-title text-white">{{ bundle.title }}</h5>
+                                <p class="card-subtitle">{{ bundle.bundleType }}</p>
+                                {% if topic.subscriptionReq %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ bundle.fee }}</small></p>
+                                {% else %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ bundle.fee }}</small></p>
+                                {% endif %}
+                                <a href="{% url 'physicscontent' bundle.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
             </div>        
         </div>
     </div>    

@@ -4,46 +4,98 @@
 <main id="about" style="background-color: white;">
     <div class="container">
         <div class="row">
-            <div class="my-5">
-                <h1 class="text-dark mb-3">Videos</h1>
-                <div class="accordion accordion-flush" id="accordionFlushExample">
-                    {% for lecture in lectures %}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordion{{lecture.id}}" aria-expanded="false"
-                                aria-controls="flush-collapseOne">
-                                {{ lecture.title }}
-                            </button>
-                        </h2>
-                        <div id="accordion{{lecture.id}}" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <img src="/media/{{ lecture.thumb }}" class="img-thumbnail" alt="...">
+            <h1 class="text-dark mb-3 mt-2">{{ topic.title }}</h1>
+            <div class="col-md-8">
+                <div class="my-5">
+                    
+                    <p class="lead text-dark">Topic Contents</p>
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <!-- {% for lecture in lectures %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion{{lecture.id}}" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    {{ lecture.title }}
+                                </button>
+                            </h2>
+                            <div id="accordion{{lecture.id}}" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img src="/media/{{ lecture.thumb }}" class="img-thumbnail" alt="...">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <p class="text-dark">
+                                                {{ lecture.detail }} <br>
+                                                Interactive Lesson Link: <a href="{{ lecture.videoUrl }}" target="_blank">Link</a>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="col-md-9">
-                                        <p class="text-dark">
-                                            {{ lecture.detail }} <br>
-                                            Interactive Lesson Link: <a href="{{ lecture.videoUrl }}" target="_blank">Link</a>
-                                        </p>
-                                    </div>
+                                    
+                                    
                                 </div>
-                                
-                                
                             </div>
                         </div>
+                        {% endfor %} -->
+
+                        {% for content in contents %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion{{lecture.id}}" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                    {{ content.topic.title }}
+                                </button>
+                            </h2>
+                            <div id="accordion{{lecture.id}}" class="accordion-collapse collapse"
+                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                <div class="accordion-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img src="/media/{{ content.topic.thumb }}" class="img-thumbnail" alt="...">
+                                        </div>
+                                        <div class="col-md-9">
+                                            <p class="text-dark">
+                                                {{ content.topic.detail }} <br>
+                                                Interactive Lesson Link: <a href="{{ content.zipurl }}" target="_blank">Link</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
+            </div>
+            <div class="col-md-4">
+                <div class="my-5">
+                    <p class="lead text-dark">Topic Details</p>
+                    <p class="text-dark">Detail : {{ topic.detail }}</p>
+                    <p class="text-dark">Subject : {{ topic.subject.title }}</p>
+                    <p class="text-dark">Fee: {{ topic.fee }}</p>
+                    <p class="text-dark">Total Visited: {{ topic.view_count }}</p>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="my-5">
+                {% for exercise in exercises %}
+                <a href="/media/{{exercise.exercise}}" class="btn btn-sm btn-outline-warning rounded-0">Exercise - {{ exercise.id }}</a>
+                {% endfor %}
             </div>
         </div>
     </div>
 </main>
 
 
-<section id="basic-idea">
+<!-- <section id="basic-idea">
     <div class="row g-0">
         <div class="col-md-4 col-lg-4 col-sm-12 bg-success">
             <div class="d-flex align-items-center h-100" style="padding: 2em;">
@@ -64,7 +116,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <section id="join">
     <div class="advertise">

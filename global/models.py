@@ -378,14 +378,17 @@ class BundleWallet(models.Model):
     def __str__(self):
         return self.shortKey
 
+
+# TODO
+# add active status to StudentBundles so that subscription can be revoked
 class StudentEnlistedBundles(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)    
-    bundles = models.ForeignKey(Bundle, null=True, blank=True, on_delete=models.CASCADE)
+    bundles = models.ForeignKey(Bundle, null=True, blank=True, on_delete=models.CASCADE) 
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         msg = "user {} subscribed to {}"
-        done = msg.format(self.user.username, self.course.title)
+        done = msg.format(self.user.username, self.bundles.title)
         return done
 
 class StudentWallet(models.Model):

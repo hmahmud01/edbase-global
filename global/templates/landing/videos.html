@@ -5,7 +5,7 @@
     <div class="container">
         <div class="row">
             <div class="my-5">
-                <h1 class="mb-3">Videos</h1>
+                <!-- <h1 class="mb-3">Videos</h1>
                 {% for course in courses %}
                 <div class="col-md-12">
                     <div class="card mb-3 rounded-0">
@@ -29,7 +29,32 @@
                         </div>
                     </div>
                 </div>
-                {% endfor %}
+                {% endfor %} -->
+
+                <h1 class="mb-3">Topics</h1>
+
+                <p class="text-dark">Following are the topics which are provided in this platform. You can Explore them and see if they are helpful To you for any purpose. Contact Us for any help and query. Thanks</p>
+
+                <div class="row">
+                    {% for topic in topics %}
+                    <div class="col-md-3 p-2">
+                        <div class="card rounded-0">
+                            <img src="/media/{{ topic.thumb }}"
+                                height="200px" class="card-img-top rounded-0">
+                            <div class="card-body bg-primary">
+                                <h5 class="card-title text-white">{{ topic.title }}</h5>
+                                <p class="card-subtitle">{{ topic.subject.title }}</p>
+                                {% if topic.subscriptionReq %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ topic.fee }}</small></p>
+                                {% else %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ topic.fee }}</small></p>
+                                {% endif %}
+                                <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>

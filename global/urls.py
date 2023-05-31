@@ -14,6 +14,7 @@ urlpatterns = [
     path('profile/', views.student_profile, name='profile'),
     path('addfund/', views.add_fund, name='addfund'),
     path('walletReceharge/', views.wallet_recharge, name='recharge'),
+    path('bundlesubscription/', views.bundle_subscription, name='bundlesubscription'),
     path('subscribe/<int:cid>/', views.subscribe, name='subscribe'),
     path('confirmsubscription/<int:cid>', views.confirmSubscription, name='confirmsubscription'),
     path('articleindex/', views.articleIndex, name='articleindex'),

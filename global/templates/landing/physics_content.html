@@ -4,30 +4,58 @@
 <main id="about" style="background-color: white;">
     <div class="container">
         <div class="row">
+            <h1 class="text-dark mb-3"> {{ bundle.title }}</h1>
             <div class="col-md-8">
-                <h1 class="text-dark mb-3"> {{ course }}</h1>
                 <div class="accordion accordion-flush" id="accordionFlushExample">
-                    {% if allowed %}
-                    {% for lecture in lectures %}
+
+                    <!-- {% for content in contents %}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingOne">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordion{{lecture.id}}" aria-expanded="false"
+                                data-bs-target="#accordion{{content.id}}" aria-expanded="false"
                                 aria-controls="flush-collapseOne">
-                                {{ lecture.title }}
+                                {{ content.topic.title }}
                             </button>
                         </h2>
-                        <div id="accordion{{lecture.id}}" class="accordion-collapse collapse"
+                        <div id="accordion{{content.id}}" class="accordion-collapse collapse"
                             aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
                             <div class="accordion-body">
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <img src="/media/{{ lecture.thumb }}" class="img-thumbnail" alt="...">
+                                        <img src="/media/{{ content.topic.thumb }}" class="img-thumbnail" alt="...">
                                     </div>
                                     <div class="col-md-9">
                                         <p class="text-dark">
                                             {{ lecture.detail }} <br>
-                                            Interactive Lesson Link: <a href="{{ lecture.zipurl }}" target="_blank">Link</a>
+                                            Interactive Lesson Link: <a href="{% url 'videoscontent' content.topic.id %}" target="_blank">Link</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %} -->
+                    {% if allowed %}
+                    {% for content in contents %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion{{content.id}}" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                                {{ content.topic.title }}
+                            </button>
+                        </h2>
+                        <div id="accordion{{content.id}}" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img src="/media/{{ content.topic.thumb }}" class="img-thumbnail" alt="...">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <p class="text-dark">
+                                            {{ content.topic.detail }} <br>
+                                            Interactive Lesson Link: <a href="{% url 'videoscontent' content.topic.id %}" target="_blank">Link</a>
                                         </p>
                                     </div>
                                 </div>
@@ -37,19 +65,21 @@
                     {% endfor %}
                     {% else %}
                     <p class="fs-4 text-dark">Course Lectures are unavailabe. You didn't subscribed this course Yet. Please Subscribed to See the course Lectures. Thanks</p>
-                    <a href="{% url 'subscribe' course.id %}" class="btn btn-sm btn-outline-dark">Subscribe</a>
                     {% endif %}
                 </div>
             </div>
             <div class="col-md-4">
-                <img src="/media/{{course.thumb}}" class="img-fluid" style="height: 240px;" alt="...">
+                <img src="/static/asset/img/phy-10.jpg" class="img-fluid mb-2" style="height: 240px;">
+                <p class="lead text-dark">Type: {{ bundle.bundleType }}</p>
+                <p class="lead text-dark">Fee: {{ bundle.fee }}</p>
+                <p class="lead text-dark">Subscription Status: {{ bundle.subscriptionReq }}</p>
             </div>
         </div>
     </div>
 </main>
 
 
-<section id="basic-idea">
+<!-- <section id="basic-idea">
     <div class="row g-0">
         <div class="col-md-4 col-lg-4 col-sm-12 bg-danger">
             <div class="d-flex align-items-center h-100" style="padding: 2em;">
@@ -70,7 +100,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <section id="join">
     <div class="advertise">
