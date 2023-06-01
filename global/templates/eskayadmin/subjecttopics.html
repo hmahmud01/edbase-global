@@ -25,6 +25,10 @@
                         data-bs-target="#topicmodal">
                         Add Topic
                     </button>
+                    <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
+                        data-bs-target="#infomodal">
+                        Add Topic Info
+                    </button>
                 </div>
             </div>
             {% endif %}
@@ -176,6 +180,75 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="infomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Information To Topic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addtopicinfo' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Select Topic</label>
+                                        <select class="form-select form-select-sm" name="topic" required>
+                                            {% for topic in topics %}
+                                            <option value="{{ topic.id }}">{{ topic.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="article" class="form-label">Artice in Text</label>
+                                        <textarea class="form-control" id="article" name="article" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="articleimage" class="form-label">Article in File</label>
+                                        <input class="form-control" type="file" id="articleimage" name="articleimage" multiple>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="instruction" class="form-label">Instruction in Text</label>
+                                        <textarea class="form-control" id="instruction" name="instruction" rows="3"></textarea>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="instructionimage" class="form-label">Instruction in File</label>
+                                        <input class="form-control" type="file" id="instructionimage" name="instructionimage" multiple>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    
+                                    <div class="mb-3">
+                                        <label for="shortdescription" class="form-label">Short Description</label>
+                                        <textarea class="form-control" id="shortdescription" name="shortdescription" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="instructional_video" class="form-label">Instruction Video URL</label>
+                                        <input type="text" class="form-control" id="instructional_video" name="instructional_video">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="theory_video" class="form-label">Theory Video URL</label>
+                                        <input type="text" class="form-control" id="theory_video" name="theory_video">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <!-- MODAL ENDS -->
 
     <h2>Subject</h2>
@@ -220,6 +293,30 @@
                     <td>{{ topic.subject.title }}</td>
                     <td>{{ topic.fee }}</td>
                     <td>{{ topic.subcriptionType }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Topic Information</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Fee</th>
+                    <th scope="col">SubscriptinType</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for info in infos %}
+                <tr>
+                    <td>{{ info.topic.title }}</td>
+                    <td>{{ info.topic.subject.title }}</td>
+                    <td>{{ info.topic.fee }}</td>
+                    <td>{{ info.topic.subcriptionType }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

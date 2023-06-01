@@ -342,6 +342,19 @@ class TopicContent(models.Model):
     def __str__(self):
         return self.topic.title
 
+class TopicInformation(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    article = models.TextField(null=True, blank=True)
+    articleimage = models.FileField('articleImg', upload_to='article_imgs', null=True, blank=True)
+    instruction = models.TextField(null=True, blank=True)
+    instructionimage = models.FileField('instructionImg', upload_to='instruction_imgs', null=True, blank=True)
+    shortdescription = models.TextField(null=True, blank=True)
+    instructional_video = models.CharField(max_length=512, null=True, blank=True)
+    theory_video = models.CharField(max_length=512, null=True, blank=True)
+
+    def __str__(self):
+        return self.topic.title
+
 class TopicExercise(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     exercise = models.FileField('topicexercise', upload_to='topicexercise', null=True, blank=True)

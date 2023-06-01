@@ -80,6 +80,7 @@ urlpatterns = [
     path('subjecttopics/', views.subjecttopics, name="subjecttopics"),
     path('addsubject/', views.addSubject, name="addsubject"),
     path('addtopics/', views.addTopics, name="addtopics"),
+    path('addtopicinfo/', views.addTopicInformation, name="addtopicinfo"),
     path('bundle/', views.bundle, name="bundle"),
     path('addbundle/', views.addBundle, name="addbundle"),
     path('unsubscribebundle/<int:bid>', views.bundle_unsubscribe, name="unsubscribebundle"),

@@ -74,11 +74,8 @@ def landing_physics(request):
 @login_required(login_url="/login/")
 def physics_content(request, cid):
     header_class = "header-physics"
-    # coursecontent = Course.objects.get(id=cid)
-    # lectures = Lecture.objects.filter(course__id=cid)
     allowed = True
 
-    # enlisted = StudentEnlistedBundles.objects.get(bundles__id=cid)
     content = BundleContent.objects.filter(bundle__id=cid)
     bundledetail = Bundle.objects.get(id=cid)
     if bundledetail.subscriptionReq == False:
@@ -102,27 +99,6 @@ def physics_content(request, cid):
             'header_main': header_class, 'allowed': allowed,
             'contents': content, 'bundle': bundledetail
             })
-
-    # if coursecontent.subscriptionReq == False:
-    #     print("SUB NOT REQUIREED:")
-    #     return render(request, 'landing/physics_content.html',  {'header_main': header_class, 'course': course, 'lectures': lectures, 'allowed': allowed})
-    # else:
-    #     print("SUB REQUIREED:")
-    #     studentCourses = StudentEnlistedCourse.objects.filter(user_id=request.user.id)   
-    #     if len(studentCourses) == 0:
-    #         allowed = False
-    #         print("NOT ALLOWED")    
-    #     else:
-    #         for course in studentCourses:
-    #             print(course)
-    #             if course.course.id == cid:
-    #                 print("ALLOWED")
-    #                 allowed= True                    
-    #             else:
-    #                 allowed= False
-    #                 print("NOT ALLOWED")
-
-    #     return render(request, 'landing/physics_content.html',  {'header_main': header_class, 'course': coursecontent, 'lectures': lectures, 'allowed': allowed})
 
 @login_required(login_url="/login/")
 def student_profile(request):
@@ -1152,30 +1128,6 @@ def studentUnis(request):
     country = Country.objects.get(id=cid)
     return render(request, 'ajax/uni_list.html', {'unis': unis, 'country': country})
 
-# def postStudentUni(request):
-#     post_data = request.POST
-#     print(request.POST)
-#     student = Student.objects.get(id=post_data['sid'])
-#     unis = post_data.getlist('unis')
-
-#     for uni in unis:
-#         university = University.objects.get(id=uni)
-#         studentUni = StudentUniversityIndex(
-#             student = student,
-#             university = university
-#         )
-
-#         studentUni.save()
-    
-#     return redirect('myprofile')
-
-
-# def studentUnis(request):
-#     get_data = request.GET    
-#     cid = get_data.get('cid')
-#     unis = University.objects.filter(country__id=cid)
-#     return render(request, 'ajax/uni_list.html', {'unis': unis})
-
 def postStudentUni(request):
     post_data = request.POST
     print(request.POST)
@@ -1204,29 +1156,6 @@ def postStudentUni(request):
     log.save()
 
     return redirect('myprofile')
-
-# def studentUnis(request):
-#     get_data = request.GET    
-#     cid = get_data.get('cid')
-#     unis = University.objects.filter(country__id=cid)
-#     return render(request, 'ajax/uni_list.html', {'unis': unis})
-
-# def postStudentUni(request):
-#     post_data = request.POST
-#     print(request.POST)
-#     student = Student.objects.get(id=post_data['sid'])
-#     unis = post_data.getlist('unis')
-
-#     for uni in unis:
-#         university = University.objects.get(id=uni)
-#         studentUni = StudentUniversityIndex(
-#             student = student,
-#             university = university
-#         )
-
-#         studentUni.save()
-
-#     return redirect('myprofile')
 
 def directoryList(request):
     pass
@@ -1431,7 +1360,9 @@ def subjecttopics(request):
     levels = Level.objects.all()
     subjects = Subject.objects.all()
     topics = Topic.objects.all()
-    return render(request, 'eskayadmin/subjecttopics.html', {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels})
+    infos = TopicInformation.objects.all()
+    return render(request, 'eskayadmin/subjecttopics.html', 
+        {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos})
 
 # <QueryDict: {'csrfmiddlewaretoken': ['GESeUKiZzcxw9iZxRru0pnMsSOT8gePzGBPWWBU3WI7PzjRmx2HYMOViSav6BQFb'], 
 # 'title': ['sdf'], 'type': ['sfe'], 'desc': ['sfes'], 'subscriptiontype': ['1'], 'level': ['1']}>
@@ -1530,6 +1461,26 @@ def addTopics(request):
     )
 
     content.save()
+    return redirect('subjecttopics')
+
+def addTopicInformation(request):
+    post_data = request.POST
+    file_data = request.FILES
+    topic = Topic.objects.get(id=post_data['topic'])
+
+    info = TopicInformation(
+        topic=topic,
+        article=post_data['article'],
+        articleimage=file_data['articleimage'],
+        instruction=post_data['instruction'],
+        instructionimage=file_data['instructionimage'],
+        shortdescription =post_data['shortdescription'],
+        instructional_video=post_data['instructional_video'],
+        theory_video=post_data['theory_video']
+    )
+
+    info.save()
+
     return redirect('subjecttopics')
 
 def bundle(request):
