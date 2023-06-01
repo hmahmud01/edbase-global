@@ -62,7 +62,13 @@ def videos_content(request, cid):
 def landing_physics(request):
     header_class = "header-physics"
     courses = Course.objects.filter(coursetype__title="Interactives")
+    # if request.user.student:
+    #     bundles = StudentEnlistedBundles.objects.filter(user__id=request.user.id).filter(status=True)
+    # else:
+    #     bundles = Bundle.objects.all()
+
     bundles = Bundle.objects.all()
+    
     return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses, 'bundles': bundles})
 
 @login_required(login_url="/login/")
@@ -72,29 +78,29 @@ def physics_content(request, cid):
     # lectures = Lecture.objects.filter(course__id=cid)
     allowed = True
 
-    content = BundleContent.objects.filter(bundle_id=cid)
-    bundle = Bundle.objects.get(id=cid)
-    bundle2 = content[0].bundle
-    print(bundle.fee)
-    print(content)
-    print(bundle2)
-    if bundle.subscriptionReq == False:
+    # enlisted = StudentEnlistedBundles.objects.get(bundles__id=cid)
+    content = BundleContent.objects.filter(bundle__id=cid)
+    bundledetail = Bundle.objects.get(id=cid)
+    if bundledetail.subscriptionReq == False:
         return render(request, 'landing/physics_content.html',  {
             'header_main': header_class, 'allowed': allowed,
-            'contents': content, 'bundle': bundle})
+            'contents': content, 'bundle': bundledetail})
     else:
         studentbundles = StudentEnlistedBundles.objects.filter(user_id=request.user.id)
+        print(studentbundles)
         if len(studentbundles) == 0:
             allowed = False
         else:
             for bundle in studentbundles:
-                print(bundle)
-                if bundle.bundles.id == cid:
+                if bundle.bundles.id == cid and bundle.status:
                     allowed=True
+                    break
+                else:
+                    allowed=False
         
         return render(request, 'landing/physics_content.html',  {
             'header_main': header_class, 'allowed': allowed,
-            'contents': content, 'bundle': bundle
+            'contents': content, 'bundle': bundledetail
             })
 
     # if coursecontent.subscriptionReq == False:
@@ -178,11 +184,6 @@ def bundle_subscription(request):
         print(key.active_status)
         print(key)
         if key.active_status == False:
-            # wallet = BundleWallet(
-            #     user = user,
-            #     key = key
-            # )
-
             enlist = StudentEnlistedBundles(
                 user = user,
                 bundles = key.bundle
@@ -203,6 +204,20 @@ def bundle_subscription(request):
         return render(request, 'landing/subscribe.html', {'msg': msg})
 
     # key = SubsciptionKey.objects.get(shortKey=post_data['code'])
+
+@login_required(login_url="/login/")
+def bundle_unsubscribe(request, bid):
+    enlisted = StudentEnlistedBundles.objects.get(id=bid)
+    enlisted.status=False
+    enlisted.save()
+    return redirect('profile')
+
+@login_required(login_url="/login/")
+def bundle_reactivate(request, bid):
+    enlisted = StudentEnlistedBundles.objects.get(id=bid)
+    enlisted.status=True
+    enlisted.save()
+    return redirect('profile')
     
 
 @login_required(login_url="/login/")

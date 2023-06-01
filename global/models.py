@@ -384,6 +384,7 @@ class BundleWallet(models.Model):
 class StudentEnlistedBundles(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)    
     bundles = models.ForeignKey(Bundle, null=True, blank=True, on_delete=models.CASCADE) 
+    status = models.BooleanField(null=True, blank=True, default=True)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):

@@ -82,6 +82,8 @@ urlpatterns = [
     path('addtopics/', views.addTopics, name="addtopics"),
     path('bundle/', views.bundle, name="bundle"),
     path('addbundle/', views.addBundle, name="addbundle"),
+    path('unsubscribebundle/<int:bid>', views.bundle_unsubscribe, name="unsubscribebundle"),
+    path('reactivebundle/<int:bid>', views.bundle_reactivate, name="reactivebundle"),
     path('addkeys/', views.addKeys, name="addkeys"),
     path('exportbundlewallets/', views.exportBundleWallets, name="exportbundlewallets"),
 ]

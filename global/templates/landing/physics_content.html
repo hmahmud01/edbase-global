@@ -7,34 +7,6 @@
             <h1 class="text-dark mb-3"> {{ bundle.title }}</h1>
             <div class="col-md-8">
                 <div class="accordion accordion-flush" id="accordionFlushExample">
-
-                    <!-- {% for content in contents %}
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordion{{content.id}}" aria-expanded="false"
-                                aria-controls="flush-collapseOne">
-                                {{ content.topic.title }}
-                            </button>
-                        </h2>
-                        <div id="accordion{{content.id}}" class="accordion-collapse collapse"
-                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <img src="/media/{{ content.topic.thumb }}" class="img-thumbnail" alt="...">
-                                    </div>
-                                    <div class="col-md-9">
-                                        <p class="text-dark">
-                                            {{ lecture.detail }} <br>
-                                            Interactive Lesson Link: <a href="{% url 'videoscontent' content.topic.id %}" target="_blank">Link</a>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %} -->
                     {% if allowed %}
                     {% for content in contents %}
                     <div class="accordion-item">

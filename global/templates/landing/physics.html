@@ -5,36 +5,31 @@
     <div class="container">
         <div class="row">
             <div class="my-5">
-                <!-- <h1 class="text-dark mb-3">Interactives</h1>
-                {% for course in courses %}
-                <div class="col-md-12">
-                    <div class="card mb-3 rounded-0">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="/media/{{ course.thumb }}"
-                                    class="img-fluid rounded-start" alt="{{ course.title }}">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body bg-primary">
-                                    <h5 class="card-title text-white">{{ course.title }}</h5>
-                                    <p class="card-text text-dark course-landing-text text-white">{{ course.detail }}</p>
-                                    {% if course.subscriptionReq %}
-                                    <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ course.fee }}</small></p>
-                                    {% else %}
-                                    <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ course.fee }}</small></p>
-                                    {% endif %}
-                                    <a href="{% url 'physicscontent' course.id %}" class="btn btn-sm btn-outline-warning rounded-0">See Course Content</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %} -->
                 <h1 class="mb-3">Bundles</h1>
 
                 <p class="text-dark">Following bundles are offered as Student packages to explore.</p>
 
                 <div class="row">
+                    {% comment %} {% if request.user.student %}
+                    {% for bundle in bundles %}
+                    <div class="col-md-3 p-2">
+                        <div class="card rounded-0">
+                            <img src="/static/asset/img/phy-10.jpg"
+                                height="200px" class="card-img-top rounded-0">
+                            <div class="card-body bg-primary">
+                                <h5 class="card-title text-white">{{ bundle.bundles.title }}</h5>
+                                <p class="card-subtitle">{{ bundle.bundles.bundleType }}</p>
+                                {% if topic.subscriptionReq %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ bundle.bundles.fee }}</small></p>
+                                {% else %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ bundle.bundles.fee }}</small></p>
+                                {% endif %}
+                                <a href="{% url 'physicscontent' bundle.bundles.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %} {% endcomment %}
                     {% for bundle in bundles %}
                     <div class="col-md-3 p-2">
                         <div class="card rounded-0">
@@ -53,6 +48,8 @@
                         </div>
                     </div>
                     {% endfor %}
+                    {% comment %} {% endif %} {% endcomment %}
+                    
                 </div>
 
             </div>        

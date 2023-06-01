@@ -126,7 +126,7 @@
                                         <label for="Title" class="form-label">Subject</label>
                                         <select class="form-select form-select-sm" name="subject" required>
                                             {% for subject in subjects %}
-                                            <option value="{{ subject.id }}">{{ subject.title }}</option>
+                                            <option value="{{ subject.id }}">{{ subject.title }} - {{ subject.level.title }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
