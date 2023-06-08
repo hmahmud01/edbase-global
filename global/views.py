@@ -40,22 +40,22 @@ def landing_videos(request):
 @login_required(login_url="/login/")
 def videos_content(request, cid):
     header_class = "header-physics"
-    # course = Course.objects.get(id=cid)
-    # lectures = Lecture.objects.filter(course__id=cid)
     topic = Topic.objects.get(id=cid)
     content = TopicContent.objects.filter(topic__id=cid)
     exercises = TopicExercise.objects.filter(topic__id=cid)
     topic.view_count += 1
     topic.save()
-    # return render(request, 'landing/videos_content.html',  
-    #         {
-    #             'header_main': header_class, 'course': course, 'lectures': lectures,
-    #             'topic': topic, 'content': content, 'exercises': exercises
-    #         })
+    info = None
+
+    try:
+        info = TopicInformation.objects.get(topic__id=cid)
+        print(info)
+    except:
+        info = None
 
     return render(request, 'landing/videos_content.html',  
             {
-                'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises
+                'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises, 'info': info
             })
 
 @login_required(login_url="/login/")

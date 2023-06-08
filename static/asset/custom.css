@@ -329,3 +329,9 @@ nav .fa-bars:hover {
 .bg-video { 
     background-color: #dffd0d !important;
 }
+
+.content-background {
+    height: 300px;
+    width: 100%;
+    background-size: cover;
+}
