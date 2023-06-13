@@ -1,0 +1,86 @@
+.section-1 {
+    position: relative;
+    background-color: #fff;
+}
+
+.jss225 svg {
+    top: -200px;
+    left: 40px;
+    position: absolute;
+    transform: translateX(-40%);
+}
+
+.jss226 {
+    width: 100%;
+    bottom: 0;
+    top: 320px;
+    height: 740px;
+    overflow: hidden;
+    position: absolute;
+    padding-top: 8px;
+}
+
+.jss226 svg {
+    left: 60%;
+    bottom: 0;
+    position: absolute;
+    min-width: 1280px;
+    transform: translateX(-50%);
+}
+
+.section-2 {
+    overflow: hidden;
+    position: relative;
+    background-color: #002333;
+}
+
+.jss239 svg {
+    left: 50%;
+    bottom: 30px;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.border-cs {
+    border-color: #00FF84 !important;
+}
+
+.cs-list{
+    list-style: none !important;
+    position: relative;
+    padding-left: 44px;
+}
+
+.cs-list svg {
+    top: 5px;
+    left: 0;
+    position: absolute;
+}
+
+.vision .content {
+    background-image: url("https://www.edx.org/images/brand/globe-dark-lg.png");
+    background-position: bottom;
+    background-repeat: no-repeat;
+    background-position-x: right;
+}
+
+.section-course {
+    position: relative;
+    background-color: #1c1d1f;
+}
+
+.header-physics {
+    height: 10vh !important;
+    background-color: #1c1d1f !important;
+}
+
+.header-videos {
+    height: 10vh !important;
+    background-color: #1c1d1f !important;
+}
+
+.main-content {
+    padding: 0 !important;
+    background: #111 !important;
+    background-color: white !important;
+}

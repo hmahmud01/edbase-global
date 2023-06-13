@@ -24,13 +24,13 @@ ul {
 
 .header-videos {
     height: 30vh !important;
-    background: url(/static/asset/img/phy-2.jpg) no-repeat center;
+    /* background: url(/static/asset/img/phy-2.jpg) no-repeat center; */
     background-size: cover;
 }
 
 .header-physics {
     height: 30vh !important;
-    background: url(/static/asset/img/phy-9.jpg) no-repeat center;
+    /* background: url(/static/asset/img/phy-9.jpg) no-repeat center; */
     background-size: cover;
 }
 

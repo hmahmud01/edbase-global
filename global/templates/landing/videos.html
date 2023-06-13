@@ -1,58 +1,59 @@
 {% extends 'base_landing.html' %}
 
 {% block content %}
-<main id="about" style="background-color: white ;">
+<main id="about" class="main-content" style="background-color: white ;">
+    <section class="section-course text-white">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="fs-3 fw-bold mb-2">Topics</p>
+                    <p class="my-2">Following are the topics which are provided in this platform. You can Explore them and see if they are helpful To you for any purpose. Contact Us for any help and query. Thanks</p>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
     <div class="container">
         <div class="row">
             <div class="my-5">
-                <!-- <h1 class="mb-3">Videos</h1>
-                {% for course in courses %}
-                <div class="col-md-12">
-                    <div class="card mb-3 rounded-0">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="/media/{{ course.thumb }}"
-                                    class="img-fluid rounded-start" alt="{{ course.title }}">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body bg-primary">
-                                    <h5 class="card-title text-white">{{ course.title }}</h5>
-                                    <p class="card-text text-dark course-landing-text text-white">{{ course.detail }}</p>
-                                    {% if course.subscriptionReq %}
-                                    <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ course.fee }}</small></p>
-                                    {% else %}
-                                    <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ course.fee }}</small></p>
-                                    {% endif %}
-                                    <a href="{% url 'videoscontent' course.id %}" class="btn btn-sm btn-outline-warning rounded-0">See Course Content</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %} -->
-
-                <h1 class="mb-3">Topics</h1>
-
-                <p class="text-dark">Following are the topics which are provided in this platform. You can Explore them and see if they are helpful To you for any purpose. Contact Us for any help and query. Thanks</p>
-
                 <div class="row">
                     {% for topic in topics %}
                     <div class="col-md-3 p-2">
                         <div class="card rounded-0">
                             <img src="/media/{{ topic.thumb }}"
                                 height="200px" class="card-img-top rounded-0">
-                            <div class="card-body bg-primary">
-                                <h5 class="card-title text-white">{{ topic.title }}</h5>
-                                <p class="card-subtitle">{{ topic.subject.title }}</p>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ topic.title }}</h5>
+                                <p class="card-subtitle text-dark">{{ topic.subject.title }}</p>
                                 {% if topic.subscriptionReq %}
-                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ topic.fee }}</small></p>
+                                <p class="card-text mt-2 text-dark"><small class="">Subscription Required: Required <br> Fee: {{ topic.fee }}</small></p>
                                 {% else %}
-                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ topic.fee }}</small></p>
+                                <p class="card-text mt-2 text-dark"><small class="">Subscription Required: Not Required <br> Fee: {{ topic.fee }}</small></p>
                                 {% endif %}
-                                <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a>
+                                <!-- <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a> -->
+                                <div class="d-grid gap-2">
+                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">AS Level</a>
+                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">A2 Level</a>
+                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">O Level</a>
+                                  </div>
                             </div>
                         </div>
                     </div>
+                    <!-- <div class="card rounded-0 my-2">
+                        <img src="https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="card-img-top rounded-0" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-sm btn-outline-dark rounded-0" type="button">Button</button>
+                            <button class="btn btn-sm btn-outline-dark rounded-0" type="button">Button</button>
+                            <button class="btn btn-sm btn-outline-dark rounded-0" type="button">Button</button>
+                          </div>
+                        </div>
+                    </div> -->
                     {% endfor %}
                 </div>
             </div>
@@ -63,7 +64,7 @@
 
 <section id="basic-idea">
     <div class="row g-0">
-        <div class="col-md-4 col-lg-4 col-sm-12 bg-video">
+        <div class="col-md-6 col-lg-6 col-sm-12 bg-video">
             <div class="d-flex align-items-center h-100" style="padding: 2em;">
                 <div class="p-5 text-white">
                     <h1 class="mb-5 text-dark">Videos</h1>
@@ -82,7 +83,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-lg-8 col-sm-12">
+        <div class="col-md-6 col-lg-6 col-sm-12">
             <div class="idea-background h-100">
                 <div class="overlay px-5 py-5 text-light d-flex align-self-center">
                     <div class="row align-items-center" style="padding: 2em;">
@@ -96,16 +97,5 @@
     </div>
 </section>
 
-<section id="join">
-    <div class="advertise">
-        <div class="d-flex align-items-center justify-content-center h-100 w-100 py-5">
-            <div class="my-5 text-center">
-                <h1 class="add-stroke"> Eskay Physics</h1>
-                <a href="{% url 'login' %}" class="btn btn-outline-light align-self-center rounded-0">Sign in to find
-                    out more.</a>
-            </div>
-        </div>
-    </div>
-</section>
 
 {% endblock %}

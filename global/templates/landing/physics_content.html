@@ -1,13 +1,33 @@
 {% extends 'base_landing.html' %}
 
 {% block content %}
-<main id="about" style="background-color: white;">
-    <div class="container">
+<main id="about" class="main-content" style="background-color: white;">
+    <section class="section-course text-white">
+        <div class="container p-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="fs-3 fw-bold mb-2">{{ bundle.title }}</p>
+                    <p class="text-light">Bundle</p>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Library</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </div>
+
+                <div class="col-md-4">
+                    <img src="/static/asset/img/phy-10.jpg" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container p-5">
         <div class="row">
-            <h1 class="text-dark mb-3"> {{ bundle.title }}</h1>
-            <div class="col-md-8">
+            <div class="col-md-8 border p-4">
                 <div class="accordion accordion-flush" id="accordionFlushExample">
                     {% if allowed %}
+                    <p class="fs-3 fw-bold mb-5 text-dark">Bundle Contents</p>
+
                     {% for content in contents %}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="flush-headingOne">
@@ -40,11 +60,17 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-md-4">
-                <img src="/static/asset/img/phy-10.jpg" class="img-fluid mb-2" style="height: 240px;">
-                <p class="lead text-dark">Type: {{ bundle.bundleType }}</p>
-                <p class="lead text-dark">Fee: {{ bundle.fee }}</p>
-                <p class="lead text-dark">Subscription Status: {{ bundle.subscriptionReq }}</p>
+            <div class="col-md-4">     
+                <div class="border p-4">
+                    <p class="lead text-dark">Information</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-info-square"></i> Type: {{ bundle.bundleType }}</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-currency-dollar"></i> Fee: {{ bundle.fee }}</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-body-text"></i> Subscription : {{ bundle.subscriptionReq }}</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-person-check"></i> 9101 Students</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-info-circle"></i> Last Updated 2023</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-globe"></i> English</p>
+                </div>           
+                
             </div>
         </div>
     </div>
@@ -74,7 +100,7 @@
     </div>
 </section> -->
 
-<section id="join">
+<!-- <section id="join">
     <div class="advertise">
         <div class="d-flex align-items-center justify-content-center h-100 w-100 py-5">
             <div class="my-5 text-center">
@@ -84,6 +110,6 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 {% endblock %}
