@@ -84,3 +84,26 @@
     background: #111 !important;
     background-color: white !important;
 }
+
+.btn-eskay {
+    color: #fff;
+    background-color: #002333;
+    border-color: #002333;
+}
+
+.btn-eskay:hover {
+    color: #fff;
+    background-color: #001c29;
+    border-color: #001c29;
+}
+
+.btn-outline-eskay {
+    color: #001c29;
+    border-color: #001c29;
+}
+
+.btn-outline-eskay:hover {
+    color: #fff;
+    background-color: #001c29;
+    border-color: #001c29;
+}

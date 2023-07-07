@@ -35,10 +35,15 @@
                                 {% endif %}
                                 <!-- <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a> -->
                                 <div class="d-grid gap-2">
-                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">AS Level</a>
+                                    {% comment %} <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">AS Level</a>
                                     <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">A2 Level</a>
-                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">O Level</a>
-                                  </div>
+                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">O Level</a> {% endcomment %}
+                                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                        <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">AS Level</a>
+                                        <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">A2 Level</a>
+                                        <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">O Level</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,7 +72,7 @@
         <div class="col-md-6 col-lg-6 col-sm-12 bg-video">
             <div class="d-flex align-items-center h-100" style="padding: 2em;">
                 <div class="p-5 text-white">
-                    <h1 class="mb-5 text-dark">Videos</h1>
+                    <h1 class="mb-5 text-dark">Physics</h1>
                     <p class="text-dark">Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
                         classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a
                         Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure

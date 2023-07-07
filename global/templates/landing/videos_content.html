@@ -29,14 +29,15 @@
         <div class="container p-5">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="border p-4 text-dark mb-5">
+                    <div class="border p-4 text-dark mb-5 shadow-sm rounded-3">
                         <h3 class="mb-2">Few Words About The Course</h3>
+                        <hr>
                         {% if info is not None %}
                         <p class="mb-3 lh-sm text-dark">
                             {{ info.shortdescription }}
                         </p>
                         {% endif %}
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <div class="mt-5 mb-2">  
                                 {% for content in contents %}
                                 <div class="row">
@@ -45,25 +46,42 @@
                                             {{ content.topic.detail }}
                                         </p> -->
                                         <!-- <iframe src="{{ content.zipurl }}" height="200" width="300" title="Iframe Example"></iframe>  -->
-                                        <p class="text-dark">Interactive Lesson Link: <a class="btn btn-sm btn-outline-dark rounded-0 px-5" href="{{ content.zipurl }}" target="_blank">Click</a></p>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <p class="text-dark">Interactive Lesson Link:</p>
+                                            </div>
+                                            <div>
+                                                <a class="btn btn-sm btn-eskay rounded-3 px-5" href="{{ content.zipurl }}" target="_blank">Click</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 {% endfor %}
+                                <hr>
                                 <h3 class="mb-2">Exercises</h3>
-                                {% for exercise in exercises %}
-                                <a href="/media/{{exercise.exercise}}" class="btn btn-sm btn-outline-info rounded-0">Exercise - {{ exercise.id }}</a>
-                                {% endfor %}
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <p class="lead text-dark">View All the Exercises</p>
+                                    </div>
+                                    <div>
+                                        {% for exercise in exercises %}
+                                        <a href="/media/{{exercise.exercise}}" class="btn btn-sm btn-outline-eskay rounded-3">Exercise - {{ exercise.id }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </div>
 
                     {% if info is not None %}
-                    <div class="border p-4 text-dark mb-5">
+                    <div class="border p-4 text-dark mb-5 shadow-sm">
                         <h3 class="mb-2">Article</h3>
+                        <hr>
                         <p class="mb-3 lh-sm text-dark">
                             {{ info.shortdescription }}
                         </p>
-                        <div class="col-md-8">
+                        <!-- <div class="col-md-8">
                             <div class="mt-5 mb-2">  
                                 {% for content in contents %}
                                 <div class="row">
@@ -73,14 +91,15 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-                    <div class="border p-4 text-dark">
+                    <div class="border p-4 text-dark shadow-sm">
                         <h3 class="mb-2">Instructions</h3>
+                        <hr>
                         <p class="mb-3 lh-sm text-dark">
                             {{ info.instruction }}
                         </p>
-                        <div class="col-md-8">
+                        <!-- <div class="col-md-8">
                             <div class="mt-5 mb-2">  
                                 {% for content in contents %}
                                 <div class="row">
@@ -90,35 +109,40 @@
                                 </div>
                                 {% endfor %}
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     {% endif %}
                 </div>
 
                 <div class="col-md-4">
-                    <div class="border p-4 shadow-sm">
+                    <div class="border p-4 shadow-sm mb-5">
                         <p class="fs-3 text-dark">{{ topic.fee }} $</p>
+                        <hr>
                         <p class="m-0 p-0 text-dark"><i class="bi bi-clock"></i> 9 Hours (Estimated)</p>
                         <p class="m-0 p-0 text-dark"><i class="bi bi-filetype-pdf"></i> Articles Available</p>
                         <p class="m-0 p-0 text-dark"><i class="bi bi-paperclip"></i> Test Available</p>
                         <p class="m-0 p-0 text-dark"><i class="bi bi-controller"></i> Simulations Available</p>
                         <p class="m-0 p-0 text-dark"><i class="bi bi-arrow-counterclockwise"></i> {{ topic.view_count }} visited</p>
-                        
+                        <hr>
+                        <a href="" class="btn btn-eskay">Subscribe Bundle</a>
+                        <p class="text-dark my-2">Note: <small class="text-dark">This will Subscribe the Bundle containing this topic</small></p>
                     </div>
                     {% if info is not None %}
-                    <div class="card rounded-0 my-2">     
+                    <div class="card rounded-0 my-2 mb-5">     
                         <div class="card-body">
                             <h5 class="card-title">Instructional Video</h5>  
+                            <hr>
                             <div class="my-2 d-flex justify-content-center">
                                 <object data='{{ info.instructional_video }}'></object>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card rounded-0 my-2">    
+                    <div class="card rounded-0 my-2 mb-5">    
                         <div class="card-body">
-                            <h5 class="card-title">Theory Video</h5>  
+                            <h5 class="card-title">Theory Video</h5> 
+                            <hr> 
                             <div class="my-2 d-flex justify-content-center">
                                 <object data='{{ info.theory_video }}'></object>
                             </div>

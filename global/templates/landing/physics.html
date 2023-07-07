@@ -43,26 +43,26 @@
                     {% else %} {% endcomment %}
                     {% for bundle in bundles %}
                     <div class="col-md-3 p-2">
-                        <div class="card rounded-0">
+                        <div class="card rounded-3">
                             <img src="/static/asset/img/phy-10.jpg"
                                 height="200px" class="card-img-top rounded-0">
-                            <div class="card-body bg-primary">
-                                <h5 class="card-title text-white">{{ bundle.title }}</h5>
-                                <p class="card-subtitle">{{ bundle.bundleType }}</p>
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">{{ bundle.title }}</h5>
+                                <p class="card-subtitle text-dark">{{ bundle.bundleType }}</p>
                                 {% if topic.subscriptionReq %}
-                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ bundle.fee }}</small></p>
+                                <p class="card-text mt-2"><small class="text-dark">Subscription Required: Required <br> Fee: {{ bundle.fee }}</small></p>
                                 {% else %}
-                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ bundle.fee }}</small></p>
+                                <p class="card-text mt-2"><small class="text-dark">Subscription Required: Not Required <br> Fee: {{ bundle.fee }}</small></p>
                                 {% endif %}
-                                <a href="{% url 'physicscontent' bundle.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a>
+                                <div class="d-grid col-6 mx-auto">
+                                    <a href="{% url 'physicscontent' bundle.id %}" class="btn btn-sm btn-eskay rounded-pill">Expore</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     {% endfor %}
                     {% comment %} {% endif %} {% endcomment %}
-                    
                 </div>
-
             </div>        
         </div>
     </div>    
@@ -74,7 +74,7 @@
         <div class="col-md-6 col-lg-6 col-sm-12 bg-interact">
             <div class="d-flex align-items-center h-100" style="padding: 2em;">
                 <div class="p-5 text-white">
-                    <h1 class="mb-5">Interactives</h1>
+                    <h1 class="mb-5">Bundles</h1>
                     <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
                         classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a
                         Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure
