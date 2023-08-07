@@ -1,0 +1,123 @@
+{% extends 'base_landing.html' %}
+
+{% block content %}
+<main id="about" class="main-content" style="background-color: white;">
+    <section class="section-course text-white">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="fs-3 fw-bold mb-2">Bundles</p>
+                    <p class="my-2">Following bundles are offered as Student packages to explore.</p>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row">
+            <div class="my-5">                
+
+                <div class="row">
+                    {% comment %} {% if request.user.student %}
+                    {% for bundle in bundles %}
+                    <div class="col-md-3 p-2">
+                        <div class="card rounded-0">
+                            <img src="/static/asset/img/phy-10.jpg"
+                                height="200px" class="card-img-top rounded-0">
+                            <div class="card-body bg-primary">
+                                <h5 class="card-title text-white">{{ bundle.bundles.title }}</h5>
+                                <p class="card-subtitle">{{ bundle.bundles.bundleType }}</p>
+                                {% if topic.subscriptionReq %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Required <br> Fee: {{ bundle.bundles.fee }}</small></p>
+                                {% else %}
+                                <p class="card-text mt-2"><small class="text-white">Subscription Required: Not Required <br> Fee: {{ bundle.bundles.fee }}</small></p>
+                                {% endif %}
+                                <a href="{% url 'physicscontent' bundle.bundles.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %} {% endcomment %}
+                    {% for bundle in bundles %}
+                    <div class="col-md-3 p-2">
+                        <div class="card rounded-3">
+                            <img src="/static/asset/img/phy-10.jpg"
+                                height="200px" class="card-img-top rounded-0">
+                            <div class="card-body">
+                                <h5 class="card-title text-dark">{{ bundle.title }}</h5>
+                                <p class="card-subtitle text-dark">{{ bundle.bundleType }}</p>
+                                {% if topic.subscriptionReq %}
+                                <p class="card-text mt-2"><small class="text-dark">Subscription Required: Required <br> Fee: {{ bundle.fee }}</small></p>
+                                {% else %}
+                                <p class="card-text mt-2"><small class="text-dark">Subscription Required: Not Required <br> Fee: {{ bundle.fee }}</small></p>
+                                {% endif %}
+                                <div class="d-grid col-6 mx-auto">
+                                    <a href="{% url 'physicscontent' bundle.id %}" class="btn btn-sm btn-eskay rounded-pill">Expore</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% comment %} {% endif %} {% endcomment %}
+                </div>
+            </div>        
+        </div>
+    </div>    
+</main>
+
+
+<section id="basic-idea">
+    <div class="row g-0">
+        <div class="col-md-6 col-lg-6 col-sm-12 bg-interact">
+            <div class="d-flex align-items-center h-100" style="padding: 2em;">
+                <div class="p-5 text-white">
+                    <h1 class="mb-5">Bundles</h1>
+                    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
+                        classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a
+                        Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure
+                        Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the
+                        word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from
+                        sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and
+                        Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very
+                        popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit
+                        amet..", comes from a line in section 1.10.32. The standard chunk of Lorem Ipsum used since
+                        the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de
+                        Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form,
+                        accompanied by English versions from the 1914 translation by H. Rackham.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-6 col-sm-12">
+            <div class="idea-background h-100">
+                <div class="overlay px-5 py-5 text-light d-flex align-self-center">
+                    <div class="row align-items-center" style="padding: 2em;">
+                        <div class="col-md-5 d-flex flex-column justify-content-between">
+                            <!-- <h1 class="mb-5">Every Purchase pays an artist.</h1>
+                            <p class="mb-5">Empower creativity around the world. We are an open marketplace for
+                                independent artists to upload and enable their work on a wide array of wall art,
+                                home decor, lifestyle products and more.</p>
+                            <a href="" class="text-white">Join</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- <section id="join">
+    <div class="advertise">
+        <div class="d-flex align-items-center justify-content-center h-100 w-100 py-5">
+            <div class="my-5 text-center">
+                <h1 class="add-stroke"> Eskay Physics</h1>
+                <a href="{% url 'login' %}" class="btn btn-outline-light align-self-center rounded-0">Sign in to find out more.</a>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+{% endblock %}

@@ -1,0 +1,173 @@
+{% extends 'base_landing.html' %}
+
+{% block content %}
+<main id="about" class="main-content" style="background-color: white;">
+    <section class="section-course text-white">
+        <div class="container p-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="fs-3 fw-bold mb-2">{{ topic.title }}</p>
+                    <p class="my-2">{{ topic.detail }}</p>
+                    <p><i class="bi bi-person-check"></i> 9101 Students</p>
+                    <p><i class="bi bi-info-circle"></i> Last Updated 2023</p>
+                    <p><i class="bi bi-globe"></i> English</p>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Library</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </div>
+
+                <div class="col-md-4">
+                    <img src="https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-1">
+        <div class="container p-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="border p-4 text-dark mb-5 shadow-sm rounded-3">
+                        <h3 class="mb-2">Few Words About The Course</h3>
+                        <hr>
+                        {% if info is not None %}
+                        <p class="mb-3 lh-sm text-dark">
+                            {{ info.shortdescription }}
+                        </p>
+                        {% endif %}
+                        <div class="col-md-12">
+                            <div class="mt-5 mb-2">  
+                                {% for content in contents %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!-- <p class="text-dark mb-3 lh-1 text-dark">
+                                            {{ content.topic.detail }}
+                                        </p> -->
+                                        <!-- <iframe src="{{ content.zipurl }}" height="200" width="300" title="Iframe Example"></iframe>  -->
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <p class="text-dark">Interactive Lesson Link:</p>
+                                            </div>
+                                            <div>
+                                                <a class="btn btn-sm btn-eskay rounded-3 px-5" href="{{ content.zipurl }}" target="_blank">Click</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                <hr>
+                                <h3 class="mb-2">Exercises</h3>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <p class="lead text-dark">View All the Exercises</p>
+                                    </div>
+                                    <div>
+                                        {% for exercise in exercises %}
+                                        <a href="/media/{{exercise.exercise}}" class="btn btn-sm btn-outline-eskay rounded-3">Exercise - {{ exercise.id }}</a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if info is not None %}
+                    <div class="border p-4 text-dark mb-5 shadow-sm">
+                        <h3 class="mb-2">Article</h3>
+                        <hr>
+                        <p class="mb-3 lh-sm text-dark">
+                            {{ info.shortdescription }}
+                        </p>
+                        <!-- <div class="col-md-8">
+                            <div class="mt-5 mb-2">  
+                                {% for content in contents %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-dark">Download Article: <a class="btn btn-sm btn-outline-dark rounded-0 px-5" href="/media/{{info.articleimage}}" target="_blank">Click</a></p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="border p-4 text-dark shadow-sm">
+                        <h3 class="mb-2">Instructions</h3>
+                        <hr>
+                        <p class="mb-3 lh-sm text-dark">
+                            {{ info.instruction }}
+                        </p>
+                        <!-- <div class="col-md-8">
+                            <div class="mt-5 mb-2">  
+                                {% for content in contents %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <p class="text-dark">Download Article: <a class="btn btn-sm btn-outline-dark rounded-0 px-5" href="/media/{{info.instructionimage}}" target="_blank">Click</a></p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div> -->
+                    </div>
+
+                    {% endif %}
+                </div>
+
+                <div class="col-md-4">
+                    <div class="border p-4 shadow-sm mb-5">
+                        <p class="fs-3 text-dark">{{ topic.fee }} $</p>
+                        <hr>
+                        <p class="m-0 p-0 text-dark"><i class="bi bi-clock"></i> 9 Hours (Estimated)</p>
+                        <p class="m-0 p-0 text-dark"><i class="bi bi-filetype-pdf"></i> Articles Available</p>
+                        <p class="m-0 p-0 text-dark"><i class="bi bi-paperclip"></i> Test Available</p>
+                        <p class="m-0 p-0 text-dark"><i class="bi bi-controller"></i> Simulations Available</p>
+                        <p class="m-0 p-0 text-dark"><i class="bi bi-arrow-counterclockwise"></i> {{ topic.view_count }} visited</p>
+                        <hr>
+                        <a href="" class="btn btn-eskay">Subscribe Bundle</a>
+                        <p class="text-dark my-2">Note: <small class="text-dark">This will Subscribe the Bundle containing this topic</small></p>
+                    </div>
+                    {% if info is not None %}
+                    <div class="card rounded-0 my-2 mb-5">     
+                        <div class="card-body">
+                            <h5 class="card-title">Instructional Video</h5>  
+                            <hr>
+                            <div class="my-2 d-flex justify-content-center">
+                                <object data='{{ info.instructional_video }}'></object>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card rounded-0 my-2 mb-5">    
+                        <div class="card-body">
+                            <h5 class="card-title">Theory Video</h5> 
+                            <hr> 
+                            <div class="my-2 d-flex justify-content-center">
+                                <object data='{{ info.theory_video }}'></object>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    <!-- <div class="card rounded-0 my-2">                        
+                        <div class="card-body">
+                          <h5 class="card-title">Card title</h5>
+                          <p class="card-text text-dark">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                          <div class="d-grid gap-2">
+                            <button class="btn btn-sm btn-outline-dark rounded-0" type="button">Button</button>
+                            <button class="btn btn-sm btn-outline-dark rounded-0" type="button">Button</button>
+                            <button class="btn btn-sm btn-outline-dark rounded-0" type="button">Button</button>
+                          </div>
+                        </div>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+
+
+{% endblock %}

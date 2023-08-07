@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login as auth_login, logout
 from django.contrib.auth.decorators import login_required
@@ -6,8 +6,16 @@ from django.contrib.auth.decorators import login_required
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.utils.crypto import get_random_string
+import datetime
+import csv
+from django.http import HttpResponse
 
 from .models import *
+
+from django.conf import settings
+import os
+import zipfile
 
 TEACHER_TYPE = "Counselor"
 STUDENT_TYPE = "Student"
@@ -16,8 +24,322 @@ DEFAULT_PASS = "edbase2022"
 ACTIVATE = "activate"
 DEACTIVATE = "deactivate"
 
+
 def landing(request):
-    return render(request, 'landing/index.html')
+    header_class = "header-main"
+    return render(request, 'landing/index.html', {'header_main': header_class})
+
+@login_required(login_url="/login/")
+def landing_videos(request):
+    header_class = "header-videos"
+    courses = Course.objects.filter(coursetype__title="Video")
+    topics = Topic.objects.all()
+    return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics})
+
+
+@login_required(login_url="/login/")
+def videos_content(request, cid):
+    header_class = "header-physics"
+    topic = Topic.objects.get(id=cid)
+    content = TopicContent.objects.filter(topic__id=cid)
+    exercises = TopicExercise.objects.filter(topic__id=cid)
+    topic.view_count += 1
+    topic.save()
+    info = None
+
+    try:
+        info = TopicInformation.objects.get(topic__id=cid)
+        print(info)
+    except:
+        info = None
+
+    return render(request, 'landing/videos_content.html',  
+            {
+                'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises, 'info': info
+            })
+
+@login_required(login_url="/login/")
+def landing_physics(request):
+    header_class = "header-physics"
+    courses = Course.objects.filter(coursetype__title="Interactives")
+    # if request.user.student:
+    #     bundles = StudentEnlistedBundles.objects.filter(user__id=request.user.id).filter(status=True)
+    # else:
+    #     bundles = Bundle.objects.all()
+
+    bundles = Bundle.objects.all()
+    
+    return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses, 'bundles': bundles})
+
+@login_required(login_url="/login/")
+def physics_content(request, cid):
+    header_class = "header-physics"
+    allowed = True
+
+    content = BundleContent.objects.filter(bundle__id=cid)
+    bundledetail = Bundle.objects.get(id=cid)
+    if bundledetail.subscriptionReq == False:
+        return render(request, 'landing/physics_content.html',  {
+            'header_main': header_class, 'allowed': allowed,
+            'contents': content, 'bundle': bundledetail})
+    else:
+        studentbundles = StudentEnlistedBundles.objects.filter(user_id=request.user.id)
+        print(studentbundles)
+        if len(studentbundles) == 0:
+            allowed = False
+        else:
+            for bundle in studentbundles:
+                if bundle.bundles.id == cid and bundle.status:
+                    allowed=True
+                    break
+                else:
+                    allowed=False
+        
+        return render(request, 'landing/physics_content.html',  {
+            'header_main': header_class, 'allowed': allowed,
+            'contents': content, 'bundle': bundledetail
+            })
+
+@login_required(login_url="/login/")
+def student_profile(request):
+    available_credit = 0.00
+    subscribed_fees = 0.00
+    subscriptions = StudentEnlistedCourse.objects.filter(user_id=request.user.id)
+    for subs in subscriptions:
+        subscribed_fees += subs.course.fee
+    wallets = StudentWallet.objects.filter(user_id=request.user.id)
+    for wallet in wallets:
+        available_credit += wallet.key.amount
+
+    available_credit = available_credit - subscribed_fees
+
+    bundles = StudentEnlistedBundles.objects.filter(user_id=request.user.id)
+
+    return render(request, 'landing/profile.html', {'available_credit': available_credit, "courses":subscriptions, "bundles": bundles})
+
+@login_required(login_url="/login/")
+def add_fund(request):
+    return render(request, 'landing/addfund.html', {'data': ""})
+
+@login_required(login_url="/login/")
+def wallet_recharge(request):
+    post_data = request.POST
+    user = request.user
+    print(post_data['code'])
+    try:
+        key = SubsciptionKey.objects.get(shortKey=post_data['code'])
+        print(key.active_status)
+        print(key)
+        if key.active_status == False:
+            wallet = StudentWallet(
+                user = user,
+                key = key
+            )
+
+            wallet.save()
+            key.active_status = True
+            key.save()
+            msg = "YOUR PROFILE HAS BEEN CREDIT WITH THE CODE AMOUNT {}".format(key.amount)
+            return render(request, 'landing/subscribe.html', {'msg': msg})
+        else:
+            msg = "YOUR SUBSCRIPTION CODE IS ALREADY USED. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
+            return render(request, 'landing/subscribe.html', {'msg': msg})
+    except SubsciptionKey.DoesNotExist:
+        msg = "YOUR SUBSCRIPTION CODE IS NOT CORRECT. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
+        return render(request, 'landing/subscribe.html', {'msg': msg})
+
+    key = SubsciptionKey.objects.get(shortKey=post_data['code'])
+
+@login_required(login_url="/login/")
+def bundle_subscription(request):
+    post_data = request.POST
+    user = request.user
+    print(post_data['code'])
+    try:
+        key = BundleWallet.objects.get(shortKey=post_data['code'])
+        print(key.active_status)
+        print(key)
+        if key.active_status == False:
+            enlist = StudentEnlistedBundles(
+                user = user,
+                bundles = key.bundle
+            )
+
+            enlist.save()
+
+            # wallet.save()
+            key.active_status = True
+            key.save()
+            msg = "YOUR PROFILE HAS BEEN CREDIT WITH THE CODE AMOUNT {}".format(key.amount)
+            return render(request, 'landing/subscribe.html', {'msg': msg})
+        else:
+            msg = "YOUR SUBSCRIPTION CODE IS ALREADY USED. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
+            return render(request, 'landing/subscribe.html', {'msg': msg})
+    except SubsciptionKey.DoesNotExist:
+        msg = "YOUR SUBSCRIPTION CODE IS NOT CORRECT. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
+        return render(request, 'landing/subscribe.html', {'msg': msg})
+
+    # key = SubsciptionKey.objects.get(shortKey=post_data['code'])
+
+@login_required(login_url="/login/")
+def bundle_unsubscribe(request, bid):
+    enlisted = StudentEnlistedBundles.objects.get(id=bid)
+    enlisted.status=False
+    enlisted.save()
+    return redirect('profile')
+
+@login_required(login_url="/login/")
+def bundle_reactivate(request, bid):
+    enlisted = StudentEnlistedBundles.objects.get(id=bid)
+    enlisted.status=True
+    enlisted.save()
+    return redirect('profile')
+    
+
+@login_required(login_url="/login/")
+def subscribe(request, cid):
+    available_credit = 0.00
+    subscribed_fees = 0.00
+    subscriptions = StudentEnlistedCourse.objects.filter(user_id=request.user.id)
+    for subs in subscriptions:
+        subscribed_fees += subs.course.fee
+    wallets = StudentWallet.objects.filter(user_id=request.user.id)
+    for wallet in wallets:
+        available_credit += wallet.key.amount
+
+    available_credit = available_credit - subscribed_fees
+    
+    course = Course.objects.get(id=cid)
+    msg = ""
+    disabled = False
+    if available_credit >= course.fee:
+        msg = "You have Enough Credit to Subscribe to this course"
+        disabled = False
+    else:
+        msg = "Your Credit is not Enough for This Course please Recharge Your Profile Credit"
+        disabled = True
+    return render(request, 'landing/coursesubscription.html', {"course": course, "credit": available_credit, "msg": msg, "disabled": disabled})
+
+def confirmSubscription(request, cid):
+    course = Course.objects.get(id=cid)
+    enlist = StudentEnlistedCourse(
+        user = request.user,
+        course = course
+    )
+
+    enlist.save()
+    msg = "Congrats! You Have subscribed to this course. Please visit other courses for your necessity"
+
+    return render(request, 'landing/confirmsubscription.html', {"msg": msg})
+
+def articleIndex(request):
+    return render(request, 'eskayadmin/articles.html', {'data': ""})
+
+def videoIndex(request):
+    return render(request, 'eskayadmin/videos.html', {'data': ""})
+
+def physicsIndex(request):
+    return render(request, 'eskayadmin/physics.html', {'data': ""})
+
+
+def courseIndex(request):
+    courses = Course.objects.all()
+    lectures = Lecture.objects.all()
+    course_types = CourseType.objects.all()
+
+    qualifications = Qualification.objects.all()    
+    boards = Board.objects.all()
+    
+    return render(request, 'eskayadmin/courses.html', {'courses': courses, 'lectures': lectures, 'coursetypes': course_types, 'qualifications': qualifications, 'boards': boards})
+
+def addCourse(request):
+    post_data = request.POST
+    file_data = request.FILES
+    subscriptionReq = False
+    print(post_data)
+    print(file_data)
+
+    req = post_data['subscriptionReq']
+    if req == "1":
+        subscriptionReq = True
+
+    coursetype = CourseType.objects.get(id=post_data['coursetype'])
+    
+    course = Course(
+        title=post_data['title'],
+        detail=post_data['detail'],
+        fee=post_data['fee'],
+        subscriptionReq=subscriptionReq,
+        coursetype=coursetype,
+        thumb=file_data['thumb']
+    )
+
+    course.save()
+
+    return redirect('courseindex')
+
+def addCourseType(request):
+    post_data = request.POST
+    coursetype = CourseType(
+        title = post_data['title']
+    )
+
+    coursetype.save()
+    return redirect('courseindex')
+
+def deleteLecture(request, lid):
+    lecture = Lecture.objects.get(id=lid)
+    lecture.delete()
+    return redirect('courseindex')
+
+def filterCourse(request):
+    print("inside filter")
+    get_data = request.GET
+    data = get_data.get('type')
+    subscriptionReq = False
+    if data == "2":
+        subscriptionReq = True
+
+    courses = Course.objects.filter(subscriptionReq=subscriptionReq)
+    print(courses)
+    return render(request, 'ajax/courses.html', {"courses": courses})
+
+def subscriptionToggle(request, cid):
+    pass
+
+def subscriptionKeyList(request):
+    keys = SubsciptionKey.objects.all()
+    return render(request, 'eskayadmin/keylist.html', {"keys": keys})
+
+def generateKeys(request):
+    post_data = request.POST
+    iterator = post_data['iterator']
+    today = datetime.date.today()
+    year = today.year
+    for i in range(int(iterator)):
+        generator = get_random_string(7)
+        code = "ESK" + generator + str(year)[-2:]
+        subscriptionkey = SubsciptionKey(
+            shortKey=code,
+            amount=post_data['amount']
+        )
+        subscriptionkey.save()
+
+    return redirect('subscriptionkeylist')
+
+def exportCsvKeys(request):
+    keys = SubsciptionKey.objects.filter(active_status=False)
+    key_vals = keys.values_list('subscriptionKey','shortKey', 'amount')
+
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=SubscriptionKeys.csv'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Code', 'Amount'])
+    for val in key_vals:
+        writer.writerow(val)
+
+    print(writer)
+    return response
 
 def userLogout(request):
     logout(request)
@@ -40,7 +362,20 @@ def verifyLogin(request):
             return render(request, 'login.html', {'alert': alert})
         else:
             auth_login(request, user)
-            return redirect('home')
+            try:
+                print("printing USER AGENT")
+                print(request.user_agent.device)
+                print(request.user_agent.device.family)
+                print(request.user_agent.os)
+                print(request.user_agent.os.family)
+                print(request.user_agent.os.version)
+            except:
+                pass
+
+            if user.is_superuser:
+                return redirect('home')
+            else:
+                return redirect('/')
     else:
         alert = "Either username or password is empty"
         return render(request, 'login.html', {'alert': alert})
@@ -78,6 +413,7 @@ def home(request):
                     }
                     institutes.append(content)
             return render(request, 'index_student.html', {'directories': directories, 'student': profile, 'institutes': institutes})
+
         else:
             return redirect('failed')
 
@@ -594,7 +930,8 @@ def statusUpdateDirectory(request, did, status):
 
 def listQualifications(request):
     data = Qualification.objects.all()    
-    return render(request, 'list_qualifications.html', {'data': data})
+    boards = Board.objects.all()
+    return render(request, 'list_qualifications.html', {'data': data, 'boards': boards})
 
 def addQualification(request):
     post_data = request.POST
@@ -608,6 +945,28 @@ def addQualification(request):
 
     title = "New Qualification Added"
     description = f"{qual.title} has been added to the Qualifaction list."
+    link = f'<a href="/qualifications">Qualification list</a>'
+
+    log = SystemLog(
+        title = title,
+        description = description,
+        link = link
+    )
+
+    log.save()
+
+    return redirect('qualifications')
+
+def addBoard(request):
+    post_data = request.POST
+    board = Board(
+        title=post_data['title']
+    )
+
+    board.save()
+
+    title = "New Board Added"
+    description = f"{board.title} has been added to the Qualifaction list."
     link = f'<a href="/qualifications">Qualification list</a>'
 
     log = SystemLog(
@@ -769,30 +1128,6 @@ def studentUnis(request):
     country = Country.objects.get(id=cid)
     return render(request, 'ajax/uni_list.html', {'unis': unis, 'country': country})
 
-# def postStudentUni(request):
-#     post_data = request.POST
-#     print(request.POST)
-#     student = Student.objects.get(id=post_data['sid'])
-#     unis = post_data.getlist('unis')
-
-#     for uni in unis:
-#         university = University.objects.get(id=uni)
-#         studentUni = StudentUniversityIndex(
-#             student = student,
-#             university = university
-#         )
-
-#         studentUni.save()
-    
-#     return redirect('myprofile')
-
-
-# def studentUnis(request):
-#     get_data = request.GET    
-#     cid = get_data.get('cid')
-#     unis = University.objects.filter(country__id=cid)
-#     return render(request, 'ajax/uni_list.html', {'unis': unis})
-
 def postStudentUni(request):
     post_data = request.POST
     print(request.POST)
@@ -821,29 +1156,6 @@ def postStudentUni(request):
     log.save()
 
     return redirect('myprofile')
-
-# def studentUnis(request):
-#     get_data = request.GET    
-#     cid = get_data.get('cid')
-#     unis = University.objects.filter(country__id=cid)
-#     return render(request, 'ajax/uni_list.html', {'unis': unis})
-
-# def postStudentUni(request):
-#     post_data = request.POST
-#     print(request.POST)
-#     student = Student.objects.get(id=post_data['sid'])
-#     unis = post_data.getlist('unis')
-
-#     for uni in unis:
-#         university = University.objects.get(id=uni)
-#         studentUni = StudentUniversityIndex(
-#             student = student,
-#             university = university
-#         )
-
-#         studentUni.save()
-
-#     return redirect('myprofile')
 
 def directoryList(request):
     pass
@@ -950,3 +1262,333 @@ def systemLog(request):
     logs = SystemLog.objects.all()
 
     return render(request, 'systemlog.html', {'logs': logs})
+
+
+# ALL SUBSCRIPTION PLAN
+
+def articles(request):
+    articles = Article.objects.all()
+
+    return render(request, 'subscription/article.html', {'articles': articles})
+
+def courses(request):
+    courses = Course.objects.all()
+
+    return render(request, 'subscription/article.html', {'courses': courses})
+
+def lecture(request, cid):
+    lectures = Lecture.objects.filter(course___=cid)
+
+    return render(request, 'subscription/article.html', {'lectures': lectures})
+
+def lectureDetail(request, did):
+    lecture = Lecture.objects.get(id=did)
+
+    return render(request, 'subscription/article.html', {'lecture': lecture})
+
+def lectureMedia(request):
+    freelectures = LectureMedia.objects.all()
+
+    return render(request, 'subscription/article.html', {'freelectures': freelectures})
+
+def activateSubscription(request):
+    user = request.user
+    post_data = request.POST
+
+    code = post_data['code']
+
+    if SubscriptionCode.objects.filter(code=code).exists():
+        code_obj = SubscriptionCode.object.get(code=code)
+        if code.status:
+            msg = "Your Code is already activated"
+        else:
+            msg = "Your Code has been actiavated"
+            usersubscription= UserSubscription(
+                user = user,
+                subscriptionStatus = True,
+                subscriptionType = code_obj.ref
+            )
+
+            user.save()
+            code_obj.user = usersubscription
+            code_obj.status = False
+            code_obj.save()
+    else:
+        msg = "CODE IS INVALID"
+
+def pricing(request):
+    header_class = "header-physics"
+    return render(request, "landing/pricing.html", {'header_main': header_class})
+
+def checkout(request):
+    header_class = "header-physics"
+    return render(request, "landing/checkout.html", {'header_main': header_class})
+
+def cart(request):
+    header_class = "header-physics"
+    return render(request, "landing/cart.html", {'header_main': header_class})
+
+def batchlevel(request):
+    batchs = Batch.objects.all()
+    levels = Level.objects.all()
+    return render(request, 'eskayadmin/batchlevel.html', {'batchs': batchs, 'levels': levels})
+
+def addBatch(request):
+    post_data = request.POST
+    print(post_data)
+
+    batch = Batch(
+        title = post_data['title']
+    )
+    batch.save()
+    return redirect('batchlevel')
+
+def addLevel(request):
+    post_data = request.POST
+    print(post_data)
+    batch = Batch.objects.get(id=post_data['batch'])    
+    level = Level(
+        title = post_data['title'],
+        batch = batch
+    )
+
+    level.save()
+    return redirect('batchlevel')
+
+def subjecttopics(request):
+    batchs = Batch.objects.all()
+    levels = Level.objects.all()
+    subjects = Subject.objects.all()
+    topics = Topic.objects.all()
+    infos = TopicInformation.objects.all()
+    return render(request, 'eskayadmin/subjecttopics.html', 
+        {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos})
+
+# <QueryDict: {'csrfmiddlewaretoken': ['GESeUKiZzcxw9iZxRru0pnMsSOT8gePzGBPWWBU3WI7PzjRmx2HYMOViSav6BQFb'], 
+# 'title': ['sdf'], 'type': ['sfe'], 'desc': ['sfes'], 'subscriptiontype': ['1'], 'level': ['1']}>
+# <MultiValueDict: {'thumb': [<InMemoryUploadedFile: 82279090_10222317071502570_3655072904686600192_n.jpg (image/jpeg)>]}>
+def addSubject(request):
+    post_data = request.POST
+    file_data = request.FILES
+    level = Level.objects.get(id=post_data['level'])
+    print(post_data)
+    print(file_data)
+
+    subject = Subject(
+        title = post_data['title'],
+        detail = post_data['desc'],
+        level = level,
+        subjectType = post_data['subscriptiontype'],
+        thumb = file_data['thumb']
+    )
+
+    subject.save()
+
+    return redirect('subjecttopics')
+
+# <QueryDict: {'csrfmiddlewaretoken': 
+# ['jJ2mmscQemNjlh7jnMQUMKdnjicFz2O3jGZ4ojOUBSnCLiZ83n3S9bmdjEODUEEF'], 
+# 'title': ['start 1', 'NA'], 'desc': ['desc'], 'subscriptiontype': ['1', '1'], 
+# 'subject': ['1'], 'fee': ['200']}>
+# 2023-05-31 01:40:26 <MultiValueDict: 
+# {'thumb': [<TemporexportCsvKeysaryUploadedFile: 82279090_10222317071502570_3655072904686600192_n.jpg (image/jpeg)>], 
+# 'exercise': [<TemporaryUploadedFile: New Text Document (2).txt (text/plain)>, 
+# <TemporaryUploadedFile: New Text Document.txt (text/plain)>],
+# 'zipcontent': [<TemporaryUploadedFile: Build_uncompressed.zip (application/x-zip-compressed)>]}>
+def addTopics(request):
+    post_data = request.POST
+    file_data_exercise = request.FILES.getlist('exercise')
+    file_data = request.FILES
+
+    thumb = file_data['thumb']
+    parent_dir = "/"
+
+    print(post_data)
+    print(file_data)
+
+    subject =Subject.objects.get(id=post_data['subject'])
+    level = Level.objects.get(id=post_data['level'])
+    subscriptionType = False
+
+    if post_data['subscriptiontype'] == 1:
+        subscriptionType = True
+    
+
+    topic = Topic(
+        title = post_data['title'],
+        detail = post_data['desc'],
+        subject = subject,
+        subcriptionType = subscriptionType,
+        thumb = thumb,
+        fee = post_data['fee'],
+    )
+
+    topic.save()
+
+    for practise in file_data_exercise:
+        topicexercise = TopicExercise(
+            topic = topic,
+            exercise = practise
+        )
+
+        topicexercise.save()
+
+    try:
+        content = file_data['zipcontent']
+
+        content_dir_name = os.path.basename(content.name)[:-4]
+        dir_name = "topicZips"
+        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+        print(path)
+        if os.path.exists(path):
+            print("Path exists")
+        else:
+            os.mkdir(path)
+        
+        os.chdir(path)
+        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
+        print(index_source)
+        with zipfile.ZipFile(content) as f:
+            f.extractall()
+    except:
+        index_source = ""
+        
+    content = TopicContent(
+        topic= topic,
+        videoUrl = post_data['videourl'],
+        zipurl = index_source,
+        thumb = topic.thumb
+    )
+
+    content.save()
+    return redirect('subjecttopics')
+
+def addTopicInformation(request):
+    post_data = request.POST
+    file_data = request.FILES
+    topic = Topic.objects.get(id=post_data['topic'])
+
+    info = TopicInformation(
+        topic=topic,
+        article=post_data['article'],
+        articleimage=file_data['articleimage'],
+        instruction=post_data['instruction'],
+        instructionimage=file_data['instructionimage'],
+        shortdescription =post_data['shortdescription'],
+        instructional_video=post_data['instructional_video'],
+        theory_video=post_data['theory_video']
+    )
+
+    info.save()
+
+    return redirect('subjecttopics')
+
+def bundle(request):
+    bundles = Bundle.objects.all()
+    keys = BundleWallet.objects.all()
+    topics = Topic.objects.all()
+    return render(request, 'eskayadmin/bundle.html', {'bundles': bundles, 'keys': keys, "topics": topics})
+
+
+# <QueryDict: {'csrfmiddlewaretoken': ['Fxoz8EJiXIBLbtZa0h7teclWEdwmVPtzFulhavlmkeb4BuRZGSkrBDuMEz8kgrjb'], 
+# 'title': ['Economic Bundle'], 'bundle': ['Student'], 'bundleContents': ['11', '12']}>
+def addBundle(request):
+    post_data = request.POST
+    print(post_data)
+
+    fee = 0
+
+    for content in post_data.getlist('bundleContents'):
+        topic = Topic.objects.get(id=content)
+        fee += topic.fee
+
+    bundle = Bundle(
+        title = post_data['title'],
+        bundleType = post_data['bundle'],
+        fee = fee,
+        subscriptionReq = True
+    )
+
+    bundle.save()
+
+    for content in post_data.getlist('bundleContents'):
+        topic = Topic.objects.get(id=content)
+        bundlecontent = BundleContent(
+            bundle = bundle,
+            topic = topic
+        )
+        bundlecontent.save()
+    return redirect('bundle')
+
+
+# <QueryDict: {'csrfmiddlewaretoken': ['ozbjDA67pI2vTMrYbk028ak56n04tSROow81FrIbMeCOjNjNRVd0vBtV6JC2OuHq'], 'counter': ['23'], 'bundle': ['1']}>
+def addKeys(request):
+    post_data = request.POST
+    iterator = post_data['counter']
+    today = datetime.date.today()
+    year = today.year
+    bundle = Bundle.objects.get(id=post_data['bundle'])
+    for i in range(int(iterator)):
+        generator = get_random_string(7)
+        code = "ESK" + generator + str(year)[-2:]
+        subscriptionkey = BundleWallet(
+            shortKey=code,
+            amount=bundle.fee,
+            bundle=bundle
+        )
+        subscriptionkey.save()    
+
+    return redirect('bundle')
+
+def exportBundleWallets(request):
+    keys = BundleWallet.objects.filter(active_status=False)
+    key_vals = keys.values_list('subscriptionKey','shortKey', 'amount')
+
+    response = HttpResponse('text/csv')
+    response['Content-Disposition'] = 'attachment; filename=SubscriptionKeys.csv'
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'Code', 'Amount'])
+    for val in key_vals:
+        writer.writerow(val)
+
+    print(writer)
+    return response
+
+def addLecture(request):
+    post_data = request.POST
+    file_data = request.FILES
+    parent_dir = "/"
+
+    try:
+        content = file_data['zipcontent']
+
+        content_dir_name = os.path.basename(content.name)[:-4]
+        dir_name = "interactives"
+        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+        print(path)
+        if os.path.exists(path):
+            print("Path exists")
+        else:
+            os.mkdir(path)
+        
+        os.chdir(path)
+        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
+
+        with zipfile.ZipFile(content) as f:
+            f.extractall()
+    except:
+        index_source = ""
+
+    course = Course.objects.get(id=post_data['course'])
+
+    lecture = Lecture(
+        title = post_data['title'],
+        detail = post_data['detail'],
+        videoUrl = post_data['videoUrl'],
+        zipurl = index_source,
+        course = course,
+        thumb = file_data['thumb']
+    )
+
+    lecture.save()
+    return redirect('courseindex')

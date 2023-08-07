@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Subscription Key Index </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <div class="d-flex justify-content-between">
+            <h1 class="page-heading">Subscription Key Index</h1>
+            {% if request.user.is_superuser %}
+            <div>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#generateKey">
+                Generate 100 Keys
+            </button>
+            <a href="{% url 'csvkeys' %}" class="btn btn-sm btn-success">Export CSV</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="generateKey" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adduniversity">Generate Key</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'generatekeys' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="name" name="amount" placeholder="Amount for 100 keys">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Iterator</label>
+                            <input type="number" class="form-control" id="name" name="iterator" placeholder="Iterator">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="row">
+            {% for university in data %}
+            <div class="col-md-6 col-lg-3 h-100">
+                <div class="card mb-4">
+                    <img class="card-img-top img-fluid" style="height: 190px;" src="/media/{{ university.image }}" alt="{{ university.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ university.name }}</h5>
+                        <p>{{ university.country }}</p>
+                    </div>
+                    <div class="card-footer">
+                        {% if request.user.is_superuser %}
+                        <a class="btn btn-outline-danger" href="{% url 'deleteuni' university.id %}">Delete</a>
+                        {% endif %}
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="{{ university.id }}" onclick="func(this)"
+                            href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">University Information</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="container-fluid px-0">
+                        <div class="" id="loaduni">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Subscrition Keys</div>
+            </div>
+            <div class="card-body text-muted">
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Key Code</th>
+                            <th>amount</th>
+                            <th>Active Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key in keys %}
+                        <tr>
+                            <td>{{ key.subscriptionKey }}</td>
+                            <td>{{ key.shortKey }}</td>
+                            <td>{{ key.amount }}</td>
+                            {% if key.active_status %}
+                            <td><span class="badge badge-danger-light">Activated</span></td>
+                            {% else %}
+                            <td><span class="badge badge-success-light">Inactive</span></td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function func(d){
+        console.log(d.getAttribute("data-id"));
+        var url = "{% url 'loaduniversity' %}"; 
+        console.log(url);
+        const uid = d.getAttribute("data-id");
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'uid' : uid,
+            },
+            success: function(data){
+                $('#loaduni').html(data);
+            }
+        })
+    }
+
+    function typeFunc(){
+        var type = document.getElementById("courseType").value;
+        var url = "{% url 'filtercourse' %}";
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'type': type,
+            },
+            success: function(data){
+                $('#loadcourses').html(data);
+            }
+        })
+    }
+</script>
+{% endblock %}

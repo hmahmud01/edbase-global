@@ -1,0 +1,115 @@
+{% extends 'base_landing.html' %}
+
+{% block content %}
+<main id="about" class="main-content" style="background-color: white;">
+    <section class="section-course text-white">
+        <div class="container p-5">
+            <div class="row">
+                <div class="col-md-8">
+                    <p class="fs-3 fw-bold mb-2">{{ bundle.title }}</p>
+                    <p class="text-light">Bundle</p>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#" class="link-light text-decoration-none">Library</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Data</li>
+                    </ol>
+                </div>
+
+                <div class="col-md-4">
+                    <img src="/static/asset/img/phy-10.jpg" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="container p-5">
+        <div class="row">
+            <div class="col-md-8 border p-4">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                    {% if allowed %}
+                    <p class="fs-3 fw-bold mb-5 text-dark">Bundle Contents</p>
+
+                    {% for content in contents %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion{{content.id}}" aria-expanded="false"
+                                aria-controls="flush-collapseOne">
+                                {{ content.topic.title }}
+                            </button>
+                        </h2>
+                        <div id="accordion{{content.id}}" class="accordion-collapse collapse"
+                            aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <img src="/media/{{ content.topic.thumb }}" class="img-thumbnail" alt="...">
+                                    </div>
+                                    <div class="col-md-9">
+                                        <p class="text-dark">
+                                            {{ content.topic.detail }} <br>
+                                            Interactive Lesson Link: <a href="{% url 'videoscontent' content.topic.id %}" target="_blank">Link</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% else %}
+                    <p class="fs-4 text-dark">Course Lectures are unavailabe. You didn't subscribed this course Yet. Please Subscribed to See the course Lectures. Thanks</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4">     
+                <div class="border p-4">
+                    <p class="lead text-dark">Information</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-info-square"></i> Type: {{ bundle.bundleType }}</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-currency-dollar"></i> Fee: {{ bundle.fee }}</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-body-text"></i> Subscription : {{ bundle.subscriptionReq }}</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-person-check"></i> 9101 Students</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-info-circle"></i> Last Updated 2023</p>
+                    <p class="m-0 p-0 text-dark"><i class="bi bi-globe"></i> English</p>
+                </div>           
+                
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<!-- <section id="basic-idea">
+    <div class="row g-0">
+        <div class="col-md-4 col-lg-4 col-sm-12 bg-danger">
+            <div class="d-flex align-items-center h-100" style="padding: 2em;">
+                <div class="p-5 text-white">
+                    <h1 class="mb-5">{{ course.title }}</h1>
+                    <p>{{ course.detail }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-lg-8 col-sm-12">
+            <div class="idea-background h-100">
+                <div class="overlay px-5 py-5 text-light d-flex align-self-center">
+                    <div class="row align-items-center" style="padding: 2em;">
+                        <div class="col-md-5 d-flex flex-column justify-content-between">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+<!-- <section id="join">
+    <div class="advertise">
+        <div class="d-flex align-items-center justify-content-center h-100 w-100 py-5">
+            <div class="my-5 text-center">
+                <h1 class="add-stroke"> Eskay Physics</h1>
+                <a href="{% url 'login' %}" class="btn btn-outline-light align-self-center rounded-0">Sign in to find
+                    out more.</a>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+{% endblock %}

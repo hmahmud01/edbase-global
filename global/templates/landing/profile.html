@@ -1,0 +1,77 @@
+{% extends 'utils/login_base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-0">
+    <div class="row gx-0 min-vh-100">
+        <div class="col-md-9 col-lg-6 col-xl-8 px-5 d-flex align-items-center shadow">
+            <div class="w-100 py-5">
+                <div class="text-center">
+                    <!-- <img class="img-fluid mb-4" src="img/brand/brand-1.svg" alt="..." style="max-width: 6rem;"> -->
+                    <h1 class="h2 text-uppercase mb-3">Eskay</h1>
+                    <h1 class="h4 text-uppercase mb-3">Student Profile</h1>
+                </div>
+                <div class="row">
+                    <p class="fs-2">Profile Information</p>
+                    <hr>
+                    <div class="col-md-6">
+                        <p class="fs-5">Basic Info</p>
+                        <p class="g-0 m-0">User Name: {{ user.username }}</p>
+                        <p class="g-0 m-0">Id: ESK-STUDENT-{{ user.id }}</p>
+                        <p class="g-0 m-0">Name: {{ user.student.name }}</p>
+                        <p class="g-0 m-0">Mobile: {{ user.student.mobile }}</p>
+                        <p class="g-0 m-0">Email: {{ user.student.email }}</p>
+                        <p class="g-0 m-0">Guardian Mobile: {{ user.student.guardian_mobile }}</p>
+                        <p class="g-0 m-0">School: {{ user.student.school }}</p>
+                        <p class="g-0 m-0">Qualified Till Now: {{ user.student.qualification }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="fs-5">Credit Info</p>
+                        <p class="g-0 m-0">Available Credit: {{ available_credit }}</p>
+                    </div>
+                    <!-- <p class="fs-2">Enlisted Courses Information</p>
+                    <div class="col-md-12">
+                        <div class="list-group">
+                            {% for course in courses %}
+                            <a href="{% url 'physicscontent' course.course.id %}" class="list-group-item list-group-item-action">{{ course.course.title }}</a>
+                            {% endfor %}
+                          </div>
+                    </div> -->
+                    <hr class="mt-2">
+                    <p class="fs-2">Enlisted Bundles</p>
+                    <div class="col-md-12">
+                        <div class="list-group">
+                            {% for bundle in bundles %}
+                            <div class="d-flex justify-content-between">
+                                {% if bundle.status %}
+                                <p><a href="{% url 'physicscontent' bundle.bundles.id %}" class="list-group-item list-group-item-action">{{ bundle.bundles.title }}</a></p>
+                                <a href="{% url 'unsubscribebundle' bundle.id %}">Unsubscribe</a>
+                                {% else %}
+                                <p><a href="{% url 'physicscontent' bundle.bundles.id %}" class="list-group-item list-group-item-action btn disabled">{{ bundle.bundles.title }} [UNSUBSCRIBED REMAINING DAYS - 20]</a></p>
+                                <a href="{% url 'reactivebundle' bundle.id %}">Subscribe Again</a>
+                                {% endif %}
+                                
+                            </div>
+                            
+                            {% endfor %}
+                          </div>
+                    </div>
+                </div>
+
+                <p class="text-center"><small class="text-muted text-center">Have A Bundle Code? <a
+                            href="{% url 'addfund' %}">Add To Your Profile</a>.</small> <br> <a href="/">Back To Home</a> <br>
+                            <a href="{% url 'userlogout' %}">Logout</a>
+                </p>
+                            
+                <p class="mb-2 mb-md-0 text-muted text-center text-sm">Eskay &copy; 2023</p>
+            </div>
+        </div>
+        <div class="col-md-3 col-lg-6 col-xl-4 d-none d-md-block">
+            <!-- Image-->
+            <div class="bg-cover h-100"
+                style="background-image: url(/static/asset/img/phy-11.jpg); background-repeat: no-repeat; background-attachment: fixed;">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

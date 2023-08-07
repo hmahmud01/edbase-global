@@ -1,0 +1,387 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">Course Index </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <div class="d-flex justify-content-between">
+            <h1 class="page-heading">Course Index</h1>
+            {% if request.user.is_superuser %}
+            <div>
+            <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                data-bs-target="#add_course">
+                Add A Course
+            </button>
+            <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                data-bs-target="#add_course_type">
+                Add A Course Type
+            </button>
+            <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal"
+                data-bs-target="#add_lecture">
+                Add A Lecture
+            </button>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="modal fade" id="add_course_type" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adduniversity">Add a Course Type</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'addcoursetype' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Course Type</label>
+                            <input type="text" class="form-control" id="name" name="title" placeholder="Type Name">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="add_course" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adduniversity">Add a Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'addcourse' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3>Board Information</h3>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Board</label>
+                                    <select class="form-select" aria-label="" name="board">
+                                        <option selected>Open this select menu</option>
+                                        {% for board in boards %}
+                                        <option value="{{ board.id }}">{{ board.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Level</label>
+                                    <select class="form-select" aria-label="" name="level">
+                                        <option selected>Open this select menu</option>
+                                        {% for level in qualifications %}
+                                        <option value="{{ level.id }}">{{ level.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Course Name</label>
+                                    <input type="text" class="form-control" id="name" name="title" placeholder="Course Name">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Type</label>
+                                    <select class="form-select" aria-label="" name="coursetype">
+                                        <option selected>Open this select menu</option>
+                                        {% for type in coursetypes %}
+                                        <option value="{{ type.id }}">{{ type.title }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h3>Course Information</h3>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Subscription Type</label>
+                                    <select class="form-select" aria-label="Subscription Type" name="subscriptionReq">
+                                        <option value="0" selected>Not Required</option>
+                                        <option value="1">Required</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" rows="3" name="detail"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Course Fee</label>
+                                    <input type="number" class="form-control" id="description" name="fee"></input>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Thumbnail Image</label>
+                                    <input class="form-control form-control-sm" id="thumb" name="thumb" type="file">
+                                </div>
+        
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Excercise</label>
+                                    <input class="form-control form-control-sm" id="exercies" name="exercies" type="file" multiple>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal fade" id="add_lecture" tabindex="-1" aria-labelledby="adduniversity" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adduniversity">Add A Lecture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="{% url 'addlecture' %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <div class="modal-body">
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Course Type</label>
+                            <select class="form-select" aria-label="Default select country" id="courseType" name="coursetype" onchange="typeFunc()">
+                                <option value="2">Paid</option>
+                                <option value="1">Free</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Course</label>
+                            <select class="form-select" aria-label="Default select country" id="loadcourses" name="course">
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Lecture Name</label>
+                            <input type="text" class="form-control" id="name" name="title" placeholder="Lecture Title">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Video Url</label>
+                            <input type="text" class="form-control" id="name" name="videoUrl" placeholder="Video Name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">ZipContent</label>
+                            <input class="form-control form-control-sm" id="image" name="zipcontent" type="file">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Detail</label>
+                            <textarea class="form-control" id="description" rows="3" name="detail"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label">Thumbnail Image</label>
+                            <input class="form-control form-control-sm" id="image" name="thumb" type="file">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <section>
+        <div class="row">
+            {% for university in data %}
+            <div class="col-md-6 col-lg-3 h-100">
+                <div class="card mb-4">
+                    <img class="card-img-top img-fluid" style="height: 190px;" src="/media/{{ university.image }}" alt="{{ university.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ university.name }}</h5>
+                        <p>{{ university.country }}</p>
+                    </div>
+                    <div class="card-footer">
+                        {% if request.user.is_superuser %}
+                        <a class="btn btn-outline-danger" href="{% url 'deleteuni' university.id %}">Delete</a>
+                        {% endif %}
+                        <a class="btn btn-primary" data-bs-toggle="offcanvas" data-id="{{ university.id }}" onclick="func(this)"
+                            href="#offcanvasExample" role="button" aria-controls="offcanvasExample">Detail</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasExample"
+                aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">University Information</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <div class="container-fluid px-0">
+                        <div class="" id="loaduni">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Course Type</div>
+            </div>
+            <div class="card-body text-muted">
+                <table class="table" id="datatable2">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for types in coursetypes %}
+                        <tr>
+                            <td>{{ types.id }}</td>
+                            <td>{{ types.title }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Course</div>
+            </div>
+            <div class="card-body text-muted">
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Fee</th>
+                            <th>Subscription Status</th>
+                            <th>Type</th>
+                            <th>Thumb</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for course in courses %}
+                        <tr>
+                            <td>{{ course.id }}</td>
+                            <td>{{ course.title }}</td>
+                            <td>{{ course.fee }}</td>
+                            <td>{{ course.subscriptionReq }}</td>
+                            <td>{{ course.coursetype.title }}</td>
+                            <td><img src="/media/{{ course.thumb }}" alt="{{ course.thumb }}" style="width: 32px"></td>
+                            
+                            <td>
+                                <a href="" class="btn btn-sm btn-danger">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Lectures</div>
+            </div>
+            <div class="card-body text-muted">
+                <table class="table" id="datatable3">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Title</th>
+                            <th>Course </th>
+                            <th>Course Type </th>
+                            <th>Thumb</th>
+                            <th>App Link</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for lecture in lectures %}
+                        <tr>
+                            <td>{{ lecture.id }}</td>
+                            <td>{{ lecture.title }}</td>
+                            <td>{{ lecture.course }}</td>
+                            <td>{{ lecture.course.coursetype.title }}</td>
+                            <td><img src="/media/{{ lecture.thumb }}" alt="{{ course.thumb }}" style="width: 32px"></td>
+                            {% if lecture.course.coursetype.title == 'Video' %}
+                            <td> <a href="{{ lecture.videoUrl }}" target="_blank">{{ lecture.videoUrl }}</a></td>
+                            {% else %}
+                            <td> <a href="{{ lecture.zipurl }}" target="_blank">{{ lecture.zipurl }}</a></td>
+                            {% endif %}                            
+                            <td>
+                                <a href="{% url 'deletelecture' lecture.id %}" class="btn btn-sm btn-danger btn-disabled">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+    function func(d){
+        console.log(d.getAttribute("data-id"));
+        var url = "{% url 'loaduniversity' %}"; 
+        console.log(url);
+        const uid = d.getAttribute("data-id");
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'uid' : uid,
+            },
+            success: function(data){
+                $('#loaduni').html(data);
+            }
+        })
+    }
+
+    function typeFunc(){
+        
+        var type = document.getElementById("courseType").value;
+        console.log("course", type);
+        var url = "{% url 'filtercourse' %}";
+        $.ajax({
+            url: url,
+            type: 'get',
+            data: {
+                'type': type,
+            },
+            success: function(data){
+                $('#loadcourses').html(data);
+            }
+        })
+    }
+</script>
+{% endblock %}
