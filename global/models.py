@@ -132,8 +132,6 @@ class Board(models.Model):
     def __str__(self):
         return self.title
 
-    def __str__(self):
-        return self.title
 
 class University(models.Model):
     name = models.CharField(max_length=128, null=True, blank=True)
@@ -312,6 +310,16 @@ class Subject(models.Model):
     keywords = models.ForeignKey(Keywords, null=True, on_delete=models.CASCADE)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
+    def __str__(self):
+        return self.title
+    
+class InteractiveModule(models.Model):
+    title = models.CharField(max_length=64)
+    detail = models.TextField(null=True, blank=True)
+    intZip = models.FileField('interactiveZips', upload_to='interactiveZips', null=True, blank=True)
+    intUrl = models.CharField(max_length=256, null=True, blank=True)
+    thumb = models.FileField('intThumbs', upload_to='intThumbs', blank=True, null=True)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -329,7 +337,6 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class TopicContent(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)

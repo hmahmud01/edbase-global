@@ -78,6 +78,8 @@ urlpatterns = [
     path('addbatch/', views.addBatch, name="addbatch"),
     path('addlevel/', views.addLevel, name="addlevel"),
     path('subjecttopics/', views.subjecttopics, name="subjecttopics"),
+    path('addinteractive/', views.addInteractive, name="addinteractive"),
+    path('showint/<int:id>/<int:tid>', views.showint, name="showint"),
     path('addsubject/', views.addSubject, name="addsubject"),
     path('addtopics/', views.addTopics, name="addtopics"),
     path('addtopicinfo/', views.addTopicInformation, name="addtopicinfo"),
@@ -90,3 +92,4 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

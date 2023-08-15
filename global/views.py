@@ -84,7 +84,6 @@ def physics_content(request, cid):
             'contents': content, 'bundle': bundledetail})
     else:
         studentbundles = StudentEnlistedBundles.objects.filter(user_id=request.user.id)
-        print(studentbundles)
         if len(studentbundles) == 0:
             allowed = False
         else:
@@ -1357,12 +1356,13 @@ def addLevel(request):
 
 def subjecttopics(request):
     batchs = Batch.objects.all()
+    interactives = InteractiveModule.objects.all()
     levels = Level.objects.all()
     subjects = Subject.objects.all()
     topics = Topic.objects.all()
-    infos = TopicInformation.objects.all()
+    infos = TopicInformation.objects.all()    
     return render(request, 'eskayadmin/subjecttopics.html', 
-        {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos})
+        {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos, 'interactives': interactives})
 
 # <QueryDict: {'csrfmiddlewaretoken': ['GESeUKiZzcxw9iZxRru0pnMsSOT8gePzGBPWWBU3WI7PzjRmx2HYMOViSav6BQFb'], 
 # 'title': ['sdf'], 'type': ['sfe'], 'desc': ['sfes'], 'subscriptiontype': ['1'], 'level': ['1']}>
@@ -1395,6 +1395,43 @@ def addSubject(request):
 # 'exercise': [<TemporaryUploadedFile: New Text Document (2).txt (text/plain)>, 
 # <TemporaryUploadedFile: New Text Document.txt (text/plain)>],
 # 'zipcontent': [<TemporaryUploadedFile: Build_uncompressed.zip (application/x-zip-compressed)>]}>
+
+def addInteractive(request):
+    post_data = request.POST
+    file_data = request.FILES
+
+    try:
+        content = file_data['intzip']
+
+        content_dir_name = os.path.basename(content.name)[:-4]
+        dir_name = "interactiveZips"
+        path = os.path.join(settings.MEDIA_ROOT, dir_name)
+        if os.path.exists(path):
+            print("Path exists")
+        else:
+            os.mkdir(path)
+        
+        os.chdir(path)
+        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/?scene="
+        print(index_source)
+        with zipfile.ZipFile(content) as f:
+            f.extractall()
+    except:
+        index_source = ""
+        
+    intmodule = InteractiveModule(
+        title = post_data['title'],
+        detail = post_data['detail'],
+        intUrl = index_source,
+        thumb = file_data['thumb']        
+    )
+
+    intmodule.save()
+    return redirect('subjecttopics')
+
+def showint(reqeuest, id, tid):
+    pass
+
 def addTopics(request):
     post_data = request.POST
     file_data_exercise = request.FILES.getlist('exercise')
@@ -1433,25 +1470,30 @@ def addTopics(request):
 
         topicexercise.save()
 
-    try:
-        content = file_data['zipcontent']
+    # try:
+    #     content = file_data['zipcontent']
 
-        content_dir_name = os.path.basename(content.name)[:-4]
-        dir_name = "topicZips"
-        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
-        print(path)
-        if os.path.exists(path):
-            print("Path exists")
-        else:
-            os.mkdir(path)
+    #     content_dir_name = os.path.basename(content.name)[:-4]
+    #     dir_name = "topicZips"
+    #     path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+    #     print(path)
+    #     if os.path.exists(path):
+    #         print("Path exists")
+    #     else:
+    #         os.mkdir(path)
         
-        os.chdir(path)
-        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
-        print(index_source)
-        with zipfile.ZipFile(content) as f:
-            f.extractall()
-    except:
-        index_source = ""
+    #     os.chdir(path)
+    #     index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
+    #     print(index_source)
+    #     with zipfile.ZipFile(content) as f:
+    #         f.extractall()
+    # except:
+    #     index_source = ""
+
+    interactive = InteractiveModule.objects.get(id=post_data['index_source_id'])
+    scene_no = post_data['scene']
+
+    index_source = interactive.intUrl + scene_no
         
     content = TopicContent(
         topic= topic,
