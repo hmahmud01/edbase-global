@@ -16,6 +16,10 @@
             <h1 class="page-heading">Subject & Topic Index</h1>
             {% if request.user.is_superuser %}
             <div>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#interactiveModal">
+                        Add Interactives
+                </button>
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                         data-bs-target="#subjectmodal">
@@ -81,6 +85,51 @@
                                             <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}</option>
                                             {% endfor %}
                                         </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="interactiveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Interactive Zip</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addinteractive' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="desc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="detail" name="detail" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="thumb" class="form-label">Thumbnail</label>
+                                        <input class="form-control" type="file" id="thumb" name="thumb">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="intzip" class="form-label">Zip Archieve</label>
+                                        <input class="form-control" type="file" id="intzip" name="intzip">
                                     </div>
                                 </div>
                             </div>
@@ -163,9 +212,22 @@
                                         <label for="videourl" class="form-label">Video URL</label>
                                         <input type="text" class="form-control" id="videourl" name="videourl">
                                     </div>
-                                    <div class="mb-3">
+                                    <!-- <div class="mb-3">
                                         <label for="zipcontent" class="form-label">Zip Archieve</label>
                                         <input class="form-control" type="file" id="zipcontent" name="zipcontent">
+                                    </div> -->
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Select Interactives</label>
+                                        <select class="form-select form-select-sm" name="index_source_id"
+                                            aria-label=".form-select-sm example" required>
+                                            {% for int in interactives %}
+                                            <option value="{{ int.id }}">{{ int.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="scene" class="form-label">Scene No:</label>
+                                        <input type="text" class="form-control" id="scene" name="scene" required>
                                     </div>
                                 </div>
                             </div>
@@ -251,6 +313,30 @@
     </div>
     <!-- MODAL ENDS -->
 
+    <h2>Interactives</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">URL</th>
+                    <th scope="col">Detail</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for int in interactives %}
+                <tr>
+                    <td>{{ int.title }}</td>
+                    <td>{{ int.intUrl }}</td>
+                    <td>{{ int.detail }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
     <h2>Subject</h2>
     <div class="table-responsive">
         <table class="table table-striped table-sm">
@@ -298,6 +384,8 @@
             </tbody>
         </table>
     </div>
+
+    <hr>
 
     <h2>Topic Information</h2>
     <div class="table-responsive">
