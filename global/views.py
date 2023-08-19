@@ -1416,17 +1416,27 @@ def addInteractive(request):
         print(index_source)
         with zipfile.ZipFile(content) as f:
             f.extractall()
+
+        intmodule = InteractiveModule(
+            title = post_data['title'],
+            detail = post_data['detail'],
+            intUrl = index_source,
+            thumb = file_data['thumb']
+        )
+
+        intmodule.save()
     except:
         index_source = ""
-        
-    intmodule = InteractiveModule(
-        title = post_data['title'],
-        detail = post_data['detail'],
-        intUrl = index_source,
-        thumb = file_data['thumb']        
-    )
+        print("NO INDEX FOUND")
+    
+    # intmodule = InteractiveModule(
+    #     title = post_data['title'],
+    #     detail = post_data['detail'],
+    #     intUrl = index_source,
+    #     thumb = file_data['thumb']        
+    # )
 
-    intmodule.save()
+    # intmodule.save()
     return redirect('subjecttopics')
 
 def showint(reqeuest, id, tid):
