@@ -1616,7 +1616,7 @@ def addLecture(request):
 
         content_dir_name = os.path.basename(content.name)[:-4]
         dir_name = "interactives"
-        path = os.path.join(settings.MEDIA_ROOT, dir_name) 
+        path = os.path.join(settings.MEDIA_ROOT, dir_name, content_dir_name)
         print(path)
         if os.path.exists(path):
             print("Path exists")
