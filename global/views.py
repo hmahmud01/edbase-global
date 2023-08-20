@@ -1405,7 +1405,7 @@ def addInteractive(request):
 
         content_dir_name = os.path.basename(content.name)[:-4]
         dir_name = "interactiveZips"
-        path = os.path.join(settings.MEDIA_ROOT, dir_name)
+        path = os.path.join(settings.MEDIA_ROOT, dir_name, content_dir_name)
         if os.path.exists(path):
             print("Path exists")
         else:
