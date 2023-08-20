@@ -1412,7 +1412,7 @@ def addInteractive(request):
             os.mkdir(path)
         
         os.chdir(path)
-        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/?scene="
+        index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html?scene="
         print(index_source)
         with zipfile.ZipFile(content) as f:
             f.extractall()
