@@ -27,14 +27,16 @@ DEACTIVATE = "deactivate"
 
 def landing(request):
     header_class = "header-main"
-    return render(request, 'landing/index.html', {'header_main': header_class})
+    subjects = Subject.objects.all()
+    return render(request, 'landing/index.html', {'header_main': header_class, 'subjects':subjects})
 
 @login_required(login_url="/login/")
 def landing_videos(request):
     header_class = "header-videos"
     courses = Course.objects.filter(coursetype__title="Video")
     topics = Topic.objects.all()
-    return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics})
+    subjects = Subject.objects.all()
+    return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
 
 
 @login_required(login_url="/login/")
@@ -46,22 +48,25 @@ def videos_content(request, cid):
     topic.view_count += 1
     topic.save()
     info = None
+    subjects = Subject.objects.all()
 
     try:
         info = TopicInformation.objects.get(topic__id=cid)
         print(info)
     except:
         info = None
+        
 
     return render(request, 'landing/videos_content.html',  
             {
-                'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises, 'info': info
+                'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises, 'info': info, 'subjects':subjects
             })
 
 @login_required(login_url="/login/")
 def landing_physics(request):
     header_class = "header-physics"
     courses = Course.objects.filter(coursetype__title="Interactives")
+    subjects = Subject.objects.all()
     # if request.user.student:
     #     bundles = StudentEnlistedBundles.objects.filter(user__id=request.user.id).filter(status=True)
     # else:
@@ -69,11 +74,12 @@ def landing_physics(request):
 
     bundles = Bundle.objects.all()
     
-    return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses, 'bundles': bundles})
+    return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses, 'bundles': bundles, 'subjects':subjects})
 
 @login_required(login_url="/login/")
 def physics_content(request, cid):
     header_class = "header-physics"
+    subjects = Subject.objects.all()
     allowed = True
 
     content = BundleContent.objects.filter(bundle__id=cid)
@@ -96,7 +102,7 @@ def physics_content(request, cid):
         
         return render(request, 'landing/physics_content.html',  {
             'header_main': header_class, 'allowed': allowed,
-            'contents': content, 'bundle': bundledetail
+            'contents': content, 'bundle': bundledetail, 'subjects':subjects
             })
 
 @login_required(login_url="/login/")
@@ -118,10 +124,12 @@ def student_profile(request):
 
 @login_required(login_url="/login/")
 def add_fund(request):
-    return render(request, 'landing/addfund.html', {'data': ""})
+    subjects = Subject.objects.all()
+    return render(request, 'landing/addfund.html', {'data': "", 'subjects':subjects})
 
 @login_required(login_url="/login/")
 def wallet_recharge(request):
+    subjects = Subject.objects.all()
     post_data = request.POST
     user = request.user
     print(post_data['code'])
@@ -139,18 +147,19 @@ def wallet_recharge(request):
             key.active_status = True
             key.save()
             msg = "YOUR PROFILE HAS BEEN CREDIT WITH THE CODE AMOUNT {}".format(key.amount)
-            return render(request, 'landing/subscribe.html', {'msg': msg})
+            return render(request, 'landing/subscribe.html', {'msg': msg, 'subjects':subjects})
         else:
             msg = "YOUR SUBSCRIPTION CODE IS ALREADY USED. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
-            return render(request, 'landing/subscribe.html', {'msg': msg})
+            return render(request, 'landing/subscribe.html', {'msg': msg, 'subjects':subjects})
     except SubsciptionKey.DoesNotExist:
         msg = "YOUR SUBSCRIPTION CODE IS NOT CORRECT. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
-        return render(request, 'landing/subscribe.html', {'msg': msg})
+        return render(request, 'landing/subscribe.html', {'msg': msg, 'subjects':subjects})
 
     key = SubsciptionKey.objects.get(shortKey=post_data['code'])
 
 @login_required(login_url="/login/")
 def bundle_subscription(request):
+    subjects = Subject.objects.all()
     post_data = request.POST
     user = request.user
     print(post_data['code'])
@@ -173,15 +182,16 @@ def bundle_subscription(request):
             return render(request, 'landing/subscribe.html', {'msg': msg})
         else:
             msg = "YOUR SUBSCRIPTION CODE IS ALREADY USED. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
-            return render(request, 'landing/subscribe.html', {'msg': msg})
+            return render(request, 'landing/subscribe.html', {'msg': msg, 'subjects':subjects})
     except SubsciptionKey.DoesNotExist:
         msg = "YOUR SUBSCRIPTION CODE IS NOT CORRECT. PLEASE CHECK BACK WITH AUTHORIZED PERSON WITH THE CODE"
-        return render(request, 'landing/subscribe.html', {'msg': msg})
+        return render(request, 'landing/subscribe.html', {'msg': msg, 'subjects':subjects})
 
     # key = SubsciptionKey.objects.get(shortKey=post_data['code'])
 
 @login_required(login_url="/login/")
 def bundle_unsubscribe(request, bid):
+    subjects = Subject.objects.all()
     enlisted = StudentEnlistedBundles.objects.get(id=bid)
     enlisted.status=False
     enlisted.save()
@@ -189,6 +199,7 @@ def bundle_unsubscribe(request, bid):
 
 @login_required(login_url="/login/")
 def bundle_reactivate(request, bid):
+    subjects = Subject.objects.all()
     enlisted = StudentEnlistedBundles.objects.get(id=bid)
     enlisted.status=True
     enlisted.save()
@@ -197,6 +208,7 @@ def bundle_reactivate(request, bid):
 
 @login_required(login_url="/login/")
 def subscribe(request, cid):
+    subjects = Subject.objects.all()
     available_credit = 0.00
     subscribed_fees = 0.00
     subscriptions = StudentEnlistedCourse.objects.filter(user_id=request.user.id)
@@ -217,7 +229,7 @@ def subscribe(request, cid):
     else:
         msg = "Your Credit is not Enough for This Course please Recharge Your Profile Credit"
         disabled = True
-    return render(request, 'landing/coursesubscription.html', {"course": course, "credit": available_credit, "msg": msg, "disabled": disabled})
+    return render(request, 'landing/coursesubscription.html', {"course": course, "credit": available_credit, "msg": msg, "disabled": disabled, 'subjects':subjects})
 
 def confirmSubscription(request, cid):
     course = Course.objects.get(id=cid)
@@ -229,7 +241,7 @@ def confirmSubscription(request, cid):
     enlist.save()
     msg = "Congrats! You Have subscribed to this course. Please visit other courses for your necessity"
 
-    return render(request, 'landing/confirmsubscription.html', {"msg": msg})
+    return render(request, 'landing/confirmsubscription.html', {"msg": msg, 'subjects':subjects})
 
 def articleIndex(request):
     return render(request, 'eskayadmin/articles.html', {'data': ""})
@@ -1267,12 +1279,12 @@ def systemLog(request):
 
 def articles(request):
     articles = Article.objects.all()
-
+    subjects = Subject.objects.all()
     return render(request, 'subscription/article.html', {'articles': articles})
 
 def courses(request):
     courses = Course.objects.all()
-
+    subjects = Subject.objects.all()
     return render(request, 'subscription/article.html', {'courses': courses})
 
 def lecture(request, cid):
@@ -1316,16 +1328,19 @@ def activateSubscription(request):
         msg = "CODE IS INVALID"
 
 def pricing(request):
+    subjects = Subject.objects.all()
     header_class = "header-physics"
-    return render(request, "landing/pricing.html", {'header_main': header_class})
+    return render(request, "landing/pricing.html", {'header_main': header_class, 'subjects':subjects})
 
 def checkout(request):
+    subjects = Subject.objects.all()
     header_class = "header-physics"
-    return render(request, "landing/checkout.html", {'header_main': header_class})
+    return render(request, "landing/checkout.html", {'header_main': header_class, 'subjects':subjects})
 
 def cart(request):
+    subjects = Subject.objects.all()
     header_class = "header-physics"
-    return render(request, "landing/cart.html", {'header_main': header_class})
+    return render(request, "landing/cart.html", {'header_main': header_class, 'subjects':subjects})
 
 def batchlevel(request):
     batchs = Batch.objects.all()
@@ -1358,7 +1373,6 @@ def subjecttopics(request):
     batchs = Batch.objects.all()
     interactives = InteractiveModule.objects.all()
     levels = Level.objects.all()
-    subjects = Subject.objects.all()
     topics = Topic.objects.all()
     infos = TopicInformation.objects.all()    
     return render(request, 'eskayadmin/subjecttopics.html', 
