@@ -140,28 +140,33 @@
                             </div>
                         </div>
                         <div class="tab-pane" id="lectures" role="tabpanel" aria-labelledby="settings-tab">
-                            
-                            {% if info is not None %}
-                            <div class="card rounded-0 my-2 mb-5">
-                                <div class="card-body">
-                                    <h5 class="card-title">Instructional Video</h5>
-                                    <hr>
-                                    <div class="my-2 d-flex justify-content-center">
-                                        <object data='{{ info.instructional_video }}'></object>
-                                    </div>
-                                </div>
-                            </div>
+                            {% if request.user.is_authenticated %}
 
-                            <div class="card rounded-0 my-2 mb-5">
-                                <div class="card-body">
-                                    <h5 class="card-title">Theory Video</h5>
-                                    <hr>
-                                    <div class="my-2 d-flex justify-content-center">
-                                        <object data='{{ info.theory_video }}'></object>
+                                {% if info is not None %}
+                                <div class="card rounded-0 my-2 mb-5">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Instructional Video</h5>
+                                        <hr>
+                                        <div class="my-2 d-flex justify-content-center">
+                                            <object data='{{ info.instructional_video }}'></object>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="card rounded-0 my-2 mb-5">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Theory Video</h5>
+                                        <hr>
+                                        <div class="my-2 d-flex justify-content-center">
+                                            <object data='{{ info.theory_video }}'></object>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
+                            {% else %}
+                            <h1>You Need To Have an account to access this area. Please register and have this area available.</h1>
                             {% endif %}
+                            
                         </div>
                         <div class="tab-pane" id="test" role="tabpanel" aria-labelledby="settings-tab">
                             

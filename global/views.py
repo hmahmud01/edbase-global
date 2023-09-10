@@ -30,7 +30,7 @@ def landing(request):
     subjects = Subject.objects.all()
     return render(request, 'landing/index.html', {'header_main': header_class, 'subjects':subjects})
 
-@login_required(login_url="/login/")
+# @login_required(login_url="/login/")
 def landing_videos(request):
     header_class = "header-videos"
     courses = Course.objects.filter(coursetype__title="Video")
@@ -38,8 +38,16 @@ def landing_videos(request):
     subjects = Subject.objects.all()
     return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
 
+# @login_required(login_url="/login/")
+def landing_subjects(request, sid):
+    header_class = "header-videos"
+    courses = Course.objects.filter(coursetype__title="Video")
+    topics = Topic.objects.filter(subject__id=sid).filter(status=True)
+    subjects = Subject.objects.all()
+    return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
 
-@login_required(login_url="/login/")
+
+# @login_required(login_url="/login/")
 def videos_content(request, cid):
     header_class = "header-physics"
     topic = Topic.objects.get(id=cid)
@@ -62,7 +70,7 @@ def videos_content(request, cid):
                 'header_main': header_class, 'topic': topic, 'contents': content, 'exercises': exercises, 'info': info, 'subjects':subjects
             })
 
-@login_required(login_url="/login/")
+# @login_required(login_url="/login/")
 def landing_physics(request):
     header_class = "header-physics"
     courses = Course.objects.filter(coursetype__title="Interactives")
@@ -76,7 +84,7 @@ def landing_physics(request):
     
     return render(request, 'landing/physics.html', {'header_main': header_class, 'courses': courses, 'bundles': bundles, 'subjects':subjects})
 
-@login_required(login_url="/login/")
+# @login_required(login_url="/login/")
 def physics_content(request, cid):
     header_class = "header-physics"
     subjects = Subject.objects.all()
@@ -1375,8 +1383,20 @@ def subjecttopics(request):
     levels = Level.objects.all()
     topics = Topic.objects.all()
     infos = TopicInformation.objects.all()    
+    subjects = Subject.objects.all()
     return render(request, 'eskayadmin/subjecttopics.html', 
         {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos, 'interactives': interactives})
+
+
+def topicStatusToggle(request, tid):
+    topic = Topic.objects.get(id=tid)
+    print(topic)
+    ts = topic.status
+
+    topic.status = not ts
+    topic.save()
+
+    return redirect('subjecttopics')
 
 # <QueryDict: {'csrfmiddlewaretoken': ['GESeUKiZzcxw9iZxRru0pnMsSOT8gePzGBPWWBU3WI7PzjRmx2HYMOViSav6BQFb'], 
 # 'title': ['sdf'], 'type': ['sfe'], 'desc': ['sfes'], 'subscriptiontype': ['1'], 'level': ['1']}>
