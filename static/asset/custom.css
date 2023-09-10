@@ -335,3 +335,8 @@ nav .fa-bars:hover {
     width: 100%;
     background-size: cover;
 }
+
+.nav-tabs .nav-link{
+    margin-bottom: 0px !important;
+    border: 0px solid transparent !important;
+}

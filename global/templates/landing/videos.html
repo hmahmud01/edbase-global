@@ -20,32 +20,43 @@
         <div class="row">
             <div class="my-5">
                 <div class="row">
+                    {% if topics %}
                     {% for topic in topics %}
                     <div class="col-md-3 p-2">
-                        <div class="card rounded-0">
-                            <img src="/media/{{ topic.thumb }}"
-                                height="200px" class="card-img-top rounded-0">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ topic.title }}</h5>
-                                <p class="card-subtitle text-dark">{{ topic.subject.title }}</p>
-                                {% if topic.subscriptionReq %}
-                                <p class="card-text mt-2 text-dark"><small class="">Subscription Required: Required <br> Fee: {{ topic.fee }}</small></p>
-                                {% else %}
-                                <p class="card-text mt-2 text-dark"><small class="">Subscription Required: Not Required <br> Fee: {{ topic.fee }}</small></p>
-                                {% endif %}
-                                <!-- <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a> -->
-                                <div class="d-grid gap-2">
-                                    {% comment %} <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">AS Level</a>
-                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">A2 Level</a>
-                                    <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-dark rounded-0" type="button">O Level</a> {% endcomment %}
-                                    <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                        <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">AS Level</a>
-                                        <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">A2 Level</a>
-                                        <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">O Level</a>
+                        <a href="{% url 'videoscontent' topic.id %}">
+                            <div class="card rounded-0">
+                                <img src="/media/{{ topic.thumb }}"
+                                    height="200px" class="card-img-top rounded-0">
+                                <div class="card-body">
+                                    <h5 class="card-title text-decoration-none">{{ topic.title }}</h5>
+                                    <p class="card-subtitle text-dark text-decoration-none">{{ topic.subject.title }}</p>
+                                    <!-- {% if topic.subscriptionReq %}
+                                    <p class="card-text mt-2 text-dark"><small class="">Subscription Required: Required <br> Fee: {{ topic.fee }}</small></p>
+                                    {% else %}
+                                    <p class="card-text mt-2 text-dark"><small class="">Subscription Required: Not Required <br> Fee: {{ topic.fee }}</small></p>
+                                    {% endif %} -->
+                                    <p class="card-text mt-2 text-dark text-decoration-none">{{ topic.view_count }} Views</p>
+                                    <!-- <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-warning rounded-0">Expore</a> -->
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="btn-group" role="group">
+                                            <!-- <div class="btn-group" role="group" aria-label="Basic mixed styles example"> -->
+                                                <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">AS</a>
+                                                <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">A2</a>
+                                                <a href="{% url 'videoscontent' topic.id %}" class="btn btn-sm btn-outline-eskay" type="button">O</a>
+                                            <!-- </div> -->
+                                        </div>
+                                        <div class="text-dark m-0 p-0">
+                                            <i class="bi bi-camera-video-fill"></i>
+                                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                                            <i class="bi bi-list-check"></i>
+                                            <i class="bi bi-person-fill-down"></i>                                   
+                                        </div>
                                     </div>
+                                    
                                 </div>
                             </div>
-                        </div>
+                        </a>
+                        
                     </div>
                     <!-- <div class="card rounded-0 my-2">
                         <img src="https://images.unsplash.com/32/Mc8kW4x9Q3aRR3RkP5Im_IMG_4417.jpg?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" class="card-img-top rounded-0" alt="...">
@@ -60,6 +71,13 @@
                         </div>
                     </div> -->
                     {% endfor %}
+                    {% else %}
+                    <div class="col-md-12 p-5">
+                        <h1>No Topic FOUND</h1>
+
+                    </div>
+                    {% endif %}
+                    
                 </div>
             </div>
         </div>
@@ -67,7 +85,7 @@
 </main>
 
 
-<section id="basic-idea">
+<!-- <section id="basic-idea">
     <div class="row g-0">
         <div class="col-md-6 col-lg-6 col-sm-12 bg-video">
             <div class="d-flex align-items-center h-100" style="padding: 2em;">
@@ -100,7 +118,7 @@
         </div>
 
     </div>
-</section>
+</section> -->
 
 
 {% endblock %}

@@ -370,6 +370,7 @@
                     <th scope="col">Subject</th>
                     <th scope="col">Fee</th>
                     <th scope="col">SubscriptinType</th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -379,6 +380,13 @@
                     <td>{{ topic.subject.title }}</td>
                     <td>{{ topic.fee }}</td>
                     <td>{{ topic.subcriptionType }}</td>
+                    <!-- <td>{{ topic.status }}</td> -->
+                    {% if topic.status %}
+                    <td><a class="btn btn-sm btn-success" href="{% url 'topicstatustoggle' topic.id %}">Activated</a></td>
+                    {% else %}
+                    <td><a class="btn btn-sm btn-danger" href="{% url 'topicstatustoggle' topic.id %}">Inactive</a></td>
+                    {% endif %}
+                    
                 </tr>
                 {% endfor %}
             </tbody>

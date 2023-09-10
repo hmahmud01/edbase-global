@@ -70,8 +70,10 @@
                     <ul>
                         <li><a href="/">Home</a></li>
                         <!-- <li><a href="#about">About</a></li> -->
-                        <li><a href="/videos">Physics</a></li>
-                        <li><a href="/physics">Bundles</a></li>
+                        {% for subject in subjects %}
+                        <li><a href="{% url 'subjects' subject.id %}">{{ subject.title }}</a></li>
+                        {% endfor %}
+                        <!-- <li><a href="/physics">Bundles</a></li> -->
                         <!-- <li><a href="/pricing">Pricing</a></li> -->
                         <!-- <li><a href="#join">Join</a></li> -->
                     </ul>
@@ -139,7 +141,7 @@
                     </div>
                     <div class="col-md-5 d-flex flex-row-reverse">
                         <p class="text-white">Developed by <a class="text-decoration-none text-white hv"
-                            href="">hmahmud01@gmail.com</a></p>
+                            href="">Eskay Science</a></p>
                     </div>
                 </div>
             </div>

@@ -333,6 +333,7 @@ class Topic(models.Model):
     fee = models.FloatField()
     view_count = models.IntegerField(default=0)
     keywords = models.ForeignKey(Keywords, null=True, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
     created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
