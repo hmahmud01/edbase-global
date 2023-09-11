@@ -17,8 +17,8 @@
             {% if request.user.is_superuser %}
             <div>
                 <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#interactiveModal">
-                        Add Interactives
+                    data-bs-target="#interactiveModal">
+                    Add Interactives Source
                 </button>
                 <div class="btn-group me-2">
                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
@@ -26,13 +26,18 @@
                         Add Subject
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                        data-bs-target="#topicmodal">
+                        data-bs-target="#topicmastermodal">
                         Add Topic
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#topicmodal">
+                        Add Topic Interactive
                     </button>
                     <button type="button" class="btn btn-sm btn-outline-info" data-bs-toggle="modal"
                         data-bs-target="#infomodal">
                         Add Topic Info
                     </button>
+                    
                 </div>
             </div>
             {% endif %}
@@ -82,7 +87,8 @@
                                         <select class="form-select form-select-sm" name="level"
                                             aria-label=".form-select-sm example" required>
                                             {% for level in levels %}
-                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}</option>
+                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}
+                                            </option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -150,7 +156,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Topic Description and Interactive</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" action="{% url 'addtopics' %}" enctype="multipart/form-data"> {% csrf_token %}
@@ -158,6 +164,15 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Select Topic</label>
+                                        <select class="form-select form-select-sm" name="topic"
+                                            aria-label=".form-select-sm example" required>
+                                            {% for topic in topicmain %}
+                                            <option value="{{ topic.id }}">{{ topic.title }} - {{ topic.subject.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
                                         <label for="Title" class="form-label">Title</label>
                                         <input type="text" class="form-control" id="title" name="title">
@@ -179,7 +194,7 @@
                                         <label for="Title" class="form-label">Subject</label>
                                         <select class="form-select form-select-sm" name="subject" required>
                                             {% for subject in subjects %}
-                                            <option value="{{ subject.id }}">{{ subject.title }} - {{ subject.level.title }}</option>
+                                            <option value="{{ subject.id }}">{{ subject.title }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -187,10 +202,7 @@
                                         <label for="thumb" class="form-label">Thumbnail</label>
                                         <input class="form-control" type="file" id="thumb" name="thumb">
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="Fee" class="form-label">Fee</label>
-                                        <input type="number" class="form-control" id="fee" name="fee">
-                                    </div>
+                                    
 
                                 </div>
                                 <div class="col-md-6">
@@ -200,11 +212,26 @@
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="Qualications" class="form-label">Select Level</label>
+                                        {% for qual in qualifications %}
+                                        <div class="form-check form-check-inline">
+                                            <input name="quals" class="form-check-input" type="checkbox" value="{{ qual.id }}"
+                                                id="quals">
+                                            <label class="form-check-label" for="quals">
+                                                {{ qual.title }}
+                                            </label>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    
+
+                                    <div class="mb-3">
                                         <label for="Type" class="form-label">Select Batch Level</label>
                                         <select class="form-select form-select-sm" name="level"
                                             aria-label=".form-select-sm example" required>
                                             {% for level in levels %}
-                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}</option>
+                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}
+                                            </option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -229,6 +256,10 @@
                                         <label for="scene" class="form-label">Scene No:</label>
                                         <input type="text" class="form-control" id="scene" name="scene" required>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="Fee" class="form-label">Fee</label>
+                                        <input type="number" class="form-control" id="fee" name="fee">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -242,6 +273,51 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="topicmastermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addtopicmaster' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Subject</label>
+                                        <select class="form-select form-select-sm" name="subject" required>
+                                            {% for subject in subjects %}
+                                            <option value="{{ subject.id }}">{{ subject.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="thumb" class="form-label">Thumbnail</label>
+                                        <input class="form-control" type="file" id="thumb" name="thumb">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    
 
     <div class="modal fade" id="infomodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -270,28 +346,34 @@
 
                                     <div class="mb-3">
                                         <label for="articleimage" class="form-label">Article in File</label>
-                                        <input class="form-control" type="file" id="articleimage" name="articleimage" multiple>
+                                        <input class="form-control" type="file" id="articleimage" name="articleimage"
+                                            multiple>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="instruction" class="form-label">Instruction in Text</label>
-                                        <textarea class="form-control" id="instruction" name="instruction" rows="3"></textarea>
+                                        <textarea class="form-control" id="instruction" name="instruction"
+                                            rows="3"></textarea>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="instructionimage" class="form-label">Instruction in File</label>
-                                        <input class="form-control" type="file" id="instructionimage" name="instructionimage" multiple>
+                                        <input class="form-control" type="file" id="instructionimage"
+                                            name="instructionimage" multiple>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    
+
                                     <div class="mb-3">
                                         <label for="shortdescription" class="form-label">Short Description</label>
-                                        <textarea class="form-control" id="shortdescription" name="shortdescription" rows="3"></textarea>
+                                        <textarea class="form-control" id="shortdescription" name="shortdescription"
+                                            rows="3"></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="instructional_video" class="form-label">Instruction Video URL</label>
-                                        <input type="text" class="form-control" id="instructional_video" name="instructional_video">
+                                        <label for="instructional_video" class="form-label">Instruction Video
+                                            URL</label>
+                                        <input type="text" class="form-control" id="instructional_video"
+                                            name="instructional_video">
                                     </div>
 
                                     <div class="mb-3">
@@ -368,6 +450,28 @@
                 <tr>
                     <th scope="col">Title</th>
                     <th scope="col">Subject</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for main in topicmain %}
+                <tr>
+                    <td>{{ main.title }}</td>
+                    <td>{{ main.subject.title }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <hr>
+
+    <h2>Topic Interactive & Detail</h2>
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Subject</th>
                     <th scope="col">Fee</th>
                     <th scope="col">SubscriptinType</th>
                     <th scope="col">Status</th>
@@ -382,11 +486,12 @@
                     <td>{{ topic.subcriptionType }}</td>
                     <!-- <td>{{ topic.status }}</td> -->
                     {% if topic.status %}
-                    <td><a class="btn btn-sm btn-success" href="{% url 'topicstatustoggle' topic.id %}">Activated</a></td>
+                    <td><a class="btn btn-sm btn-success" href="{% url 'topicstatustoggle' topic.id %}">Activated</a>
+                    </td>
                     {% else %}
                     <td><a class="btn btn-sm btn-danger" href="{% url 'topicstatustoggle' topic.id %}">Inactive</a></td>
                     {% endif %}
-                    
+
                 </tr>
                 {% endfor %}
             </tbody>

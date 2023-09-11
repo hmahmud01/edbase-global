@@ -29,7 +29,7 @@
         <nav id="navbar">
             <div class="menu">
                 <div>
-                    <h3 class="logo">Edbase</h3>
+                    <a href="/" class="brand">Eskay</a>
                     <ul>
                         <li><a href="{% url 'register' %}">Sign Up</a></li>
                         <li><a href="{% url 'login' %}">Login</a></li>
@@ -65,10 +65,9 @@
                 </div>
             </div>
             <div class="container-custom">
-                <a href="#" class="brand">Eskay</a>
+                <a href="/" class="brand">Eskay</a>
                 <div class="container-custom-inner">
                     <ul>
-                        <li><a href="/">Home</a></li>
                         <!-- <li><a href="#about">About</a></li> -->
                         {% for subject in subjects %}
                         <li><a href="{% url 'subjects' subject.id %}">{{ subject.title }}</a></li>
@@ -86,7 +85,18 @@
                 </div>
                 
                 {% if user.is_authenticated %}
-                <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-light" id="menu-btn">{{user.username}}</a>
+                <!-- <a href="{% url 'profile' %}" class="btn btn-sm btn-outline-light" id="menu-btn">{{user.username}}</a> -->
+                <div class="dropdown">
+                    <a class="btn btn-sm btn-outline-light dropdown-toggle px-5" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{user.username}}
+                    </a>
+                  
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                      <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+                      <li><a class="dropdown-item" href="{% url 'userlogout' %}">Logout</a></li>
+                      <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
+                    </ul>
+                  </div>
                 {% else %}
                 <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light" id="menu-btn">Login</a>
                 {% endif %}

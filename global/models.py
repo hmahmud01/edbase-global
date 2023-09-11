@@ -323,11 +323,23 @@ class InteractiveModule(models.Model):
 
     def __str__(self):
         return self.title
+    
+class TopicMaster(models.Model):
+    title = models.CharField(max_length=64)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    thumb = models.FileField('topic_masther_thumb_image', upload_to='topicmasterthumbnails', blank=True, null=True)
+    keywords = models.ForeignKey(Keywords, null=True, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+    created_at = models.DateField(auto_now_add=True, null=True, blank=True)
 
+    def __str__(self):
+        return self.title   
+    
 class Topic(models.Model):
     title = models.CharField(max_length=64)
     detail = models.TextField(null=True, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    topic = models.ForeignKey(TopicMaster, on_delete=models.CASCADE)
     subcriptionType = models.BooleanField(default=True)
     thumb = models.FileField('topic_thumb_image', upload_to='topicthumbnails', blank=True, null=True)
     fee = models.FloatField()
@@ -338,6 +350,10 @@ class Topic(models.Model):
 
     def __str__(self):
         return self.title
+    
+class TopicQualifications(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    qualification = models.ForeignKey(Qualification, on_delete=models.CASCADE)
 
 class TopicContent(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
