@@ -355,6 +355,10 @@ class TopicQualifications(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     qualification = models.ForeignKey(Qualification, on_delete=models.CASCADE)
 
+class TopicBoard(models.Model):
+    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
+    board = models.ForeignKey(Board, on_delete=models.CASCADE)
+
 class TopicContent(models.Model):
     topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
     videoUrl = models.CharField(max_length=256, null=True, blank=True)

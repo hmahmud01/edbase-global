@@ -943,7 +943,7 @@ def statusUpdateDirectory(request, did, status):
     directory.save()
 
     title = "Directory Status"
-    description = f"{directories.title} status has been udpated"
+    description = f"{directory.title} status has been udpated"
     link = f'<a href="/directories">Directory Link</a>'
 
     log = SystemLog(
@@ -959,7 +959,10 @@ def statusUpdateDirectory(request, did, status):
 def listQualifications(request):
     data = Qualification.objects.all()    
     boards = Board.objects.all()
-    return render(request, 'list_qualifications.html', {'data': data, 'boards': boards})
+    topics = Topic.objects.all()   
+    subjects = Subject.objects.all()
+    topicmain = TopicMaster.objects.all()
+    return render(request, 'list_qualifications.html', {'data': data, 'boards': boards, 'subjects': subjects, "topics": topics, 'topicmain': topicmain})
 
 def addQualification(request):
     post_data = request.POST
@@ -1387,6 +1390,7 @@ def addLevel(request):
     return redirect('batchlevel')
 
 def subjecttopics(request):
+    boards = Board.objects.all()
     batchs = Batch.objects.all()
     interactives = InteractiveModule.objects.all()
     levels = Level.objects.all()
@@ -1397,7 +1401,7 @@ def subjecttopics(request):
     topicmain = TopicMaster.objects.all()
     return render(request, 'eskayadmin/subjecttopics.html', 
         {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos, 'interactives': interactives, 
-         'qualifications': qualifications, 'topicmain': topicmain})
+         'qualifications': qualifications, 'topicmain': topicmain, 'boards': boards})
 
 
 def topicStatusToggle(request, tid):
@@ -1509,6 +1513,7 @@ def addTopics(request):
     file_data_exercise = request.FILES.getlist('exercise')
     file_data = request.FILES
     quals = request.POST.getlist('quals')
+    boards = request.POST.getlist('boards')
 
     print(request.POST)
     print(request.POST.getlist('quals'))
@@ -1549,6 +1554,15 @@ def addTopics(request):
         )
 
         topicqual.save()
+
+    for board in boards:
+        boardobj = Board.objects.get(id=board)
+        topicboard = TopicBoard(
+            topic = topic,
+            board = boardobj
+        )
+
+        topicboard.save()
 
     for practise in file_data_exercise:
         topicexercise = TopicExercise(

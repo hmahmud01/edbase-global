@@ -16,10 +16,18 @@
             <h1 class="page-heading">Qualification Index</h1>
             <div>
                 <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_qualification">
-                    Add A Qualification
+                    Add A Level
                 </button>
                 <button type="button" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_board">
                     Add A Board
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#subjectmodal">
+                    Add Subject
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                    data-bs-target="#topicmastermodal">
+                    Add Topic
                 </button>
             </div>
 
@@ -81,13 +89,119 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="subjectmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addsubject' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Type</label>
+                                        <input type="text" class="form-control" id="type" name="type">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="desc" class="form-label">Description</label>
+                                        <textarea class="form-control" id="desc" name="desc" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="thumb" class="form-label">Thumbnail</label>
+                                        <input class="form-control" type="file" id="thumb" name="thumb">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Subscription Type</label>
+                                        <select class="form-select form-select-sm" name="subscriptiontype"
+                                            aria-label=".form-select-sm example" required>
+                                            <option selected value="notrequired">Not Required</option>
+                                            <option value="required">Required</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Type" class="form-label">Select Batch Level</label>
+                                        <select class="form-select form-select-sm" name="level"
+                                            aria-label=".form-select-sm example" required>
+                                            {% for level in levels %}
+                                            <option value="{{ level.id }}">{{ level.title }} - {{ level.batch.title }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="topicmastermodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addtopicmaster' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Title</label>
+                                        <input type="text" class="form-control" id="title" name="title">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="Title" class="form-label">Subject</label>
+                                        <select class="form-select form-select-sm" name="subject" required>
+                                            {% for subject in subjects %}
+                                            <option value="{{ subject.id }}">{{ subject.title }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="thumb" class="form-label">Thumbnail</label>
+                                        <input class="form-control" type="file" id="thumb" name="thumb">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
     <section>
         <div class="card mb-4">
             <div class="card-header">
                 <div class="card-heading">Board Index</div>
             </div>
             <div class="card-body text-muted">
-                <p>List of Qualifications</p>
+                <p>List of Boards</p>
                 <table class="table" id="datatable1">
                     <thead>
                         <tr>
@@ -112,11 +226,11 @@
         </div>
         <div class="card mb-4">
             <div class="card-header">
-                <div class="card-heading">Qualification Index</div>
+                <div class="card-heading">Level Index</div>
             </div>
             <div class="card-body text-muted">
-                <p>List of Qualifications</p>
-                <table class="table" id="datatable1">
+                <p>List of Level</p>
+                <table class="table" id="datatable2">
                     <thead>
                         <tr>
                             <th>Id</th>
@@ -134,6 +248,58 @@
                             <td>
                                 <a href="" class="btn btn-sm btn-danger">Delete</a>
                             </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Subject Index</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Subjects</p>
+                <table class="table" id="datatable3">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Level</th>
+                            <th scope="col">SubjectType</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for subject in subjects %}
+                        <tr>
+                            <td>{{ subject.title }}</td>
+                            <td>{{ subject.level.title }}</td>
+                            <td>{{ subject.subjectType }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">Topic Index</div>
+            </div>
+            <div class="card-body text-muted">
+                <p>List of Topic</p>
+                <table class="table" id="datatable4">
+                    <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Subject</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for main in topicmain %}
+                        <tr>
+                            <td>{{ main.title }}</td>
+                            <td>{{ main.subject.title }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -97,8 +97,14 @@
                       <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
                     </ul>
                   </div>
+
+                  
                 {% else %}
-                <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light" id="menu-btn">Login</a>
+                <!-- <a href="{% url 'login' %}" class="btn btn-sm btn-outline-light" id="menu-btn">Login</a> -->
+                <button type="button" class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#login">
+                    login
+                </button>
+                
                 {% endif %}
                 <!-- <i class="fas fa-bars menu-btn" id="menu-btn"></i> -->
             </div>
@@ -112,6 +118,45 @@
     {% endblock %}
 
     <footer>
+        <div class="modal fade" id="login" tabindex="-1" aria-labelledby="login" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addqualification">Login To The System</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form method="post" action="{% url 'verifylogin' %}">{% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Username (Email)</label>
+                                <input class="form-control" name="username" type="text" autocomplete="off">
+                            </div>
+                            <div class="mb-4">
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label">Password</label>
+                                    </div>
+                                    <div class="col-auto"><a class="form-text small text-muted" href="#">Forgot your
+                                            password?</a></div>
+                                </div>
+                                <input class="form-control" name="pass" type="password">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-grid mb-5">
+                                <button type="submit" class="btn btn-primary text-uppercase">Sign in</button>
+                            </div>
+                            <p class="text-sm text-muted text-center">
+                                Don't have an account yet? <a href="{% url 'register' %}">Register</a>.</p>
+                            <p class="mb-2 mb-md-0 text-muted text-center text-sm">Eskay &copy; 2022</p>
+                        </div>
+                        
+
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
         <section class="section-2">
             <div class="vision">
                 <div class="container content text-light p-5">
