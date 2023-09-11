@@ -52,7 +52,7 @@ def landing_subjectTopics(request, tid):
     courses = Course.objects.filter(coursetype__title="Video")
     # topics = Topic.objects.filter(subject__id=sid).filter(status=True)
     subjects = Subject.objects.all()
-    topics = Topic.objects.filter(topic__id=tid)
+    topics = Topic.objects.filter(topic__id=tid).filter(status=True)
     return render(request, 'landing/videostopic.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
 
 
