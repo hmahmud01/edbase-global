@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", function () {
         searchable: true,
     });
 
+    const dataTable4 = new simpleDatatables.DataTable("#datatable4", {
+        searchable: true,
+    });
+
 
     function adjustTableColumns() {
         let columns = dataTable.columns();
@@ -61,10 +65,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function bootstrapizeHeader(dataTable) {
+    function adjustTableColumns4() {
+        let columns = dataTable4.columns();
+
+        if (window.innerWidth > 900) {
+            columns.show([2, 3, 4, 5]);
+        } else if (window.innerWidth > 600) {
+            columns.hide([4, 5]);
+            columns.show([2, 3]);
+        } else {
+            columns.hide([2, 3, 4, 5]);
+        }
+    }
+
+    function bootstrapizeHeader(dataTable, dataTable2, dataTable3, dataTable4) {
         const tableWrapper = dataTable.table.closest(".dataTable-wrapper");
         const tableWrapper2 = dataTable2.table.closest(".dataTable-wrapper");
         const tableWrapper3 = dataTable3.table.closest(".dataTable-wrapper");
+        const tableWrapper4 = dataTable4.table.closest(".dataTable-wrapper");
 
 
         const input = tableWrapper.querySelector(".dataTable-input");
@@ -111,15 +129,32 @@ document.addEventListener("DOMContentLoaded", function () {
         if (dataTableContainer3) {
             dataTableContainer3.classList.add("border-0");
         }
+
+        const input4 = tableWrapper4.querySelector(".dataTable-input");
+        if (input4) {
+            input4.classList.add("form-control", "form-control-sm");
+        }
+
+        const dataTableSelect4 = tableWrapper4.querySelector(".dataTable-selector");
+        if (dataTableSelect4) {
+            dataTableSelect4.classList.add("form-select", "form-select-sm");
+        }
+
+        const dataTableContainer4 = tableWrtableWrapper4apper3.querySelector(".dataTable-container");
+        if (dataTableContainer4) {
+            dataTableContainer4.classList.add("border-0");
+        }
     }
 
     adjustTableColumns();
     adjustTableColumns2();
     adjustTableColumns3();
+    adjustTableColumns4();
 
     window.addEventListener("resize", adjustTableColumns);
     window.addEventListener("resize", adjustTableColumns2);
     window.addEventListener("resize", adjustTableColumns3);
+    window.addEventListener("resize", adjustTableColumns4);
 
     dataTable.on("datatable.init", function () {
         bootstrapizeHeader(dataTable);
@@ -130,9 +165,11 @@ document.addEventListener("DOMContentLoaded", function () {
         bootstrapizeHeader(dataTable2);
     });
 
-
-
     dataTable3.on("datatable.init", function () {
-        bootstrapizeHeader(dataTable2);
+        bootstrapizeHeader(dataTable3);
+    });
+
+    dataTable4.on("datatable.init", function () {
+        bootstrapizeHeader(dataTable4);
     });
 });
