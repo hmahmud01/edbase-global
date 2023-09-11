@@ -42,9 +42,18 @@ def landing_videos(request):
 def landing_subjects(request, sid):
     header_class = "header-videos"
     courses = Course.objects.filter(coursetype__title="Video")
-    topics = Topic.objects.filter(subject__id=sid).filter(status=True)
+    # topics = Topic.objects.filter(subject__id=sid).filter(status=True)
     subjects = Subject.objects.all()
+    topics = TopicMaster.objects.filter(subject__id=sid)
     return render(request, 'landing/videos.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
+
+def landing_subjectTopics(request, tid):
+    header_class = "header-videos"
+    courses = Course.objects.filter(coursetype__title="Video")
+    # topics = Topic.objects.filter(subject__id=sid).filter(status=True)
+    subjects = Subject.objects.all()
+    topics = Topic.objects.filter(topic__id=tid)
+    return render(request, 'landing/videostopic.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
 
 
 # @login_required(login_url="/login/")
@@ -1384,8 +1393,11 @@ def subjecttopics(request):
     topics = Topic.objects.all()
     infos = TopicInformation.objects.all()    
     subjects = Subject.objects.all()
+    qualifications = Qualification.objects.all()
+    topicmain = TopicMaster.objects.all()
     return render(request, 'eskayadmin/subjecttopics.html', 
-        {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos, 'interactives': interactives})
+        {'subjects': subjects, "topics": topics, 'batchs': batchs, 'levels': levels, 'infos': infos, 'interactives': interactives, 
+         'qualifications': qualifications, 'topicmain': topicmain})
 
 
 def topicStatusToggle(request, tid):
@@ -1476,10 +1488,31 @@ def addInteractive(request):
 def showint(reqeuest, id, tid):
     pass
 
+def addTopicMaster(request):
+    post_data = request.POST
+    file_data = request.FILES
+    subject =Subject.objects.get(id=post_data['subject'])
+
+    master = TopicMaster(
+        title = post_data['title'],
+        subject = subject,
+        thumb = file_data['thumb'],
+    )
+
+    master.save()
+
+    return redirect('subjecttopics')
+
+
 def addTopics(request):
     post_data = request.POST
     file_data_exercise = request.FILES.getlist('exercise')
     file_data = request.FILES
+    quals = request.POST.getlist('quals')
+
+    print(request.POST)
+    print(request.POST.getlist('quals'))
+
 
     thumb = file_data['thumb']
     parent_dir = "/"
@@ -1489,6 +1522,7 @@ def addTopics(request):
 
     subject =Subject.objects.get(id=post_data['subject'])
     level = Level.objects.get(id=post_data['level'])
+    master = TopicMaster.objects.get(id=post_data['topic'])
     subscriptionType = False
 
     if post_data['subscriptiontype'] == 1:
@@ -1499,12 +1533,22 @@ def addTopics(request):
         title = post_data['title'],
         detail = post_data['desc'],
         subject = subject,
+        topic = master,
         subcriptionType = subscriptionType,
         thumb = thumb,
         fee = post_data['fee'],
     )
 
     topic.save()
+
+    for qual in quals:
+        qualification = Qualification.objects.get(id=qual)
+        topicqual = TopicQualifications(
+            topic = topic,
+            qualification = qualification
+        )
+
+        topicqual.save()
 
     for practise in file_data_exercise:
         topicexercise = TopicExercise(
@@ -1514,25 +1558,6 @@ def addTopics(request):
 
         topicexercise.save()
 
-    # try:
-    #     content = file_data['zipcontent']
-
-    #     content_dir_name = os.path.basename(content.name)[:-4]
-    #     dir_name = "topicZips"
-    #     path = os.path.join(settings.MEDIA_ROOT, dir_name) 
-    #     print(path)
-    #     if os.path.exists(path):
-    #         print("Path exists")
-    #     else:
-    #         os.mkdir(path)
-        
-    #     os.chdir(path)
-    #     index_source = settings.MEDIA_URL + dir_name + "/" + content_dir_name + "/index.html"
-    #     print(index_source)
-    #     with zipfile.ZipFile(content) as f:
-    #         f.extractall()
-    # except:
-    #     index_source = ""
 
     interactive = InteractiveModule.objects.get(id=post_data['index_source_id'])
     scene_no = post_data['scene']
