@@ -1513,6 +1513,7 @@ def addTopics(request):
     file_data_exercise = request.FILES.getlist('exercise')
     file_data = request.FILES
     quals = request.POST.getlist('quals')
+    boards = request.POST.getlist('boards')
 
     print(request.POST)
     print(request.POST.getlist('quals'))
@@ -1553,6 +1554,15 @@ def addTopics(request):
         )
 
         topicqual.save()
+
+    for board in boards:
+        boardobj = Board.objects.get(id=board)
+        topicboard = TopicBoard(
+            topic = topic,
+            board = boardobj
+        )
+
+        topicboard.save()
 
     for practise in file_data_exercise:
         topicexercise = TopicExercise(
