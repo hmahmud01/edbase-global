@@ -50,10 +50,19 @@ def landing_subjects(request, sid):
 def landing_subjectTopics(request, tid):
     header_class = "header-videos"
     courses = Course.objects.filter(coursetype__title="Video")
+    newTopics = []
     # topics = Topic.objects.filter(subject__id=sid).filter(status=True)
     subjects = Subject.objects.all()
     topics = Topic.objects.filter(topic__id=tid).filter(status=True)
-    return render(request, 'landing/videostopic.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
+    for topic in topics:
+        boards = TopicBoard.objects.filter(topic__id=topic.id)
+        qualifications = TopicQualifications.objects.filter(topic__id=topic.id)
+        topic.boards = boards
+        topic.qualifications = qualifications
+
+        newTopics.append(topic)
+
+    return render(request, 'landing/videostopic.html', {'header_main': header_class, 'courses': courses, 'topics': newTopics, 'subjects':subjects})
 
 
 # @login_required(login_url="/login/")
@@ -1479,14 +1488,7 @@ def addInteractive(request):
         index_source = ""
         print("NO INDEX FOUND")
     
-    # intmodule = InteractiveModule(
-    #     title = post_data['title'],
-    #     detail = post_data['detail'],
-    #     intUrl = index_source,
-    #     thumb = file_data['thumb']        
-    # )
 
-    # intmodule.save()
     return redirect('subjecttopics')
 
 def showint(reqeuest, id, tid):
@@ -1520,13 +1522,11 @@ def addTopics(request):
 
 
     thumb = file_data['thumb']
-    parent_dir = "/"
 
     print(post_data)
     print(file_data)
 
     subject =Subject.objects.get(id=post_data['subject'])
-    level = Level.objects.get(id=post_data['level'])
     master = TopicMaster.objects.get(id=post_data['topic'])
     subscriptionType = False
 
@@ -1572,6 +1572,11 @@ def addTopics(request):
 
         topicexercise.save()
 
+    info = TopicInformation(
+        topic = topic
+    )
+
+    info.save()
 
     interactive = InteractiveModule.objects.get(id=post_data['index_source_id'])
     scene_no = post_data['scene']
@@ -1587,6 +1592,15 @@ def addTopics(request):
 
     content.save()
     return redirect('subjecttopics')
+
+def addHistory(request, tid):
+    pass
+
+def addTheory(request, tid):
+    pass
+
+def addLectures(request, tid):
+    pass
 
 def addTopicInformation(request):
     post_data = request.POST
