@@ -110,12 +110,12 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="baords" class="form-label">Select Board</label> <br>
+                                        <label for="boards" class="form-label">Select Board</label> <br>
                                         {% for board in boards %}
                                         <div class="form-check form-check-inline">
-                                            <input name="baords" class="form-check-input" type="checkbox" value="{{ board.id }}"
-                                                id="baords">
-                                            <label class="form-check-label" for="baords">
+                                            <input name="boards" class="form-check-input" type="checkbox" value="{{ board.id }}"
+                                                id="boards">
+                                            <label class="form-check-label" for="boardsboards">
                                                 {{ board.title }}
                                             </label>
                                         </div>
@@ -399,15 +399,139 @@
                         <td><a class="btn btn-sm btn-danger" href="{% url 'topicstatustoggle' topic.id %}">Inactive</a></td>
                         {% endif %}
                         <td>
-                            <i class="bi bi-1-square"></i>
-                            <i class="bi bi-app"></i>
-                            <i class="bi bi-pen"></i>
-                            <i class="bi bi-hurricane"></i>
+                            <a class="mx-2" data-bs-toggle="modal" data-bs-toggle="tooltip" data-bs-placement="top" title="Add History"
+                            data-bs-target="#historyModal" data-type="history" data-topic-id="{{ topic.id }}" onclick="setTopicId(this)"><i class="bi bi-clock-history"></i></a>  
+                            <a class="mx-2" data-bs-toggle="modal" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Theory"
+                            data-bs-target="#theoryModal" data-type="theory" data-topic-id="{{ topic.id }}" onclick="setTopicId(this)"><i class="bi bi-journal-text"></i></a>
+                            <a class="mx-2" data-bs-toggle="modal" data-bs-toggle="tooltip" data-bs-placement="top" title="Add Lecture Videos"
+                            data-bs-target="#lectureModal" data-type="lecture" data-topic-id="{{ topic.id }}" onclick="setTopicId(this)" ><i class="bi bi-camera-video"></i></a>
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div class="modal fade" id="historyModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add History Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addhistory' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                
+                                <div class="col-md-12">
+                                    <input type="text" id="historyidinput" name="topicid" class="topicId" hidden>
+                                    <div class="mb-3">
+                                        <label for="shortdescription" class="form-label">Short Description</label>
+                                        <textarea class="form-control" id="shortdescription" name="shortdescription"
+                                            rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="theoryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Theory</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addtheory' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" id="theoryidinput" name="topicid" class="topicId" hidden>
+                                    <div class="mb-3">
+                                        <label for="article" class="form-label">Artice in Text</label>
+                                        <textarea class="form-control" id="article" name="article" rows="3"></textarea>
+                                    </div>
+
+                                    <!-- <div class="mb-3">
+                                        <label for="articleimage" class="form-label">Article in File</label>
+                                        <input class="form-control" type="file" id="articleimage" name="articleimage"
+                                            multiple>
+                                    </div> -->
+
+                                    <div class="mb-3">
+                                        <label for="instruction" class="form-label">Instruction in Text</label>
+                                        <textarea class="form-control" id="instruction" name="instruction"
+                                            rows="3"></textarea>
+                                    </div>
+
+                                    <!-- <div class="mb-3">
+                                        <label for="instructionimage" class="form-label">Instruction in File</label>
+                                        <input class="form-control" type="file" id="instructionimage"
+                                            name="instructionimage" multiple>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    
+
+
+    <div class="modal fade" id="lectureModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Lectures</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form method="post" action="{% url 'addlectures' %}" enctype="multipart/form-data"> {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <input type="text" id="lectureidinput" name="topicid" class="topicId" hidden>
+                                    <div class="mb-3">
+                                        <label for="instructional_video" class="form-label">Instruction Video
+                                            URL</label>
+                                        <input type="text" class="form-control" id="instructional_video"
+                                            name="instructional_video">
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="theory_video" class="form-label">Theory Video URL</label>
+                                        <input type="text" class="form-control" id="theory_video" name="theory_video">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -440,4 +564,33 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript">
+    function setTopicId(obj) {
+        let topicId = obj.getAttribute("data-topic-id")
+        let type = obj.getAttribute("data-type")
+        console.log(type)
+        console.log(topicId);
+
+        // var input = document.getElementsByClassName("topicId");
+
+        if(type == "history"){
+            var input = document.getElementById("historyidinput");
+            input.value = ""
+            input.value = topicId
+        }else if(type == "theory"){
+            var input = document.getElementById("theoryidinput");
+            input.value = ""
+            input.value = topicId
+        }else if(type == "lecture"){
+            var input = document.getElementById("lectureidinput");
+            input.value = ""
+            input.value = topicId
+        }
+        
+    }
+
+</script>
 {% endblock %}

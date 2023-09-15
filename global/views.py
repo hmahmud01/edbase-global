@@ -50,10 +50,19 @@ def landing_subjects(request, sid):
 def landing_subjectTopics(request, tid):
     header_class = "header-videos"
     courses = Course.objects.filter(coursetype__title="Video")
+    newTopics = []
     # topics = Topic.objects.filter(subject__id=sid).filter(status=True)
     subjects = Subject.objects.all()
     topics = Topic.objects.filter(topic__id=tid).filter(status=True)
-    return render(request, 'landing/videostopic.html', {'header_main': header_class, 'courses': courses, 'topics': topics, 'subjects':subjects})
+    for topic in topics:
+        boards = TopicBoard.objects.filter(topic__id=topic.id)
+        qualifications = TopicQualifications.objects.filter(topic__id=topic.id)
+        topic.boards = boards
+        topic.qualifications = qualifications
+
+        newTopics.append(topic)
+
+    return render(request, 'landing/videostopic.html', {'header_main': header_class, 'courses': courses, 'topics': newTopics, 'subjects':subjects})
 
 
 # @login_required(login_url="/login/")
@@ -1479,14 +1488,7 @@ def addInteractive(request):
         index_source = ""
         print("NO INDEX FOUND")
     
-    # intmodule = InteractiveModule(
-    #     title = post_data['title'],
-    #     detail = post_data['detail'],
-    #     intUrl = index_source,
-    #     thumb = file_data['thumb']        
-    # )
 
-    # intmodule.save()
     return redirect('subjecttopics')
 
 def showint(reqeuest, id, tid):
@@ -1520,13 +1522,11 @@ def addTopics(request):
 
 
     thumb = file_data['thumb']
-    parent_dir = "/"
 
     print(post_data)
     print(file_data)
 
     subject =Subject.objects.get(id=post_data['subject'])
-    level = Level.objects.get(id=post_data['level'])
     master = TopicMaster.objects.get(id=post_data['topic'])
     subscriptionType = False
 
@@ -1572,6 +1572,11 @@ def addTopics(request):
 
         topicexercise.save()
 
+    info = TopicInformation(
+        topic = topic
+    )
+
+    info.save()
 
     interactive = InteractiveModule.objects.get(id=post_data['index_source_id'])
     scene_no = post_data['scene']
@@ -1586,6 +1591,37 @@ def addTopics(request):
     )
 
     content.save()
+    return redirect('subjecttopics')
+
+def addHistory(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['H04KuMnaavb7CfhMzjhUGCoENs37WfwUhU2YojggWYmdZXoKmZgLiOO7F4jMKj3Q'], 
+    # 'topicid': ['21'], 'shortdescription': ['aaffa']}>
+    post_data = request.POST
+    info = TopicInformation.objects.get(topic__id=post_data['topicid'])
+    info.shortdescription = post_data['shortdescription']
+    info.save()
+    return redirect('subjecttopics')
+
+def addTheory(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['3Ndroov6SdJTCzjLaFfGnZ6OoGNdZNzzDHbFiVocEGUZZhqJXlexZbwhgi3SNR6v'], 
+    # 'topicid': ['20'], 'article': ['asef'], 'articleimage': [''], 'instruction': ['fasef'], 'instructionimage': ['']}>
+    post_data = request.POST
+
+    info = TopicInformation.objects.get(topic__id=post_data['topicid'])
+    info.article = post_data['article']
+    info.instruction = post_data['instruction']
+    info.save()
+    return redirect('subjecttopics')
+
+def addLectures(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['QQc9n11Zp057w23qdFZyvC7kJUhrzt7CqKanhyU5btgdTKao0lYp7OxNBwx6nxEy'], 
+    # 'topicid': ['21'], 'instructional_video': ['fe'], 'theory_video': ['sdf']}>
+    post_data = request.POST
+    info = TopicInformation.objects.get(topic__id=post_data['topicid'])
+    info.instructional_video = post_data['instructional_video']
+    info.theory_video = post_data['theory_video']
+    info.save()
+    
     return redirect('subjecttopics')
 
 def addTopicInformation(request):
