@@ -1443,7 +1443,7 @@ def addSubject(request):
 
     subject.save()
 
-    return redirect('subjecttopics')
+    return redirect('qualifications')
 
 # <QueryDict: {'csrfmiddlewaretoken': 
 # ['jJ2mmscQemNjlh7jnMQUMKdnjicFz2O3jGZ4ojOUBSnCLiZ83n3S9bmdjEODUEEF'], 
@@ -1507,7 +1507,7 @@ def addTopicMaster(request):
 
     master.save()
 
-    return redirect('subjecttopics')
+    return redirect('qualifications')
 
 
 def addTopics(request):
@@ -1621,7 +1621,7 @@ def addLectures(request):
     info.instructional_video = post_data['instructional_video']
     info.theory_video = post_data['theory_video']
     info.save()
-    
+
     return redirect('subjecttopics')
 
 def addTopicInformation(request):
