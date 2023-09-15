@@ -1593,14 +1593,36 @@ def addTopics(request):
     content.save()
     return redirect('subjecttopics')
 
-def addHistory(request, tid):
-    pass
+def addHistory(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['H04KuMnaavb7CfhMzjhUGCoENs37WfwUhU2YojggWYmdZXoKmZgLiOO7F4jMKj3Q'], 
+    # 'topicid': ['21'], 'shortdescription': ['aaffa']}>
+    post_data = request.POST
+    info = TopicInformation.objects.get(topic__id=post_data['topicid'])
+    info.shortdescription = post_data['shortdescription']
+    info.save()
+    return redirect('subjecttopics')
 
-def addTheory(request, tid):
-    pass
+def addTheory(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['3Ndroov6SdJTCzjLaFfGnZ6OoGNdZNzzDHbFiVocEGUZZhqJXlexZbwhgi3SNR6v'], 
+    # 'topicid': ['20'], 'article': ['asef'], 'articleimage': [''], 'instruction': ['fasef'], 'instructionimage': ['']}>
+    post_data = request.POST
 
-def addLectures(request, tid):
-    pass
+    info = TopicInformation.objects.get(topic__id=post_data['topicid'])
+    info.article = post_data['article']
+    info.instruction = post_data['instruction']
+    info.save()
+    return redirect('subjecttopics')
+
+def addLectures(request):
+    # <QueryDict: {'csrfmiddlewaretoken': ['QQc9n11Zp057w23qdFZyvC7kJUhrzt7CqKanhyU5btgdTKao0lYp7OxNBwx6nxEy'], 
+    # 'topicid': ['21'], 'instructional_video': ['fe'], 'theory_video': ['sdf']}>
+    post_data = request.POST
+    info = TopicInformation.objects.get(topic__id=post_data['topicid'])
+    info.instructional_video = post_data['instructional_video']
+    info.theory_video = post_data['theory_video']
+    info.save()
+    
+    return redirect('subjecttopics')
 
 def addTopicInformation(request):
     post_data = request.POST
