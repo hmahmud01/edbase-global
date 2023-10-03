@@ -107,6 +107,14 @@
             </a>
         </li> -->
         <li class="sidebar-list-item">
+            <a class="sidebar-link text-muted" href="{% url 'userlist' %}">
+                <svg class="svg-icon svg-icon-md me-3">
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#user-1"> </use>
+                </svg>
+                <span class="sidebar-link-title">Users</span>
+            </a>
+        </li>
+        <li class="sidebar-list-item">
             <a class="sidebar-link text-muted" href="{% url 'courseindex' %}">
                 <svg class="svg-icon svg-icon-md me-3">
                     <use xlink:href="/static/icons/orion-svg-sprite.svg#gear-1"> </use>
@@ -117,7 +125,7 @@
         <li class="sidebar-list-item">
             <a class="sidebar-link text-muted" href="{% url 'subscriptionkeylist' %}">
                 <svg class="svg-icon svg-icon-md me-3">
-                    <use xlink:href="/static/icons/orion-svg-sprite.svg#gear-1"> </use>
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#key-1"> </use>
                 </svg>
                 <span class="sidebar-link-title">Subscription Key</span>
             </a>
@@ -125,7 +133,7 @@
         <li class="sidebar-list-item">
             <a class="sidebar-link text-muted" href="{% url 'batchlevel' %}">
                 <svg class="svg-icon svg-icon-md me-3">
-                    <use xlink:href="/static/icons/orion-svg-sprite.svg#gear-1"> </use>
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#sorting-1"> </use>
                 </svg>
                 <span class="sidebar-link-title">Batch & Level</span>
             </a>
@@ -134,7 +142,7 @@
         <li class="sidebar-list-item">
             <a class="sidebar-link text-muted" href="{% url 'bundle' %}">
                 <svg class="svg-icon svg-icon-md me-3">
-                    <use xlink:href="/static/icons/orion-svg-sprite.svg#gear-1"> </use>
+                    <use xlink:href="/static/icons/orion-svg-sprite.svg#paper-stack-1"> </use>
                 </svg>
                 <span class="sidebar-link-title">Bundles & Keys</span>
             </a>

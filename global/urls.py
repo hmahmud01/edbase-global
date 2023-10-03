@@ -22,6 +22,7 @@ urlpatterns = [
     path('articleindex/', views.articleIndex, name='articleindex'),
     path('videoindex/', views.videoIndex, name='videoindex'),
     path('physicsindex/', views.physicsIndex, name='physicsindex'),
+    path('userlist/', views.userList, name='userlist'),
     path('courseindex/', views.courseIndex, name='courseindex'),
     path('addcourse/', views.addCourse, name='addcourse'),
     path('addcoursetype/', views.addCourseType, name='addcoursetype'),

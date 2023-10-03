@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid px-lg-4 px-xl-5">
+    <!-- Breadcrumbs -->
+    <div class="page-breadcrumb">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item active">User List Index </li>
+        </ul>
+    </div>
+    <!-- Page Header-->
+    <div class="page-header">
+        <div class="d-flex justify-content-between">
+            <h1 class="page-heading">User List Index</h1>
+
+        </div>
+    </div>
+
+
+    <section>
+        <div class="card mb-4">
+            <div class="card-header">
+                <div class="card-heading">User List</div>
+            </div>
+            <div class="card-body text-muted">
+                <table class="table" id="datatable1">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}

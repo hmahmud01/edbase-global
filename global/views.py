@@ -279,6 +279,10 @@ def physicsIndex(request):
     return render(request, 'eskayadmin/physics.html', {'data': ""})
 
 
+def userList(request):
+    users = User.objects.all()
+    return render(request, 'eskayadmin/userlist.html', {'users':users})
+
 def courseIndex(request):
     courses = Course.objects.all()
     lectures = Lecture.objects.all()
